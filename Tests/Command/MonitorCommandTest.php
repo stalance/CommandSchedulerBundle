@@ -2,6 +2,7 @@
 
 namespace JMose\CommandSchedulerBundle\Tests\Command;
 
+use Doctrine\ORM\EntityManager;
 use JMose\CommandSchedulerBundle\Fixtures\ORM\LoadScheduledCommandData;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
@@ -14,7 +15,7 @@ class MonitorCommandTest extends WebTestCase
     use FixturesTrait;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $em;
 

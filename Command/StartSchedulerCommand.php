@@ -18,22 +18,25 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class StartSchedulerCommand extends Command
 {
+    /**
+     * @var string
+     */
+    protected static $defaultName = 'scheduler:start';
     const PID_FILE = '.cron-pid';
 
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
-        $this->setName('scheduler:start')
-            ->setDescription('Starts command scheduler')
+        $this->setDescription('Starts command scheduler')
             ->addOption('blocking', 'b', InputOption::VALUE_NONE, 'Run in blocking mode.');
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if ($input->getOption('blocking')) {
             $output->writeln(sprintf('<info>%s</info>', 'Starting command scheduler in blocking mode.'));
@@ -69,7 +72,7 @@ class StartSchedulerCommand extends Command
         return 0;
     }
 
-    private function scheduler(OutputInterface $output, $pidFile)
+    private function scheduler(OutputInterface $output, $pidFile): void
     {
         $input = new ArrayInput([]);
 
@@ -78,7 +81,7 @@ class StartSchedulerCommand extends Command
 
         while (true) {
             $now = microtime(true);
-            usleep((60 - ($now % 60) + (int) $now - $now) * 1e6);
+            usleep((60 - ($now % 60) + (int) $now - $now) * 1_000_000.0);
 
             if (null !== $pidFile && !file_exists($pidFile)) {
                 break;

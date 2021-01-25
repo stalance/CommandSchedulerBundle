@@ -2,6 +2,8 @@
 
 namespace JMose\CommandSchedulerBundle\Tests\Controller;
 
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use JMose\CommandSchedulerBundle\Fixtures\ORM\LoadScheduledCommandData;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
@@ -145,7 +147,10 @@ class ListControllerTest extends WebTestCase
         $four = $this->em->getRepository('JMoseCommandSchedulerBundle:ScheduledCommand')->find(4);
         $two->setLocked(false);
         $four->setLastReturnCode(0);
-        $this->em->flush();
+        try {
+            $this->em->flush();
+        } catch (OptimisticLockException | ORMException $e) {
+        }
 
         $this->client->followRedirects(true);
 

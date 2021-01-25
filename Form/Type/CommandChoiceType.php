@@ -14,23 +14,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class CommandChoiceType extends AbstractType
 {
-    /**
-     * @var CommandParser
-     */
-    private $commandParser;
-
-    /**
-     * @param CommandParser $commandParser
-     */
-    public function __construct(CommandParser $commandParser)
+    public function __construct(private CommandParser $commandParser)
     {
-        $this->commandParser = $commandParser;
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
             [
@@ -42,7 +30,7 @@ class CommandChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): string
     {
         return ChoiceType::class;
     }

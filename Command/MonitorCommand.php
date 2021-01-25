@@ -2,6 +2,8 @@
 
 namespace JMose\CommandSchedulerBundle\Command;
 
+use DateTimeInterface;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,9 +18,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 class MonitorCommand extends Command
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var string
      */
-    private $em;
+    protected static $defaultName = 'scheduler:monitor';
+    private ObjectManager $em;
 
     /**
      * @var bool
@@ -26,29 +29,8 @@ class MonitorCommand extends Command
     private $dumpMode;
 
     /**
-     * @var int|bool Number of seconds after a command is considered as timeout
-     */
-    private $lockTimeout;
-
-    /**
-     * @var string|array receiver for statusmail if an error occured
-     */
-    private $receiver;
-
-    /**
-     * @var string mailSubject subject to be used when sending a mail
-     */
-    private $mailSubject;
-
-    /**
-     * @var bool if true, current command will send mail even if all is ok.
-     */
-    private $sendMailIfNoError;
-
-    /**
      * MonitorCommand constructor.
      *
-     * @param ManagerRegistry $managerRegistry
      * @param $managerName
      * @param $lockTimeout
      * @param $receiver
@@ -58,16 +40,12 @@ class MonitorCommand extends Command
     public function __construct(
         ManagerRegistry $managerRegistry,
         $managerName,
-        $lockTimeout,
-        $receiver,
-        $mailSubject,
-        $sendMailIfNoError
+        private $lockTimeout,
+        private $receiver,
+        private $mailSubject,
+        private $sendMailIfNoError
     ) {
         $this->em = $managerRegistry->getManager($managerName);
-        $this->lockTimeout = $lockTimeout;
-        $this->receiver = $receiver;
-        $this->mailSubject = $mailSubject;
-        $this->sendMailIfNoError = $sendMailIfNoError;
 
         parent::__construct();
     }
@@ -75,22 +53,18 @@ class MonitorCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
-        $this
-            ->setName('scheduler:monitor')
-            ->setDescription('Monitor scheduled commands')
+        $this->setDescription('Monitor scheduled commands')
             ->addOption('dump', null, InputOption::VALUE_NONE, 'Display result instead of send mail')
             ->setHelp('This class is for monitoring all active commands.');
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
      *
      * @return int|void|null
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // If not in dump mode and none receiver is set, exit.
         $this->dumpMode = $input->getOption('dump');
@@ -107,29 +81,25 @@ class MonitorCommand extends Command
         // Commands in error
         if (count($failedCommands) > 0) {
             $message = '';
-
             foreach ($failedCommands as $command) {
                 $message .= sprintf(
                     "%s: returncode %s, locked: %s, last execution: %s\n",
                     $command->getName(),
                     $command->getLastReturnCode(),
                     $command->getLocked(),
-                    $command->getLastExecution()->format(\DateTimeInterface::ATOM)
+                    $command->getLastExecution()->format(DateTimeInterface::ATOM)
                 );
             }
-
             // if --dump option, don't send mail
             if ($this->dumpMode) {
                 $output->writeln($message);
             } else {
                 $this->sendMails($message);
             }
-        } else {
-            if ($this->dumpMode) {
-                $output->writeln('No errors found.');
-            } elseif ($this->sendMailIfNoError) {
-                $this->sendMails('No errors found.');
-            }
+        } elseif ($this->dumpMode) {
+            $output->writeln('No errors found.');
+        } elseif ($this->sendMailIfNoError) {
+            $this->sendMails('No errors found.');
         }
 
         return 0;
@@ -140,7 +110,7 @@ class MonitorCommand extends Command
      *
      * @param string $message message to be sent
      */
-    private function sendMails($message)
+    private function sendMails(string $message): void
     {
         // prepare email constants
         $hostname = gethostname();
@@ -158,7 +128,7 @@ class MonitorCommand extends Command
      *
      * @return string subject
      */
-    private function getMailSubject()
+    private function getMailSubject(): string
     {
         $hostname = gethostname();
 

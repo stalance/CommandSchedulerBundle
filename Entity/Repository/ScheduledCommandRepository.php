@@ -4,6 +4,8 @@ namespace JMose\CommandSchedulerBundle\Entity\Repository;
 
 use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\TransactionRequiredException;
 use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
 
 /**
@@ -18,7 +20,7 @@ class ScheduledCommandRepository extends EntityRepository
      *
      * @return ScheduledCommand[]
      */
-    public function findEnabledCommand()
+    public function findEnabledCommand(): array
     {
         return $this->findBy(['disabled' => false, 'locked' => false], ['priority' => 'DESC']);
     }
@@ -28,7 +30,7 @@ class ScheduledCommandRepository extends EntityRepository
      *
      * @return ScheduledCommand[]
      */
-    public function findAll()
+    public function findAll(): array
     {
         return $this->findBy([], ['priority' => 'DESC']);
     }
@@ -38,7 +40,7 @@ class ScheduledCommandRepository extends EntityRepository
      *
      * @return ScheduledCommand[]
      */
-    public function findLockedCommand()
+    public function findLockedCommand(): array
     {
         return $this->findBy(['disabled' => false, 'locked' => true], ['priority' => 'DESC']);
     }
@@ -48,7 +50,7 @@ class ScheduledCommandRepository extends EntityRepository
      *
      * @return ScheduledCommand[]
      */
-    public function findFailedCommand()
+    public function findFailedCommand(): array
     {
         return $this->createQueryBuilder('command')
             ->where('command.disabled = false')
@@ -58,11 +60,10 @@ class ScheduledCommandRepository extends EntityRepository
     }
 
     /**
-     * @param int|bool $lockTimeout
      *
      * @return array|\JMose\CommandSchedulerBundle\Entity\ScheduledCommand[]
      */
-    public function findFailedAndTimeoutCommands($lockTimeout = false)
+    public function findFailedAndTimeoutCommands(int|bool $lockTimeout = false): array
     {
         // Fist, get all failed commands (return != 0)
         $failedCommands = $this->findFailedCommand();
@@ -82,12 +83,11 @@ class ScheduledCommandRepository extends EntityRepository
     }
 
     /**
-     * @param ScheduledCommand $command
      *
      * @return mixed
      *
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     * @throws \Doctrine\ORM\TransactionRequiredException
+     * @throws NonUniqueResultException
+     * @throws TransactionRequiredException
      */
     public function getNotLockedCommand(ScheduledCommand $command)
     {

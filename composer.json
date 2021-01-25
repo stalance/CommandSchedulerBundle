@@ -2,38 +2,49 @@
     "name": "jmose/command-scheduler-bundle",
     "description": "This Symfony bundle will allow you to schedule all your commands just like UNIX crontab",
     "keywords": ["Symfony", "scheduler", "cron", "command", "task"],
-    "homepage": "https://github.com/J-Mose/CommandSchedulerBundle",
+    "homepage": "https://github.com/Chris53897/CommandSchedulerBundle",
     "type": "symfony-bundle",
     "license": "MIT",
     "authors": [
         {
             "name": "Julien Guyon",
             "email": "julienguyon@hotmail.com"
+        },
+        {
+            "name": "Christopher Georg",
+            "email": "chris@sky-scripts.de"
         }
     ],
     "require": {
-        "php": "^7.2",
-        "symfony/console": "^3.4|^4.3|^5.0",
-        "doctrine/orm": "^2.5.11",
-        "doctrine/doctrine-bundle": "^1.6.10|^2.0",
-        "dragonmantank/cron-expression": "^3.0",
-        "symfony/framework-bundle": "^3.4|^4.3|^5.0",
-        "symfony/twig-bundle": "^3.4|^4.3|^5.0",
-        "symfony/translation": "^3.4|^4.3|^5.0",
-        "symfony/form": "^3.4|^4.3|^5.0",
-        "symfony/asset": "^3.4|^4.3|^5.0",
-        "symfony/templating": "^3.4|^4.3|^5.0",
-        "symfony/validator": "^3.4|^4.3|^5.0"
+        "php": "^8.0",
+        "symfony/console": "^5.2",
+        "doctrine/orm": "^2.8.1",
+        "doctrine/doctrine-bundle": "^2.2",
+        "dragonmantank/cron-expression": "^3.1",
+        "symfony/framework-bundle": "^5.2",
+        "symfony/twig-bundle": "^5.2",
+        "symfony/translation": "^5.2",
+        "symfony/form": "^5.2",
+        "symfony/asset": "^5.2",
+        "symfony/templating": "^5.2",
+        "symfony/validator": "^5.2",
+        "ext-simplexml": "*",
+        "ext-posix": "*"
     },
     "require-dev": {
         "ext-pcntl": "*",
-        "phpunit/phpunit": "^8.5",
-        "php-coveralls/php-coveralls": "^2.0",
-        "doctrine/doctrine-fixtures-bundle": "^3.0.0",
-        "liip/functional-test-bundle": "^4.2",
-        "symfony/css-selector": "^3.4|^4.0|^5.0",
-        "symfony/security-bundle": "^3.4|^4.0|^5.0",
-        "liip/test-fixtures-bundle": "^1.4.0"
+        "phpunit/phpunit": "^9.5.0",
+        "php-coveralls/php-coveralls": "^2.4",
+        "doctrine/doctrine-fixtures-bundle": "^3.4.0",
+        "symfony/css-selector": "^5.2",
+        "symfony/security-bundle": "^5.2",
+        "liip/test-fixtures-bundle": "^1.11.0",
+        "rector/rector": "^0.9",
+        "thecodingmachine/phpstan-safe-rule": "^1.0",
+        "thecodingmachine/phpstan-strict-rules": "^0.12.1",
+        "friendsofphp/php-cs-fixer": "^2.17",
+        "phpmd/phpmd": "^2.9",
+        "phpstan/phpstan": "^0.12.65"
     },
     "suggest": {
         "ext-pcntl": "For using the scheduler daemon"

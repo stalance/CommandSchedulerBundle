@@ -2,6 +2,7 @@
 
 namespace JMose\CommandSchedulerBundle\Command;
 
+use Doctrine\Persistence\ObjectManager;
 use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Console\Command\Command;
@@ -18,14 +19,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 class UnlockCommand extends Command
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var string
      */
-    private $em;
-
-    /**
-     * @var int
-     */
-    private $defaultLockTimeout;
+    protected static $defaultName = 'scheduler:unlock';
+    private ObjectManager $em;
 
     /**
      * @var int|bool Number of seconds after a command is considered as timeout
@@ -45,14 +42,12 @@ class UnlockCommand extends Command
     /**
      * UnlockCommand constructor.
      *
-     * @param ManagerRegistry $managerRegistry
      * @param $managerName
      * @param $lockTimeout
      */
-    public function __construct(ManagerRegistry $managerRegistry, $managerName, $lockTimeout)
+    public function __construct(ManagerRegistry $managerRegistry, $managerName, private $defaultLockTimeout)
     {
         $this->em = $managerRegistry->getManager($managerName);
-        $this->defaultLockTimeout = $lockTimeout;
 
         parent::__construct();
     }
@@ -60,11 +55,9 @@ class UnlockCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
-        $this
-            ->setName('scheduler:unlock')
-            ->setDescription('Unlock one or all scheduled commands that have surpassed the lock timeout.')
+        $this->setDescription('Unlock one or all scheduled commands that have surpassed the lock timeout.')
             ->addArgument('name', InputArgument::OPTIONAL, 'Name of the command to unlock')
             ->addOption('all', 'A', InputOption::VALUE_NONE, 'Unlock all scheduled commands')
             ->addOption(
@@ -77,34 +70,27 @@ class UnlockCommand extends Command
 
     /**
      * Initialize parameters and services used in execute function.
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
      */
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->unlockAll = $input->getOption('all');
         $this->scheduledCommandName = $input->getArgument('name');
 
-        $this->lockTimeout = $input->getOption('lock-timeout', null);
+        $this->lockTimeout = $input->getOption('lock-timeout');
         if (null === $this->lockTimeout) {
             $this->lockTimeout = $this->defaultLockTimeout;
-        } else {
-            if ('false' === $this->lockTimeout) {
-                $this->lockTimeout = false;
-            }
+        } elseif ('false' === $this->lockTimeout) {
+            $this->lockTimeout = false;
         }
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
      *
      * @return int|void|null
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        if (false === $this->unlockAll && null === $this->scheduledCommandName) {
+        if (!$this->unlockAll && null === $this->scheduledCommandName) {
             $output->writeln('Either the name of a scheduled command or the --all option must be set.');
 
             return 1;
@@ -112,7 +98,7 @@ class UnlockCommand extends Command
 
         $repository = $this->em->getRepository(ScheduledCommand::class);
 
-        if (true === $this->unlockAll) {
+        if ($this->unlockAll) {
             $failedCommands = $repository->findLockedCommand();
             foreach ($failedCommands as $failedCommand) {
                 $this->unlock($failedCommand, $output);
@@ -139,10 +125,10 @@ class UnlockCommand extends Command
 
     /**
      * @param ScheduledCommand $command command to be unlocked
-     *
      * @return bool true if unlock happened
+     * @throws \Exception
      */
-    protected function unlock(ScheduledCommand $command, OutputInterface $output)
+    protected function unlock(ScheduledCommand $command, OutputInterface $output): bool
     {
         if (false === $command->isLocked()) {
             $output->writeln(sprintf('Skipping: Scheduled Command "%s" is not locked.', $command->getName()));

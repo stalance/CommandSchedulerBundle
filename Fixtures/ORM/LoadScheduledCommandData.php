@@ -13,15 +13,12 @@ use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
  */
 class LoadScheduledCommandData implements FixtureInterface
 {
-    /**
-     * @var ObjectManager
-     */
-    protected $manager;
+    protected ?ObjectManager $manager = null;
 
     /**
      * {@inheritdoc}
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $this->manager = $manager;
 
@@ -45,14 +42,10 @@ class LoadScheduledCommandData implements FixtureInterface
      * @param $logFile
      * @param $priority
      * @param $lastExecution
-     * @param bool $locked
-     * @param bool $disabled
-     * @param bool $executeNow
-     * @param int  $lastReturnCode
      */
     protected function createScheduledCommand(
         $name, $command, $arguments, $cronExpression, $logFile, $priority, $lastExecution,
-        $locked = false, $disabled = false, $executeNow = false, $lastReturnCode = null)
+        bool $locked = false, bool $disabled = false, bool $executeNow = false, int $lastReturnCode = null): void
     {
         $scheduledCommand = new ScheduledCommand();
         $scheduledCommand

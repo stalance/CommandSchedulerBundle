@@ -16,18 +16,21 @@ use Symfony\Component\Console\Output\OutputInterface;
 class StopSchedulerCommand extends Command
 {
     /**
+     * @var string
+     */
+    protected static $defaultName = 'scheduler:stop';
+    /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
-        $this->setName('scheduler:stop')
-            ->setDescription('Stops command scheduler');
+        $this->setDescription('Stops command scheduler');
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $pidFile = sys_get_temp_dir().DIRECTORY_SEPARATOR.StartSchedulerCommand::PID_FILE;
         if (!file_exists($pidFile)) {

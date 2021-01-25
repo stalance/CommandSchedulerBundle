@@ -5,6 +5,7 @@ namespace JMose\CommandSchedulerBundle\Controller;
 use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
 use JMose\CommandSchedulerBundle\Form\Type\ScheduledCommandType;
 use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -18,13 +19,8 @@ class DetailController extends BaseController
     /**
      * Handle display of new/existing ScheduledCommand object.
      * This action should not be invoke directly.
-     *
-     * @param ScheduledCommand $scheduledCommand
-     * @param Form             $scheduledCommandForm
-     *
-     * @return Response
      */
-    public function indexAction(ScheduledCommand $scheduledCommand, Form $scheduledCommandForm = null)
+    public function indexAction(ScheduledCommand $scheduledCommand, Form $scheduledCommandForm = null): Response
     {
         if (null === $scheduledCommandForm) {
             $scheduledCommandForm = $this->createForm(ScheduledCommandType::class, $scheduledCommand);
@@ -40,10 +36,8 @@ class DetailController extends BaseController
 
     /**
      * Initialize a new ScheduledCommand object and forward to the index action (view).
-     *
-     * @return Response
      */
-    public function initNewScheduledCommandAction()
+    public function initNewScheduledCommandAction(): Response
     {
         $scheduledCommand = new ScheduledCommand();
 
@@ -59,10 +53,9 @@ class DetailController extends BaseController
      * Get a ScheduledCommand object with its id and forward it to the index action (view).
      *
      * @param $scheduledCommandId
-     *
      * @return Response
      */
-    public function initEditScheduledCommandAction($scheduledCommandId)
+    public function initEditScheduledCommandAction($scheduledCommandId): Response
     {
         $scheduledCommand = $this->getDoctrineManager()->getRepository(ScheduledCommand::class)
             ->find($scheduledCommandId);
@@ -78,11 +71,9 @@ class DetailController extends BaseController
     /**
      * Handle save after form is submit and forward to the index action (view).
      *
-     * @param Request $request
      *
-     * @return Response
      */
-    public function saveAction(Request $request)
+    public function saveAction(Request $request): RedirectResponse|Response
     {
         $entityManager = $this->getDoctrineManager();
 

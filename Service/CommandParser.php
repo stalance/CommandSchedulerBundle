@@ -15,33 +15,10 @@ use Symfony\Component\HttpKernel\KernelInterface;
 class CommandParser
 {
     /**
-     * @var KernelInterface
-     */
-    private $kernel;
-
-    /**
-     * @var array
-     */
-    private $excludedNamespaces;
-
-    /**
-     * @var array
-     */
-    private $includedNamespaces;
-
-    /**
      * CommandParser constructor.
-     *
-     * @param KernelInterface $kernel
-     * @param array           $excludedNamespaces
-     * @param array           $includedNamespaces
      */
-    public function __construct(KernelInterface $kernel, array $excludedNamespaces = [], array $includedNamespaces = [])
+    public function __construct(private KernelInterface $kernel, private array $excludedNamespaces = [], private array $includedNamespaces = [])
     {
-        $this->kernel = $kernel;
-        $this->excludedNamespaces = $excludedNamespaces;
-        $this->includedNamespaces = $includedNamespaces;
-
         if (count($this->excludedNamespaces) > 0 && count($this->includedNamespaces) > 0) {
             throw new \InvalidArgumentException('Cannot combine excludedNamespaces with includedNamespaces');
         }
@@ -50,9 +27,10 @@ class CommandParser
     /**
      * Execute the console command "list" with XML output to have all available command.
      *
-     * @return array
+     * @return mixed[]
+     * @throws \Exception
      */
-    public function getCommands()
+    public function getCommands(): array
     {
         $application = new Application($this->kernel);
         $application->setAutoExit(false);
@@ -65,7 +43,12 @@ class CommandParser
         );
 
         $output = new StreamOutput(fopen('php://memory', 'w+'));
-        $application->run($input, $output);
+        try {
+            $application->run($input, $output);
+        } catch (\Exception $e) {
+
+        }
+
         rewind($output->getStream());
 
         return $this->extractCommandsFromXML(stream_get_contents($output->getStream()));
@@ -76,9 +59,9 @@ class CommandParser
      *
      * @param $xml
      *
-     * @return array
+     * @return array<string, array<string, string>&mixed[]>
      */
-    private function extractCommandsFromXML($xml)
+    private function extractCommandsFromXML($xml): array
     {
         if ('' == $xml) {
             return [];

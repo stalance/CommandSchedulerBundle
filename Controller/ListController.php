@@ -4,6 +4,7 @@ namespace JMose\CommandSchedulerBundle\Controller;
 
 use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -14,23 +15,17 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ListController extends BaseController
 {
-    /**
-     * @var string
-     */
-    private $lockTimeout;
+    private string $lockTimeout;
 
     /**
      * @param $lockTimeout string
      */
-    public function setLockTimeout($lockTimeout)
+    public function setLockTimeout(string $lockTimeout): void
     {
         $this->lockTimeout = $lockTimeout;
     }
 
-    /**
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function indexAction()
+    public function indexAction(): Response
     {
         $scheduledCommands = $this->getDoctrineManager()->getRepository(
             'JMoseCommandSchedulerBundle:ScheduledCommand'
@@ -44,10 +39,8 @@ class ListController extends BaseController
 
     /**
      * @param $id
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function removeAction($id)
+    public function removeAction($id): RedirectResponse
     {
         $entityManager = $this->getDoctrineManager();
         $scheduledCommand = $entityManager->getRepository(ScheduledCommand::class)->find($id);
@@ -64,10 +57,8 @@ class ListController extends BaseController
 
     /**
      * @param $id
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function toggleAction($id)
+    public function toggleAction($id): RedirectResponse
     {
         $entityManager = $this->getDoctrineManager();
         $scheduledCommand = $entityManager->getRepository(ScheduledCommand::class)->find($id);
@@ -79,11 +70,9 @@ class ListController extends BaseController
 
     /**
      * @param $id
-     * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function executeAction($id, Request $request)
+    public function executeAction($id, Request $request): RedirectResponse
     {
         $entityManager = $this->getDoctrineManager();
         $scheduledCommand = $entityManager->getRepository(ScheduledCommand::class)->find($id);
@@ -103,11 +92,9 @@ class ListController extends BaseController
 
     /**
      * @param $id
-     * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function unlockAction($id, Request $request)
+    public function unlockAction($id, Request $request): RedirectResponse
     {
         $entityManager = $this->getDoctrineManager();
         $scheduledCommand = $entityManager->getRepository(ScheduledCommand::class)->find($id);
@@ -129,10 +116,9 @@ class ListController extends BaseController
      * method checks if there are jobs which are enabled but did not return 0 on last execution or are locked.<br>
      * if a match is found, HTTP status 417 is sent along with an array which contains name, return code and locked-state.
      * if no matches found, HTTP status 200 is sent with an empty array.
-     *
-     * @return JsonResponse
+     * @throws \JsonException
      */
-    public function monitorAction()
+    public function monitorAction(): JsonResponse
     {
         $failedCommands = $this->getDoctrineManager()
             ->getRepository(ScheduledCommand::class)
@@ -148,7 +134,10 @@ class ListController extends BaseController
         }
 
         $response = new JsonResponse();
-        $response->setContent(json_encode($jsonArray));
+        try {
+            $response->setContent(json_encode($jsonArray, JSON_THROW_ON_ERROR));
+        } catch (\JsonException $e) {
+        }
         $response->setStatusCode(count($jsonArray) > 0 ? Response::HTTP_EXPECTATION_FAILED : Response::HTTP_OK);
 
         return $response;
