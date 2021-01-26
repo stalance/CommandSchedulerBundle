@@ -35,7 +35,7 @@ class UnlockCommand extends Command
     private bool $unlockAll;
 
     /**
-     * @var string name of the command to be unlocked
+     * @var array|string name of the command to be unlocked
      */
     private array|string $scheduledCommandName = [];
 

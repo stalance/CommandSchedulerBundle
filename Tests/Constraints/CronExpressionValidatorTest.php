@@ -20,6 +20,7 @@ class CronExpressionValidatorTest extends ConstraintValidatorTestCase
 
     /**
      * @dataProvider getValidValues
+     * @param $value
      */
     public function testValidValues($value)
     {
@@ -40,6 +41,7 @@ class CronExpressionValidatorTest extends ConstraintValidatorTestCase
 
     /**
      * @dataProvider getInvalidValues
+     * @param $value
      */
     public function testInvalidValues($value)
     {
