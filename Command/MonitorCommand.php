@@ -28,17 +28,17 @@ class MonitorCommand extends Command
      * MonitorCommand constructor.
      *
      * @param ManagerRegistry $managerRegistry
-     * @param $managerName
-     * @param $lockTimeout
-     * @param $receiver
-     * @param $mailSubject
-     * @param $sendMailIfNoError
+     * @param string $managerName
+     * @param int | bool $lockTimeout
+     * @param array $receiver
+     * @param string $mailSubject
+     * @param bool $sendMailIfNoError
      */
     public function __construct(
         ManagerRegistry $managerRegistry,
         string $managerName,
         private int | bool $lockTimeout,
-        private string $receiver,
+        private array $receiver,
         private string $mailSubject,
         private bool $sendMailIfNoError = false
     ) {
