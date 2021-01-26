@@ -2,6 +2,7 @@
 
 namespace JMose\CommandSchedulerBundle\Tests\Constraints;
 
+use JetBrains\PhpStorm\Pure;
 use JMose\CommandSchedulerBundle\Validator\Constraints\CronExpression;
 use JMose\CommandSchedulerBundle\Validator\Constraints\CronExpressionValidator;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
@@ -11,6 +12,7 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
  */
 class CronExpressionValidatorTest extends ConstraintValidatorTestCase
 {
+    #[Pure]
     protected function createValidator()
     {
         return new CronExpressionValidator();
