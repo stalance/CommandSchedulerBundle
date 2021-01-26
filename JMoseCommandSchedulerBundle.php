@@ -5,6 +5,9 @@ namespace JMose\CommandSchedulerBundle;
 use JMose\CommandSchedulerBundle\DependencyInjection\JMoseCommandSchedulerExtension;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
+/**
+ * Class JMoseCommandSchedulerBundle.
+ */
 class JMoseCommandSchedulerBundle extends Bundle
 {
     /**

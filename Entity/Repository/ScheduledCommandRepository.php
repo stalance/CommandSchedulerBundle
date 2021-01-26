@@ -60,11 +60,11 @@ class ScheduledCommandRepository extends EntityRepository
     }
 
     /**
-     *
      * @param int|bool $lockTimeout
+     *
      * @return array
      */
-    public function findFailedAndTimeoutCommands(int|bool $lockTimeout = false): array
+    public function findFailedAndTimeoutCommands(int | bool $lockTimeout = false): array
     {
         // Fist, get all failed commands (return != 0)
         $failedCommands = $this->findFailedCommand();
@@ -84,8 +84,8 @@ class ScheduledCommandRepository extends EntityRepository
     }
 
     /**
-     *
      * @param ScheduledCommand $command
+     *
      * @return mixed
      *
      * @throws NonUniqueResultException

@@ -13,9 +13,9 @@ class CronExpressionValidator extends ConstraintValidator
 {
     /**
      * Validate method for CronExpression constraint.
-     * TODO check
+     * TODO check.
      *
-     * @param mixed $value
+     * @param mixed      $value
      * @param Constraint $constraint
      */
     public function validate(mixed $value, Constraint $constraint): void
@@ -27,7 +27,7 @@ class CronExpressionValidator extends ConstraintValidator
         }
 
         try {
-           new CronExpressionLib($value);
+            new CronExpressionLib($value);
         } catch (\InvalidArgumentException) {
             $this->context->addViolation($constraint->message, []);
         }

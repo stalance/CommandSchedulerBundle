@@ -25,11 +25,6 @@ class MonitorCommand extends Command
     private ObjectManager $em;
 
     /**
-     * @var bool
-     */
-    private bool $dumpMode = false;
-
-    /**
      * MonitorCommand constructor.
      *
      * @param ManagerRegistry $managerRegistry
@@ -42,7 +37,7 @@ class MonitorCommand extends Command
     public function __construct(
         ManagerRegistry $managerRegistry,
         string $managerName,
-        private int|bool $lockTimeout,
+        private int | bool $lockTimeout,
         private string $receiver,
         private string $mailSubject,
         private bool $sendMailIfNoError = false
@@ -63,16 +58,16 @@ class MonitorCommand extends Command
     }
 
     /**
-     *
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
+     *
      * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // If not in dump mode and none receiver is set, exit.
-        $this->dumpMode = (bool) $input->getOption('dump');
-        if (!$this->dumpMode && 0 === count($this->receiver)) {
+        $dumpMode = (bool) $input->getOption('dump');
+        if (!$dumpMode && 0 === count($this->receiver)) {
             $output->writeln('Please add receiver in configuration');
 
             return Command::FAILURE;
@@ -95,12 +90,12 @@ class MonitorCommand extends Command
                 );
             }
             // if --dump option, don't send mail
-            if ($this->dumpMode) {
+            if ($dumpMode) {
                 $output->writeln($message);
             } else {
                 $this->sendMails($message);
             }
-        } elseif ($this->dumpMode) {
+        } elseif ($dumpMode) {
             $output->writeln('No errors found.');
         } elseif ($this->sendMailIfNoError) {
             $this->sendMails('No errors found.');
@@ -111,7 +106,8 @@ class MonitorCommand extends Command
 
     /**
      * Send message to email receivers.
-     * TODO E-Mail handling
+     * TODO E-Mail handling.
+     *
      * @param string $message message to be sent
      */
     private function sendMails(string $message): void

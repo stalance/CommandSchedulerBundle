@@ -14,13 +14,15 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author  Julien Guyon <julienguyon@hotmail.com>
  */
-class DetailController extends BaseController
+class DetailController extends AbstractBaseController
 {
     /**
      * Handle display of new/existing ScheduledCommand object.
      * This action should not be invoke directly.
+     *
      * @param ScheduledCommand $scheduledCommand
-     * @param Form|null $scheduledCommandForm
+     * @param Form|null        $scheduledCommandForm
+     *
      * @return Response
      */
     public function indexAction(ScheduledCommand $scheduledCommand, Form $scheduledCommandForm = null): Response
@@ -39,9 +41,12 @@ class DetailController extends BaseController
 
     /**
      * Initialize a new ScheduledCommand object and forward to the index action (view).
+     *
+     * @return Response
      */
     public function initNewScheduledCommandAction(): Response
     {
+        /** @var TYPE_NAME $scheduledCommand */
         $scheduledCommand = new ScheduledCommand();
 
         return $this->forward(
@@ -56,6 +61,7 @@ class DetailController extends BaseController
      * Get a ScheduledCommand object with its id and forward it to the index action (view).
      *
      * @param $scheduledCommandId
+     *
      * @return Response
      */
     public function initEditScheduledCommandAction($scheduledCommandId): Response
@@ -75,9 +81,10 @@ class DetailController extends BaseController
      * Handle save after form is submit and forward to the index action (view).
      *
      * @param Request $request
+     *
      * @return RedirectResponse|Response
      */
-    public function saveAction(Request $request): RedirectResponse|Response
+    public function saveAction(Request $request): RedirectResponse | Response
     {
         $entityManager = $this->getDoctrineManager();
 

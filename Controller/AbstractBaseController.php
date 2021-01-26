@@ -12,14 +12,14 @@ use Symfony\Contracts\Translation\TranslatorInterface as ContractsTranslatorInte
  *
  * @author  Julien Guyon <julienguyon@hotmail.com>
  */
-abstract class BaseController extends AbstractController
+abstract class AbstractBaseController extends AbstractController
 {
     private string $managerName;
 
     /**
      * @var ContractsTranslatorInterface|ComponentTranslatorInterface
      */
-    protected ComponentTranslatorInterface|ContractsTranslatorInterface $translator;
+    protected ComponentTranslatorInterface | ContractsTranslatorInterface $translator;
 
     /**
      * @param $managerName string
@@ -32,7 +32,7 @@ abstract class BaseController extends AbstractController
     /**
      * @param ContractsTranslatorInterface|ComponentTranslatorInterface $translator
      */
-    public function setTranslator(ContractsTranslatorInterface|ComponentTranslatorInterface $translator)
+    public function setTranslator(ContractsTranslatorInterface | ComponentTranslatorInterface $translator)
     {
         $this->translator = $translator;
     }

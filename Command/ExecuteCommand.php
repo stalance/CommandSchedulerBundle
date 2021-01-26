@@ -1,4 +1,6 @@
-<?php /** @noinspection PhpMissingFieldTypeInspection */
+<?php
+
+/** @noinspection PhpMissingFieldTypeInspection */
 
 namespace JMose\CommandSchedulerBundle\Command;
 
@@ -26,7 +28,7 @@ class ExecuteCommand extends Command
      * @var string
      */
     protected static $defaultName = 'scheduler:execute';
-    private ObjectManager|EntityManager $em;
+    private ObjectManager | EntityManager $em;
 
     /**
      * @var bool
@@ -67,7 +69,8 @@ class ExecuteCommand extends Command
 
     /**
      * Initialize parameters and services used in execute function.
-     * @param InputInterface $input
+     *
+     * @param InputInterface  $input
      * @param OutputInterface $output
      */
     protected function initialize(InputInterface $input, OutputInterface $output): void

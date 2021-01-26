@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author  Julien Guyon <julienguyon@hotmail.com>
  */
-class ListController extends BaseController
+class ListController extends AbstractBaseController
 {
     private string $lockTimeout;
 

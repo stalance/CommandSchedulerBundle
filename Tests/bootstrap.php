@@ -21,7 +21,7 @@ if (is_dir(__DIR__.'/../build')) {
     }
 } else {
     // Creating the build dir, to output some potential datas, and the code coverage if wanted
-    mkdir(__DIR__.'/../build', 0777);
+    mkdir(__DIR__.'/../build');
 }
 
 // Registers automatically all doctrine annotations when required

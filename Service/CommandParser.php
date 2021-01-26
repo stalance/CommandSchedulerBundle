@@ -16,9 +16,10 @@ class CommandParser
 {
     /**
      * CommandParser constructor.
+     *
      * @param KernelInterface $kernel
-     * @param array $excludedNamespaces
-     * @param array $includedNamespaces
+     * @param array           $excludedNamespaces
+     * @param array           $includedNamespaces
      */
     public function __construct(private KernelInterface $kernel, private array $excludedNamespaces = [], private array $includedNamespaces = [])
     {
@@ -31,6 +32,7 @@ class CommandParser
      * Execute the console command "list" with XML output to have all available command.
      *
      * @return mixed[]
+     *
      * @throws \Exception
      */
     public function getCommands(): array
@@ -49,7 +51,6 @@ class CommandParser
         try {
             $application->run($input, $output);
         } catch (\Exception $e) {
-
         }
 
         rewind($output->getStream());
@@ -60,11 +61,11 @@ class CommandParser
     /**
      * Extract an array of available Symfony command from the XML output.
      *
-     * @param $xml
+     * @param string $xml
      *
      * @return array
      */
-    private function extractCommandsFromXML($xml): array
+    private function extractCommandsFromXML(string $xml): array
     {
         if ('' == $xml) {
             return [];
