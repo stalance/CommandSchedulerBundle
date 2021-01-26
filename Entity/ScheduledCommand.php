@@ -9,7 +9,7 @@ namespace JMose\CommandSchedulerBundle\Entity;
  */
 class ScheduledCommand
 {
-    private int $id;
+    private ?int $id = null;
 
     private ?string $name = null;
 
@@ -54,7 +54,7 @@ class ScheduledCommand
     /**
      * Get id.
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
