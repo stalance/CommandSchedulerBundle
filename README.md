@@ -21,8 +21,21 @@ The following table shows the compatibilities of different versions of the bundl
 | [3.0 (master)](https://github.com/J-Mose/CommandSchedulerBundle/tree/master)            | ^3.4\|^4.3\|^5.0 | >=7.2  |
 | [2.2.x](https://github.com/J-Mose/CommandSchedulerBundle/tree/2.2)                      | ^3.4\|^4.3       | >=7.1  |
 
+
+## Install
+
 When using Symfony Flex there is an [installation recipe](https://github.com/symfony/recipes-contrib/tree/master/jmose/command-scheduler-bundle/2.0).  
 To use it, you have to enable contrib recipes on your project : `composer config extra.symfony.allow-contrib true`
+
+composer req jmose/command-scheduler-bundle
+
+Update Database
+php bin/console make:migration
+php bin/console doctrine:migrations:migrate
+
+Secure your route by adding - { path: ^/command-scheduler, role: ROLE_ADMIN } in your security config.
+
+Check new URL /command-scheduler/list
 
 ## Features
 

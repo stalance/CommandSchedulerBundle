@@ -13,10 +13,12 @@ class CronExpressionValidator extends ConstraintValidator
 {
     /**
      * Validate method for CronExpression constraint.
+     * TODO check
      *
      * @param mixed $value
+     * @param Constraint $constraint
      */
-    public function validate($value, Constraint $constraint): void
+    public function validate(mixed $value, Constraint $constraint): void
     {
         $value = (string) $value;
 

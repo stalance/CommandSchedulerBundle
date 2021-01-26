@@ -2,7 +2,7 @@
 
 namespace JMose\CommandSchedulerBundle\Controller;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Translation\TranslatorInterface as ComponentTranslatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface as ContractsTranslatorInterface;
@@ -19,7 +19,7 @@ abstract class BaseController extends AbstractController
     /**
      * @var ContractsTranslatorInterface|ComponentTranslatorInterface
      */
-    protected $translator;
+    protected ComponentTranslatorInterface|ContractsTranslatorInterface $translator;
 
     /**
      * @param $managerName string
@@ -29,6 +29,9 @@ abstract class BaseController extends AbstractController
         $this->managerName = $managerName;
     }
 
+    /**
+     * @param ContractsTranslatorInterface|ComponentTranslatorInterface $translator
+     */
     public function setTranslator(ContractsTranslatorInterface|ComponentTranslatorInterface $translator)
     {
         $this->translator = $translator;
@@ -37,7 +40,7 @@ abstract class BaseController extends AbstractController
     /**
      * @return ObjectManager
      */
-    protected function getDoctrineManager(): \Doctrine\Persistence\ObjectManager
+    protected function getDoctrineManager(): ObjectManager
     {
         return $this->getDoctrine()->getManager($this->managerName);
     }

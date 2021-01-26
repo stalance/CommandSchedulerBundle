@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection ALL */
 
 namespace JMose\CommandSchedulerBundle\Command;
 
@@ -60,7 +60,7 @@ class StartSchedulerCommand extends Command
 
             $output->writeln(sprintf('<info>%s</info>', 'Command scheduler started in non-blocking mode...'));
 
-            return 0;
+            return Command::SUCCESS;
         }
 
         if (-1 === posix_setsid()) {
@@ -69,7 +69,7 @@ class StartSchedulerCommand extends Command
 
         $this->scheduler(new NullOutput(), $pidFile);
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     private function scheduler(OutputInterface $output, $pidFile): void

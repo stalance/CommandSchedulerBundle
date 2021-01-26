@@ -27,23 +27,24 @@ class UnlockCommand extends Command
     /**
      * @var int|bool Number of seconds after a command is considered as timeout
      */
-    private $lockTimeout;
+    private bool|int $lockTimeout;
 
     /**
      * @var bool true if all locked commands should be unlocked
      */
-    private $unlockAll;
+    private bool $unlockAll;
 
     /**
      * @var string name of the command to be unlocked
      */
-    private $scheduledCommandName = [];
+    private array|string $scheduledCommandName = [];
 
     /**
      * UnlockCommand constructor.
      *
+     * @param ManagerRegistry $managerRegistry
      * @param $managerName
-     * @param $lockTimeout
+     * @param $defaultLockTimeout
      */
     public function __construct(ManagerRegistry $managerRegistry, $managerName, private $defaultLockTimeout)
     {
@@ -70,6 +71,8 @@ class UnlockCommand extends Command
 
     /**
      * Initialize parameters and services used in execute function.
+     * @param InputInterface $input
+     * @param OutputInterface $output
      */
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
@@ -86,14 +89,17 @@ class UnlockCommand extends Command
 
     /**
      *
-     * @return int|void|null
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int
+     * @throws \Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (!$this->unlockAll && null === $this->scheduledCommandName) {
             $output->writeln('Either the name of a scheduled command or the --all option must be set.');
 
-            return 1;
+            return Command::FAILURE;
         }
 
         $repository = $this->em->getRepository(ScheduledCommand::class);
@@ -113,18 +119,19 @@ class UnlockCommand extends Command
                     )
                 );
 
-                return 1;
+                return Command::FAILURE;
             }
             $this->unlock($scheduledCommand, $output);
         }
 
         $this->em->flush();
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     /**
      * @param ScheduledCommand $command command to be unlocked
+     * @param OutputInterface $output
      * @return bool true if unlock happened
      * @throws \Exception
      */

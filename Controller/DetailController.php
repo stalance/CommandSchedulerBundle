@@ -19,6 +19,9 @@ class DetailController extends BaseController
     /**
      * Handle display of new/existing ScheduledCommand object.
      * This action should not be invoke directly.
+     * @param ScheduledCommand $scheduledCommand
+     * @param Form|null $scheduledCommandForm
+     * @return Response
      */
     public function indexAction(ScheduledCommand $scheduledCommand, Form $scheduledCommandForm = null): Response
     {
@@ -71,7 +74,8 @@ class DetailController extends BaseController
     /**
      * Handle save after form is submit and forward to the index action (view).
      *
-     *
+     * @param Request $request
+     * @return RedirectResponse|Response
      */
     public function saveAction(Request $request): RedirectResponse|Response
     {

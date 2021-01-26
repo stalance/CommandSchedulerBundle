@@ -39,6 +39,7 @@ class ListController extends BaseController
 
     /**
      * @param $id
+     * @return RedirectResponse
      */
     public function removeAction($id): RedirectResponse
     {
@@ -57,6 +58,7 @@ class ListController extends BaseController
 
     /**
      * @param $id
+     * @return RedirectResponse
      */
     public function toggleAction($id): RedirectResponse
     {
@@ -70,7 +72,8 @@ class ListController extends BaseController
 
     /**
      * @param $id
-     *
+     * @param Request $request
+     * @return RedirectResponse
      */
     public function executeAction($id, Request $request): RedirectResponse
     {
@@ -92,7 +95,8 @@ class ListController extends BaseController
 
     /**
      * @param $id
-     *
+     * @param Request $request
+     * @return RedirectResponse
      */
     public function unlockAction($id, Request $request): RedirectResponse
     {

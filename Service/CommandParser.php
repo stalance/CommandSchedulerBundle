@@ -16,6 +16,9 @@ class CommandParser
 {
     /**
      * CommandParser constructor.
+     * @param KernelInterface $kernel
+     * @param array $excludedNamespaces
+     * @param array $includedNamespaces
      */
     public function __construct(private KernelInterface $kernel, private array $excludedNamespaces = [], private array $includedNamespaces = [])
     {
@@ -59,7 +62,7 @@ class CommandParser
      *
      * @param $xml
      *
-     * @return array<string, array<string, string>&mixed[]>
+     * @return array
      */
     private function extractCommandsFromXML($xml): array
     {

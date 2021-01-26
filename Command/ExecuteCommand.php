@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpMissingFieldTypeInspection */
 
 namespace JMose\CommandSchedulerBundle\Command;
 
@@ -38,6 +38,7 @@ class ExecuteCommand extends Command
     /**
      * ExecuteCommand constructor.
      *
+     * @param ManagerRegistry $managerRegistry
      * @param $managerName
      * @param $logPath
      */
@@ -66,6 +67,8 @@ class ExecuteCommand extends Command
 
     /**
      * Initialize parameters and services used in execute function.
+     * @param InputInterface $input
+     * @param OutputInterface $output
      */
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
@@ -81,7 +84,8 @@ class ExecuteCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $output->writeln('<info>Start : '.($this->dumpMode ? 'Dump' : 'Execute').' all scheduled command</info>');
+        $output->writeln('<!--suppress HtmlUnknownTag -->
+<info>Start : '.($this->dumpMode ? 'Dump' : 'Execute').' all scheduled command</info>');
 
         // Before continue, we check that the output file is valid and writable (except for gaufrette)
         if (false !== $this->logPath && !str_starts_with($this->logPath, 'gaufrette:') && !is_writable(
@@ -93,7 +97,7 @@ class ExecuteCommand extends Command
                 ' not found or not writable. You should override `log_path` in your config.yml'.'</error>'
             );
 
-            return 1;
+            return Command::FAILURE;
         }
 
         $commands = $this->em->getRepository(ScheduledCommand::class)->findEnabledCommand();
@@ -106,7 +110,7 @@ class ExecuteCommand extends Command
             }
 
             /** @var ScheduledCommand $command */
-            $cron = CronExpression::factory($command->getCronExpression());
+            $cron = new CronExpression($command->getCronExpression());
             $nextRunDate = $cron->getNextRunDate($command->getLastExecution());
             $now = new \DateTime();
 
@@ -137,7 +141,7 @@ class ExecuteCommand extends Command
             $output->writeln('Nothing to do.');
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     private function executeCommand(ScheduledCommand $scheduledCommand, OutputInterface $output, InputInterface $input): void

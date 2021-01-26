@@ -61,7 +61,8 @@ class ScheduledCommandRepository extends EntityRepository
 
     /**
      *
-     * @return array|\JMose\CommandSchedulerBundle\Entity\ScheduledCommand[]
+     * @param int|bool $lockTimeout
+     * @return array
      */
     public function findFailedAndTimeoutCommands(int|bool $lockTimeout = false): array
     {
@@ -84,12 +85,13 @@ class ScheduledCommandRepository extends EntityRepository
 
     /**
      *
+     * @param ScheduledCommand $command
      * @return mixed
      *
      * @throws NonUniqueResultException
      * @throws TransactionRequiredException
      */
-    public function getNotLockedCommand(ScheduledCommand $command)
+    public function getNotLockedCommand(ScheduledCommand $command): mixed
     {
         $query = $this->createQueryBuilder('command')
             ->where('command.locked = false')

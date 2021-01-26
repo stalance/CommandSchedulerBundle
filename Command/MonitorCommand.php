@@ -4,6 +4,7 @@ namespace JMose\CommandSchedulerBundle\Command;
 
 use DateTimeInterface;
 use Doctrine\Persistence\ObjectManager;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,11 +27,12 @@ class MonitorCommand extends Command
     /**
      * @var bool
      */
-    private $dumpMode;
+    private bool $dumpMode = false;
 
     /**
      * MonitorCommand constructor.
      *
+     * @param ManagerRegistry $managerRegistry
      * @param $managerName
      * @param $lockTimeout
      * @param $receiver
@@ -39,11 +41,11 @@ class MonitorCommand extends Command
      */
     public function __construct(
         ManagerRegistry $managerRegistry,
-        $managerName,
-        private $lockTimeout,
-        private $receiver,
-        private $mailSubject,
-        private $sendMailIfNoError
+        string $managerName,
+        private int|bool $lockTimeout,
+        private string $receiver,
+        private string $mailSubject,
+        private bool $sendMailIfNoError = false
     ) {
         $this->em = $managerRegistry->getManager($managerName);
 
@@ -62,16 +64,18 @@ class MonitorCommand extends Command
 
     /**
      *
-     * @return int|void|null
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // If not in dump mode and none receiver is set, exit.
-        $this->dumpMode = $input->getOption('dump');
+        $this->dumpMode = (bool) $input->getOption('dump');
         if (!$this->dumpMode && 0 === count($this->receiver)) {
             $output->writeln('Please add receiver in configuration');
 
-            return 1;
+            return Command::FAILURE;
         }
 
         // Fist, get all failed or potential timeout
@@ -102,12 +106,12 @@ class MonitorCommand extends Command
             $this->sendMails('No errors found.');
         }
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     /**
      * Send message to email receivers.
-     *
+     * TODO E-Mail handling
      * @param string $message message to be sent
      */
     private function sendMails(string $message): void
@@ -128,6 +132,7 @@ class MonitorCommand extends Command
      *
      * @return string subject
      */
+    #[Pure]
     private function getMailSubject(): string
     {
         $hostname = gethostname();

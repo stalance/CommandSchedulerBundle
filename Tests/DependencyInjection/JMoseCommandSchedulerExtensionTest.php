@@ -13,10 +13,10 @@ class JMoseCommandSchedulerExtensionTest extends TestCase
      * @dataProvider provideConfiguration
      *
      * @param string $rootNode
-     * @param array  $config
-     * @param array  $expected
+     * @param array $config
+     * @param array $expected
      */
-    public function testConfiguration($rootNode, $config, $expected)
+    public function testConfiguration(string $rootNode, array $config, array $expected)
     {
         $builder = new ContainerBuilder();
 
@@ -29,7 +29,7 @@ class JMoseCommandSchedulerExtensionTest extends TestCase
         }
     }
 
-    public function provideConfiguration()
+    public function provideConfiguration(): array
     {
         $rootNode = 'jmose_command_scheduler';
 

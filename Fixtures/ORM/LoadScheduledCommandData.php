@@ -35,17 +35,21 @@ class LoadScheduledCommandData implements FixtureInterface
     /**
      * Create a new ScheduledCommand in database.
      *
-     * @param $name
-     * @param $command
-     * @param $arguments
-     * @param $cronExpression
-     * @param $logFile
+     * @param string $name
+     * @param string $command
+     * @param string $arguments
+     * @param string $cronExpression
+     * @param string $logFile
      * @param $priority
      * @param $lastExecution
+     * @param bool $locked
+     * @param bool $disabled
+     * @param bool $executeNow
+     * @param int|null $lastReturnCode
      */
     protected function createScheduledCommand(
-        $name, $command, $arguments, $cronExpression, $logFile, $priority, $lastExecution,
-        bool $locked = false, bool $disabled = false, bool $executeNow = false, int $lastReturnCode = null): void
+        string $name, string $command, string $arguments, string $cronExpression, string $logFile, ?int $priority=0, ?\DateTime $lastExecution = null,
+        bool $locked = false, bool $disabled = false, bool $executeNow = false, ?int $lastReturnCode = null): void
     {
         $scheduledCommand = new ScheduledCommand();
         $scheduledCommand

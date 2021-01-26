@@ -31,7 +31,7 @@ class ScheduledCommand
      */
     private ?string $logFile = null;
 
-    private ?int $priority = null;
+    private ?int $priority = 0;
 
     /**
      * If true, command will be execute next time regardless cron expression.
@@ -63,6 +63,8 @@ class ScheduledCommand
      * Set id.
      *
      * @param $id
+     * @return ScheduledCommand
+     * @return ScheduledCommand
      */
     public function setId(int $id): static
     {
@@ -81,6 +83,8 @@ class ScheduledCommand
 
     /**
      * Set name.
+     * @param string $name
+     * @return ScheduledCommand
      */
     public function setName(string $name): static
     {
@@ -99,6 +103,8 @@ class ScheduledCommand
 
     /**
      * Set command.
+     * @param string $command
+     * @return ScheduledCommand
      */
     public function setCommand(string $command): static
     {
@@ -117,6 +123,8 @@ class ScheduledCommand
 
     /**
      * Set arguments.
+     * @param string $arguments
+     * @return ScheduledCommand
      */
     public function setArguments(string $arguments): static
     {
@@ -135,6 +143,8 @@ class ScheduledCommand
 
     /**
      * Set cronExpression.
+     * @param string $cronExpression
+     * @return ScheduledCommand
      */
     public function setCronExpression(string $cronExpression): static
     {
@@ -154,7 +164,8 @@ class ScheduledCommand
     /**
      * Set lastExecution.
      *
-     * @param \DateTime|\DateTimeImmutable $lastExecution
+     * @param \DateTimeInterface $lastExecution
+     * @return ScheduledCommand
      */
     public function setLastExecution(\DateTimeInterface $lastExecution): static
     {
@@ -173,6 +184,8 @@ class ScheduledCommand
 
     /**
      * Set logFile.
+     * @param string $logFile
+     * @return ScheduledCommand
      */
     public function setLogFile(string $logFile): static
     {
@@ -191,6 +204,8 @@ class ScheduledCommand
 
     /**
      * Set lastReturnCode.
+     * @param int $lastReturnCode
+     * @return ScheduledCommand
      */
     public function setLastReturnCode(int $lastReturnCode): static
     {
@@ -209,6 +224,8 @@ class ScheduledCommand
 
     /**
      * Set priority.
+     * @param int $priority
+     * @return ScheduledCommand
      */
     public function setPriority(int $priority): static
     {
@@ -237,6 +254,8 @@ class ScheduledCommand
      * Set executeImmediately.
      *
      * @param $executeImmediately
+     * @return ScheduledCommand
+     * @return ScheduledCommand
      */
     public function setExecuteImmediately(bool $executeImmediately): static
     {
@@ -263,6 +282,8 @@ class ScheduledCommand
 
     /**
      * Set disabled.
+     * @param bool $disabled
+     * @return ScheduledCommand
      */
     public function setDisabled(bool $disabled): static
     {
@@ -290,7 +311,8 @@ class ScheduledCommand
     /**
      * locked Setter.
      *
-     *
+     * @param bool $locked
+     * @return ScheduledCommand
      */
     public function setLocked(bool $locked): static
     {

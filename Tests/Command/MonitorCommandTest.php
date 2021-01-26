@@ -17,7 +17,7 @@ class MonitorCommandTest extends WebTestCase
     /**
      * @var EntityManager
      */
-    private $em;
+    private EntityManager $em;
 
     /**
      * {@inheritdoc}

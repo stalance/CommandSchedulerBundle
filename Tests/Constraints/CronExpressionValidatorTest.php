@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 class CronExpressionValidatorTest extends ConstraintValidatorTestCase
 {
     #[Pure]
-    protected function createValidator()
+    protected function createValidator(): CronExpressionValidator
     {
         return new CronExpressionValidator();
     }
@@ -28,7 +28,7 @@ class CronExpressionValidatorTest extends ConstraintValidatorTestCase
         $this->assertNoViolation();
     }
 
-    public function getValidValues()
+    public function getValidValues(): array
     {
         return [
             ['* * * * *'],
@@ -55,7 +55,7 @@ class CronExpressionValidatorTest extends ConstraintValidatorTestCase
             ->assertRaised();
     }
 
-    public function getInvalidValues()
+    public function getInvalidValues(): array
     {
         return [
             ['*/10 * * *'],

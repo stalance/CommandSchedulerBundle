@@ -2,11 +2,13 @@
 
 namespace JMose\CommandSchedulerBundle\Tests\Controller;
 
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use JMose\CommandSchedulerBundle\Fixtures\ORM\LoadScheduledCommandData;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -17,14 +19,14 @@ class ListControllerTest extends WebTestCase
     use FixturesTrait;
 
     /**
-     * @var \Symfony\Bundle\FrameworkBundle\KernelBrowser
+     * @var KernelBrowser
      */
-    private $client;
+    private KernelBrowser $client;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
-    private $em;
+    private EntityManager $em;
 
     /**
      * {@inheritdoc}

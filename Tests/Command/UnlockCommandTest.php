@@ -2,6 +2,7 @@
 
 namespace JMose\CommandSchedulerBundle\Tests\Command;
 
+use Doctrine\ORM\EntityManager;
 use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
 use JMose\CommandSchedulerBundle\Fixtures\ORM\LoadScheduledCommandData;
 use Liip\FunctionalTestBundle\Test\WebTestCase;
@@ -15,9 +16,9 @@ class UnlockCommandTest extends WebTestCase
     use FixturesTrait;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
-    private $em;
+    private EntityManager $em;
 
     /**
      * {@inheritdoc}
