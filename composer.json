@@ -1,5 +1,5 @@
 {
-    "name": "chris53897/command-scheduler-bundle",
+    "name": "jmose/command-scheduler-bundle",
     "description": "This Symfony bundle will allow you to schedule all your commands just like UNIX crontab",
     "keywords": ["Symfony", "scheduler", "cron", "command", "task"],
     "homepage": "https://github.com/Chris53897/CommandSchedulerBundle",
