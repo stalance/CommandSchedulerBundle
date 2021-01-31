@@ -10,6 +10,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * Command to unlock one or all scheduled commands that have surpassed the lock timeout.
@@ -23,11 +24,7 @@ class UnlockCommand extends Command
      */
     protected static $defaultName = 'scheduler:unlock';
     private ObjectManager $em;
-
-    /**
-     * @var int|bool Number of seconds after a command is considered as timeout
-     */
-    private bool|int $lockTimeout;
+    const DEFAULT_LOCK_TIME = 3600; # 1 hour
 
     /**
      * @var bool true if all locked commands should be unlocked
@@ -35,18 +32,18 @@ class UnlockCommand extends Command
     private bool $unlockAll;
 
     /**
-     * @var array|string name of the command to be unlocked
+     * @var array|string|null name of the command to be unlocked
      */
-    private array|string $scheduledCommandName = [];
+    private array|string|null $scheduledCommandName = [];
 
     /**
      * UnlockCommand constructor.
      *
      * @param ManagerRegistry $managerRegistry
-     * @param $managerName
-     * @param $defaultLockTimeout
+     * @param string $managerName
+     * @param int $lockTimeout Number of seconds after a command is considered as timeout
      */
-    public function __construct(ManagerRegistry $managerRegistry, $managerName, private $defaultLockTimeout)
+    public function __construct(ManagerRegistry $managerRegistry, string $managerName, private int $lockTimeout = self::DEFAULT_LOCK_TIME)
     {
         $this->em = $managerRegistry->getManager($managerName);
 
@@ -76,14 +73,13 @@ class UnlockCommand extends Command
      */
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
-        $this->unlockAll = $input->getOption('all');
-        $this->scheduledCommandName = $input->getArgument('name');
+        $this->unlockAll = (bool) $input->getOption('all');
+        $this->scheduledCommandName = (string) $input->getArgument('name');
 
-        $this->lockTimeout = $input->getOption('lock-timeout');
-        if (null === $this->lockTimeout) {
-            $this->lockTimeout = $this->defaultLockTimeout;
-        } elseif ('false' === $this->lockTimeout) {
-            $this->lockTimeout = false;
+        $this->lockTimeout = intval($input->getOption('lock-timeout'));
+
+        if (0 == $this->lockTimeout) {
+         $this->lockTimeout = self::DEFAULT_LOCK_TIME;
         }
     }
 
@@ -96,8 +92,11 @@ class UnlockCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        if (!$this->unlockAll && null === $this->scheduledCommandName) {
-            $output->writeln('Either the name of a scheduled command or the --all option must be set.');
+        $io = new SymfonyStyle($input, $output);
+        #$io->title(self::$defaultName);
+
+        if (!$this->unlockAll && empty($this->scheduledCommandName)) {
+            $io->error('Either the name of a scheduled command or the --all option must be set.');
 
             return Command::FAILURE;
         }
@@ -105,23 +104,29 @@ class UnlockCommand extends Command
         $repository = $this->em->getRepository(ScheduledCommand::class);
 
         if ($this->unlockAll) {
+            # Unlock all locked commands
             $failedCommands = $repository->findLockedCommand();
-            foreach ($failedCommands as $failedCommand) {
-                $this->unlock($failedCommand, $output);
+
+            if($failedCommands)
+            {
+                foreach ($failedCommands as $failedCommand) {
+                 $this->unlock($failedCommand, $io);
+                }
             }
         } else {
             $scheduledCommand = $repository->findOneBy(['name' => $this->scheduledCommandName, 'disabled' => false]);
             if (null === $scheduledCommand) {
-                $output->writeln(
+                $io->error(
                     sprintf(
-                        'Error: Scheduled Command with name "%s" not found or is disabled.',
+                        'Scheduled Command with name "%s" not found or is disabled.',
                         $this->scheduledCommandName
                     )
                 );
 
                 return Command::FAILURE;
             }
-            $this->unlock($scheduledCommand, $output);
+
+            $this->unlock($scheduledCommand, $io);
         }
 
         $this->em->flush();
@@ -131,14 +136,14 @@ class UnlockCommand extends Command
 
     /**
      * @param ScheduledCommand $command command to be unlocked
-     * @param OutputInterface $output
-     * @return bool true if unlock happened
+     * @param SymfonyStyle $io
+     * @return bool true if unlock success
      * @throws \Exception
      */
-    protected function unlock(ScheduledCommand $command, OutputInterface $output): bool
+    protected function unlock(ScheduledCommand $command, SymfonyStyle $io): bool
     {
-        if (false === $command->isLocked()) {
-            $output->writeln(sprintf('Skipping: Scheduled Command "%s" is not locked.', $command->getName()));
+        if (!$command->isLocked()) {
+            $io->warning(sprintf('Skipping: Scheduled Command "%s" is not locked.', $command->getName()));
 
             return false;
         }
@@ -149,14 +154,15 @@ class UnlockCommand extends Command
                 new \DateInterval(sprintf('PT%dS', $this->lockTimeout))
             )
         ) {
-            $output->writeln(
+            $io->error(
                 sprintf('Skipping: Timout for scheduled Command "%s" has not run out.', $command->getName())
             );
 
             return false;
         }
+
         $command->setLocked(false);
-        $output->writeln(sprintf('Scheduled Command "%s" has been unlocked.', $command->getName()));
+        $io->success(sprintf('Scheduled Command "%s" has been unlocked.', $command->getName()));
 
         return true;
     }

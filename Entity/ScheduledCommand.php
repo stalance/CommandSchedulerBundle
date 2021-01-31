@@ -36,7 +36,7 @@ class ScheduledCommand
     /**
      * If true, command will be execute next time regardless cron expression.
      */
-    private bool $executeImmediately;
+    private bool $executeImmediately = false;
 
     private ?bool $disabled = null;
 
@@ -167,7 +167,7 @@ class ScheduledCommand
      * @param \DateTimeInterface $lastExecution
      * @return ScheduledCommand
      */
-    public function setLastExecution(\DateTimeInterface $lastExecution): static
+    public function setLastExecution(\DateTimeInterface $lastExecution = null): static
     {
         $this->lastExecution = $lastExecution;
 
@@ -204,10 +204,10 @@ class ScheduledCommand
 
     /**
      * Set lastReturnCode.
-     * @param int $lastReturnCode
+     * @param int|null $lastReturnCode
      * @return ScheduledCommand
      */
-    public function setLastReturnCode(int $lastReturnCode): static
+    public function setLastReturnCode(?int $lastReturnCode): static
     {
         $this->lastReturnCode = $lastReturnCode;
 
@@ -254,7 +254,6 @@ class ScheduledCommand
      * Set executeImmediately.
      *
      * @param $executeImmediately
-     * @return ScheduledCommand
      * @return ScheduledCommand
      */
     public function setExecuteImmediately(bool $executeImmediately): static

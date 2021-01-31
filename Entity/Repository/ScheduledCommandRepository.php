@@ -48,9 +48,9 @@ class ScheduledCommandRepository extends EntityRepository
     /**
      * Find all failed command.
      *
-     * @return ScheduledCommand[]
+     * @return ScheduledCommand[]|null
      */
-    public function findFailedCommand(): array
+    public function findFailedCommand(): ?array
     {
         return $this->createQueryBuilder('command')
             ->where('command.disabled = false')
@@ -86,12 +86,12 @@ class ScheduledCommandRepository extends EntityRepository
     /**
      * @param ScheduledCommand $command
      *
-     * @return mixed
+     * @return ScheduledCommand | null
      *
      * @throws NonUniqueResultException
      * @throws TransactionRequiredException
      */
-    public function getNotLockedCommand(ScheduledCommand $command): mixed
+    public function getNotLockedCommand(ScheduledCommand $command): ScheduledCommand | null
     {
         $query = $this->createQueryBuilder('command')
             ->where('command.locked = false')

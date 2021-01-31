@@ -85,10 +85,12 @@ class ExecuteCommand extends Command
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $output->writeln('<!--suppress HtmlUnknownTag -->
-<info>Start : '.($this->dumpMode ? 'Dump' : 'Execute').' all scheduled command</info>');
+        $output->writeln('<info>Start : '.($this->dumpMode ? 'Dump' : 'Execute').' all scheduled command</info>');
 
         // Before continue, we check that the output file is valid and writable (except for gaufrette)
         if (false !== $this->logPath && !str_starts_with($this->logPath, 'gaufrette:') && !is_writable(
@@ -127,6 +129,7 @@ class ExecuteCommand extends Command
                     $this->executeCommand($command, $output, $input);
                 }
             } elseif ($nextRunDate < $now) {
+                // RUN the command
                 $noneExecution = false;
                 $output->writeln(
                     'Command <comment>'.$command->getCommand().
@@ -147,6 +150,18 @@ class ExecuteCommand extends Command
         return Command::SUCCESS;
     }
 
+    /**
+     * @param ScheduledCommand $scheduledCommand
+     * @param OutputInterface  $output
+     * @param InputInterface   $input
+     *
+     * @throws \Doctrine\DBAL\ConnectionException
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Doctrine\ORM\TransactionRequiredException
+     * @throws \Doctrine\Persistence\Mapping\MappingException
+     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
+     */
     private function executeCommand(ScheduledCommand $scheduledCommand, OutputInterface $output, InputInterface $input): void
     {
         //reload command from database before every execution to avoid parallel execution
@@ -156,6 +171,7 @@ class ExecuteCommand extends Command
                 ->em
                 ->getRepository(ScheduledCommand::class)
                 ->getNotLockedCommand($scheduledCommand);
+
             //$notLockedCommand will be locked for avoiding parallel calls: http://dev.mysql.com/doc/refman/5.7/en/innodb-locking-reads.html
             if (null === $notLockedCommand) {
                 throw new \Exception();
@@ -233,6 +249,7 @@ class ExecuteCommand extends Command
             $this->em = $this->em->create($this->em->getConnection(), $this->em->getConfiguration());
         }
 
+        // Reactivate the command in DB
         $scheduledCommand->setLastReturnCode($result);
         $scheduledCommand->setLocked(false);
         $scheduledCommand->setExecuteImmediately(false);

@@ -29,6 +29,11 @@ class JMoseCommandSchedulerExtensionTest extends TestCase
         }
     }
 
+
+    /**
+     * Check if config files are correct
+     * @return array
+     */
     public function provideConfiguration(): array
     {
         $rootNode = 'jmose_command_scheduler';

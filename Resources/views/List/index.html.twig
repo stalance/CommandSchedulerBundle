@@ -61,7 +61,7 @@
                             <span class="text-muted glyphicon glyphicon-lock"></span> <span class="sr-only">{{ "action.unlock"|trans }}</span>
                         </a>
                     {% endif %}
-                    <a href="{{ path('jmose_command_scheduler_detail_edit', {'scheduledCommandId': command.id}) }}" >
+                    <a href="{{ path('jmose_command_scheduler_detail_edit', {'id': command.id}) }}" >
                         <span class="text-info glyphicon glyphicon-pencil"></span> <span class="sr-only">{{ "action.edit"|trans }}</span>
                     </a>
                     <a href="#" data-href="{{ path('jmose_command_scheduler_action_remove', {'id': command.id}) }}" data-toggle="confirmation" data-btnOkLabel="{{ "action.delete"|trans }}" data-title="{{ "confirm.delete"|trans }}" >

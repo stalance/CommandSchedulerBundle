@@ -13,7 +13,6 @@ class CronExpressionValidator extends ConstraintValidator
 {
     /**
      * Validate method for CronExpression constraint.
-     * TODO check.
      *
      * @param mixed      $value
      * @param Constraint $constraint

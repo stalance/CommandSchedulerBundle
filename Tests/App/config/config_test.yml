@@ -38,8 +38,8 @@ jmose_command_scheduler:
     excluded_command_namespaces:
         - scheduler
 
-liip_functional_test:
-    command_decoration: false
+#liip_functional_test:
+#    command_decoration: false
 
 liip_test_fixtures:
     cache_db:

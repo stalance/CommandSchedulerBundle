@@ -3,8 +3,8 @@
 namespace JMose\CommandSchedulerBundle\Tests\Controller;
 
 use JMose\CommandSchedulerBundle\Fixtures\ORM\LoadScheduledCommandData;
-use Liip\FunctionalTestBundle\Test\WebTestCase;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
  * Class DetailControllerTest.
@@ -18,7 +18,7 @@ class DetailControllerTest extends WebTestCase
      */
     public function testInitNewScheduledCommand()
     {
-        $client = parent::createClient();
+        $client = static::createClient();
         $this->loadFixtures([]);
 
         $crawler = $client->request('GET', '/command-scheduler/detail/new');
@@ -30,11 +30,12 @@ class DetailControllerTest extends WebTestCase
      */
     public function testInitEditScheduledCommand()
     {
-        $client = parent::createClient();
+        $client = static::createClient();
         // DataFixtures create 4 records
         $this->loadFixtures([LoadScheduledCommandData::class]);
 
         $crawler = $client->request('GET', '/command-scheduler/detail/edit/1');
+
         $this->assertEquals(1, $crawler->filter('button[id="command_scheduler_detail_save"]')->count());
 
         $buttonCrawlerNode = $crawler->selectButton('Save');
@@ -58,7 +59,7 @@ class DetailControllerTest extends WebTestCase
      */
     public function testNewSave()
     {
-        $client = parent::createClient();
+        $client = static::createClient();
 
         $this->loadFixtures([]);
 
@@ -77,7 +78,11 @@ class DetailControllerTest extends WebTestCase
         ]);
         $crawler = $client->submit($form);
 
-        $this->assertEquals(1, $crawler->filter('a[href^="/command-scheduler/action/toggle/"]')->count());
+        //count(//span[@class="article"])');
+        //$this->assertEquals(1, $crawler->filter('a[href^="/command-scheduler/action/toggle/"]')->count());
+
+        //$this->assertEquals(1, $crawler->filter('a[contains(@href, '/ccc/ctxxxx/Load.xxx')]/"]')->count());
+        $this->assertEquals(1, $crawler->filterXPath('//a[contains(@href, "/command-scheduler/action/toggle/")]')->count());
         $this->assertEquals('wtc', trim($crawler->filter('td')->eq(1)->text()));
     }
 

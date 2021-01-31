@@ -27,7 +27,7 @@ jmose_command_scheduler_detail_index:
     defaults: { _controller: JMose\CommandSchedulerBundle\Controller\DetailController::indexAction }
 
 jmose_command_scheduler_detail_edit:
-    path:  /command-scheduler/detail/edit/{scheduledCommandId}
+    path:  /command-scheduler/detail/edit/{id}
     defaults: { _controller: JMose\CommandSchedulerBundle\Controller\DetailController::initEditScheduledCommandAction }
 
 jmose_command_scheduler_detail_new:

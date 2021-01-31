@@ -46,7 +46,6 @@ class DetailController extends AbstractBaseController
      */
     public function initNewScheduledCommandAction(): Response
     {
-        /** @var TYPE_NAME $scheduledCommand */
         $scheduledCommand = new ScheduledCommand();
 
         return $this->forward(
@@ -60,15 +59,12 @@ class DetailController extends AbstractBaseController
     /**
      * Get a ScheduledCommand object with its id and forward it to the index action (view).
      *
-     * @param $scheduledCommandId
+     * @param ScheduledCommand $scheduledCommand
      *
      * @return Response
      */
-    public function initEditScheduledCommandAction($scheduledCommandId): Response
+    public function initEditScheduledCommandAction(ScheduledCommand $scheduledCommand): Response
     {
-        $scheduledCommand = $this->getDoctrineManager()->getRepository(ScheduledCommand::class)
-            ->find($scheduledCommandId);
-
         return $this->forward(
             self::class.'::indexAction',
             [
@@ -90,6 +86,7 @@ class DetailController extends AbstractBaseController
 
         // Init and populate form object
         $commandDetail = $request->request->get('command_scheduler_detail');
+
         if ('' != $commandDetail['id']) {
             $scheduledCommand = $entityManager->getRepository(ScheduledCommand::class)
                 ->find($commandDetail['id']);
@@ -111,7 +108,7 @@ class DetailController extends AbstractBaseController
             $this->get('session')->getFlashBag()
                 ->add('success', $this->translator->trans('flash.success', [], 'JMoseCommandScheduler'));
 
-            return $this->redirect($this->generateUrl('jmose_command_scheduler_list'));
+            $this->redirectToRoute('jmose_command_scheduler_list', [], 301);
         }
 
         // Redirect to indexAction with the form object that has validation errors

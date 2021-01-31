@@ -35,6 +35,10 @@ class Configuration implements ConfigurationInterface
                     ->defaultValue([])
                     ->validate()
                         ->always(function ($value) {
+                            if (null === $value) {
+                                return [];
+                            }
+
                             if (is_string($value)) {
                                 return explode(',', $value);
                             }
@@ -47,6 +51,10 @@ class Configuration implements ConfigurationInterface
                     ->defaultValue([])
                     ->validate()
                         ->always(function ($value) {
+                            if (null === $value) {
+                                return [];
+                            }
+
                             if (is_string($value)) {
                                 return explode(',', $value);
                             }

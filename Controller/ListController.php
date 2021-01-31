@@ -15,12 +15,12 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ListController extends AbstractBaseController
 {
-    private string $lockTimeout;
+    private int $lockTimeout;
 
     /**
-     * @param $lockTimeout string
+     * @param $lockTimeout int
      */
-    public function setLockTimeout(string $lockTimeout): void
+    public function setLockTimeout(int $lockTimeout): void
     {
         $this->lockTimeout = $lockTimeout;
     }
@@ -38,14 +38,13 @@ class ListController extends AbstractBaseController
     }
 
     /**
-     * @param $id
+     * @param ScheduledCommand $scheduledCommand
+     *
      * @return RedirectResponse
      */
-    public function removeAction($id): RedirectResponse
+    public function removeAction(ScheduledCommand $scheduledCommand): RedirectResponse
     {
         $entityManager = $this->getDoctrineManager();
-        $scheduledCommand = $entityManager->getRepository(ScheduledCommand::class)->find($id);
-
         $entityManager->remove($scheduledCommand);
         $entityManager->flush();
 
@@ -57,30 +56,31 @@ class ListController extends AbstractBaseController
     }
 
     /**
-     * @param $id
+     * Toggle enabled/disabled.
+     *
+     * @param ScheduledCommand $scheduledCommand
+     *
      * @return RedirectResponse
      */
-    public function toggleAction($id): RedirectResponse
+    public function toggleAction(ScheduledCommand $scheduledCommand): RedirectResponse
     {
-        $entityManager = $this->getDoctrineManager();
-        $scheduledCommand = $entityManager->getRepository(ScheduledCommand::class)->find($id);
+        #$scheduledCommand = $id;
         $scheduledCommand->setDisabled(!$scheduledCommand->isDisabled());
-        $entityManager->flush();
+        $this->getDoctrineManager()->flush();
 
         return $this->redirect($this->generateUrl('jmose_command_scheduler_list'));
     }
 
     /**
-     * @param $id
-     * @param Request $request
+     * @param ScheduledCommand $scheduledCommand
+     * @param Request          $request
+     *
      * @return RedirectResponse
      */
-    public function executeAction($id, Request $request): RedirectResponse
+    public function executeAction(ScheduledCommand $scheduledCommand, Request $request): RedirectResponse
     {
-        $entityManager = $this->getDoctrineManager();
-        $scheduledCommand = $entityManager->getRepository(ScheduledCommand::class)->find($id);
         $scheduledCommand->setExecuteImmediately(true);
-        $entityManager->flush();
+        $this->getDoctrineManager()->flush();
 
         // Add a flash message and do a redirect to the list
         $this->get('session')->getFlashBag()
@@ -94,20 +94,20 @@ class ListController extends AbstractBaseController
     }
 
     /**
-     * @param $id
-     * @param Request $request
+     * @param ScheduledCommand $scheduledCommand
+     * @param Request          $request
+     *
      * @return RedirectResponse
      */
-    public function unlockAction($id, Request $request): RedirectResponse
+    public function unlockAction(ScheduledCommand $scheduledCommand, Request $request): RedirectResponse
     {
-        $entityManager = $this->getDoctrineManager();
-        $scheduledCommand = $entityManager->getRepository(ScheduledCommand::class)->find($id);
         $scheduledCommand->setLocked(false);
-        $entityManager->flush();
+        $this->getDoctrineManager()->flush();
 
         // Add a flash message and do a redirect to the list
         $this->get('session')->getFlashBag()
-            ->add('success', $this->translator->trans('flash.unlocked', [], 'JMoseCommandScheduler'));
+             ->add('success',
+                $this->translator->trans('flash.unlocked', [], 'JMoseCommandScheduler'));
 
         if ($request->query->has('referer')) {
             return $this->redirect($request->getSchemeAndHttpHost().urldecode($request->query->get('referer')));
@@ -120,6 +120,7 @@ class ListController extends AbstractBaseController
      * method checks if there are jobs which are enabled but did not return 0 on last execution or are locked.<br>
      * if a match is found, HTTP status 417 is sent along with an array which contains name, return code and locked-state.
      * if no matches found, HTTP status 200 is sent with an empty array.
+     *
      * @throws \JsonException
      */
     public function monitorAction(): JsonResponse
@@ -129,12 +130,14 @@ class ListController extends AbstractBaseController
             ->findFailedAndTimeoutCommands($this->lockTimeout);
 
         $jsonArray = [];
-        foreach ($failedCommands as $command) {
-            $jsonArray[$command->getName()] = [
+        if (is_iterable($failedCommands)) {
+            foreach ($failedCommands as $command) {
+                $jsonArray[$command->getName()] = [
                 'LAST_RETURN_CODE' => $command->getLastReturnCode(),
                 'B_LOCKED' => $command->getLocked() ? 'true' : 'false',
                 'DH_LAST_EXECUTION' => $command->getLastExecution(),
             ];
+            }
         }
 
         $response = new JsonResponse();

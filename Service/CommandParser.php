@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 /**
  * Class CommandChoiceList.
  *
- * @author  Julien Guyon <julienguyon@hotmail.com>
+ * @author Julien Guyon <julienguyon@hotmail.com>
  */
 class CommandParser
 {
@@ -21,7 +21,7 @@ class CommandParser
      * @param array           $excludedNamespaces
      * @param array           $includedNamespaces
      */
-    public function __construct(private KernelInterface $kernel, private array $excludedNamespaces = [], private array $includedNamespaces = [])
+    public function __construct(private KernelInterface $kernel, private array | null $excludedNamespaces = [], private array | null $includedNamespaces = [])
     {
         if (count($this->excludedNamespaces) > 0 && count($this->includedNamespaces) > 0) {
             throw new \InvalidArgumentException('Cannot combine excludedNamespaces with includedNamespaces');
@@ -31,7 +31,7 @@ class CommandParser
     /**
      * Execute the console command "list" with XML output to have all available command.
      *
-     * @return mixed[]
+     * @return array[]
      *
      * @throws \Exception
      */

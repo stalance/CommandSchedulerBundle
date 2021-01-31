@@ -8,6 +8,10 @@ use Symfony\Component\HttpKernel\Kernel;
 
 class AppKernel extends Kernel
 {
+    /**
+     * Register Bundles for test-configuration
+     * @return array
+     */
     public function registerBundles(): array
     {
         return [
@@ -16,7 +20,6 @@ class AppKernel extends Kernel
             new \Symfony\Bundle\TwigBundle\TwigBundle(),
             new \Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new \Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
-            new \Liip\FunctionalTestBundle\LiipFunctionalTestBundle(),
             new \JMose\CommandSchedulerBundle\JMoseCommandSchedulerBundle(),
             new \Liip\TestFixturesBundle\LiipTestFixturesBundle(),
         ];
@@ -27,18 +30,12 @@ class AppKernel extends Kernel
         $loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yml');
     }
 
-    /**
-     * @return string
-     */
     #[Pure]
     public function getCacheDir(): string
     {
         return __DIR__.'/../../build/cache/'.$this->getEnvironment();
     }
 
-    /**
-     * @return string
-     */
     #[Pure]
     public function getLogDir(): string
     {

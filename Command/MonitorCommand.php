@@ -2,14 +2,19 @@
 
 namespace JMose\CommandSchedulerBundle\Command;
 
-use DateTimeInterface;
+use App\Event\ScheduledCommandFailedEvent;
+use Carbon\Carbon;
+use Cron\CronExpression as CronExpressionLib;
 use Doctrine\Persistence\ObjectManager;
-use JetBrains\PhpStorm\Pure;
+use JMose\CommandSchedulerBundle\AppEvents;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 /**
  * Class MonitorCommand : This class is used for monitoring scheduled commands if they run for too long or failed to execute.
@@ -23,18 +28,22 @@ class MonitorCommand extends Command
      */
     protected static $defaultName = 'scheduler:monitor';
     private ObjectManager $em;
+    private EventDispatcherInterface $eventDispatcher;
+    private ParameterBagInterface $params;
 
     /**
      * MonitorCommand constructor.
      *
+     * @param EventDispatcherInterface $eventDispatcher
      * @param ManagerRegistry $managerRegistry
-     * @param string $managerName
-     * @param int | bool $lockTimeout
-     * @param array $receiver
-     * @param string $mailSubject
-     * @param bool $sendMailIfNoError
+     * @param string          $managerName
+     * @param int | bool      $lockTimeout
+     * @param array           $receiver
+     * @param string          $mailSubject
+     * @param bool            $sendMailIfNoError
      */
     public function __construct(
+        EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $managerRegistry,
         string $managerName,
         private int | bool $lockTimeout,
@@ -43,7 +52,7 @@ class MonitorCommand extends Command
         private bool $sendMailIfNoError = false
     ) {
         $this->em = $managerRegistry->getManager($managerName);
-
+        $this->eventDispatcher = $eventDispatcher;
         parent::__construct();
     }
 
@@ -76,63 +85,65 @@ class MonitorCommand extends Command
         // Fist, get all failed or potential timeout
         $failedCommands = $this->em->getRepository('JMoseCommandSchedulerBundle:ScheduledCommand')
             ->findFailedAndTimeoutCommands($this->lockTimeout);
+        //->findAll();
 
         // Commands in error
         if (count($failedCommands) > 0) {
-            $message = '';
-            foreach ($failedCommands as $command) {
-                $message .= sprintf(
-                    "%s: returncode %s, locked: %s, last execution: %s\n",
-                    $command->getName(),
-                    $command->getLastReturnCode(),
-                    $command->getLocked(),
-                    $command->getLastExecution()->format(DateTimeInterface::ATOM)
-                );
-            }
             // if --dump option, don't send mail
             if ($dumpMode) {
-                $output->writeln($message);
+                $this->dump($output, $failedCommands);
             } else {
-                $this->sendMails($message);
+                $this->eventDispatcher->dispatch(
+                    new ScheduledCommandFailedEvent($failedCommands),
+                    AppEvents::EVENT_SCHEDULER_COMMANDS_FAILED);
             }
         } elseif ($dumpMode) {
             $output->writeln('No errors found.');
-        } elseif ($this->sendMailIfNoError) {
+        } /*elseif ($this->params->get('sendMailIfNoError')) {
             $this->sendMails('No errors found.');
-        }
+        }*/
 
         return Command::SUCCESS;
     }
 
     /**
-     * Send message to email receivers.
-     * TODO E-Mail handling.
+     * Print a table of locked Commands to console.
      *
-     * @param string $message message to be sent
+     * @param $output
+     * @param array $failedCommands
      */
-    private function sendMails(string $message): void
+    private function dump($output, array $failedCommands): void
     {
-        // prepare email constants
-        $hostname = gethostname();
-        $subject = $this->getMailSubject();
-        $headers = 'From: cron-monitor@'.$hostname."\r\n".
-            'X-Mailer: PHP/'.phpversion();
+        $table = new Table($output);
+        $table->setStyle('box');
+        $table->setHeaders(['Name', 'LastReturnCode', 'Locked', 'LastExecution', 'NextExecution']);
 
-        foreach ($this->receiver as $rcv) {
-            mail(trim($rcv), $subject, $message, $headers);
+        foreach ($failedCommands as $command) {
+            $lockedInfo = match ($command->getLocked()) {
+                true => '<error>LOCKED</error>',
+                default => ''
+            };
+
+            $lastReturnInfo = match ($command->getLastReturnCode()) {
+                '', false, null => '',
+                0 => '<info>0 (success)</info>',
+                // no break
+                default => '<error>'.$command->getLastReturnCode().' (error)</error>'
+            };
+
+            $nextRunDate = (new CronExpressionLib($command->getCronExpression()))->getNextRunDate();
+
+            $table->addRow([
+                $command->getName(),
+                $lastReturnInfo,
+                $lockedInfo,
+                $command->getLastExecution()->format('Y-m-d H:i').' ('
+                    .Carbon::instance($command->getLastExecution())->diffForHumans().')',
+                $nextRunDate->format('Y-m-d H:i').' ('
+                    .Carbon::instance($nextRunDate)->diffForHumans().')',
+            ]);
         }
-    }
 
-    /**
-     * get the subject for monitor mails.
-     *
-     * @return string subject
-     */
-    #[Pure]
-    private function getMailSubject(): string
-    {
-        $hostname = gethostname();
-
-        return sprintf($this->mailSubject, $hostname, date('Y-m-d H:i:s'));
+        $table->render();
     }
 }

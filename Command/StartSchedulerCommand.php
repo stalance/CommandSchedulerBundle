@@ -42,7 +42,7 @@ class StartSchedulerCommand extends Command
             $output->writeln(sprintf('<info>%s</info>', 'Starting command scheduler in blocking mode.'));
             $this->scheduler($output->isVerbose() ? $output : new NullOutput(), null);
 
-            return 0;
+            return Command::SUCCESS;
         }
 
         if (!extension_loaded('pcntl')) {
@@ -72,7 +72,12 @@ class StartSchedulerCommand extends Command
         return Command::SUCCESS;
     }
 
-    private function scheduler(OutputInterface $output, $pidFile): void
+    /**
+     * @param OutputInterface $output
+     * @param string $pidFile
+     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
+     */
+    private function scheduler(OutputInterface $output, string $pidFile): void
     {
         $input = new ArrayInput([]);
 

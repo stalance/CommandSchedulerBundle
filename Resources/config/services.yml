@@ -36,6 +36,7 @@ services:
 
     JMose\CommandSchedulerBundle\Command\MonitorCommand:
         arguments:
+            - "@debug.event_dispatcher"
             - "@doctrine"
             - "%jmose_command_scheduler.doctrine_manager%"
             - "%jmose_command_scheduler.lock_timeout%"
