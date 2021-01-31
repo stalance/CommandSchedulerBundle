@@ -69,8 +69,8 @@ class ExecuteCommandTest extends WebTestCase
         $this->assertStringStartsWith('Start : Execute all scheduled command', $output);
         $this->assertMatchesRegularExpression('/debug:container should be executed/', $output);
         $this->assertMatchesRegularExpression('/Execute : debug:container --help/', $output);
-        #$this->assertMatchesRegularExpression('/Immediately execution asked for : debug:router/', $output);
-        #$this->assertMatchesRegularExpression('/Execute : debug:router/', $output);
+        $this->assertMatchesRegularExpression('/Immediately execution asked for : debug:router/', $output);
+        $this->assertMatchesRegularExpression('/Execute : debug:router/', $output);
 
         $output = $this->executeCommand(ExecuteCommand::class)->getDisplay();
         $this->assertMatchesRegularExpression('/Nothing to do/', $output);

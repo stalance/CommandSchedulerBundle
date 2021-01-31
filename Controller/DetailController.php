@@ -27,6 +27,7 @@ class DetailController extends AbstractBaseController
      */
     public function indexAction(ScheduledCommand $scheduledCommand, Form $scheduledCommandForm = null): Response
     {
+        # new scheduledCommand
         if (null === $scheduledCommandForm) {
             $scheduledCommandForm = $this->createForm(ScheduledCommandType::class, $scheduledCommand);
         }
@@ -63,8 +64,10 @@ class DetailController extends AbstractBaseController
      *
      * @return Response
      */
-    public function initEditScheduledCommandAction(ScheduledCommand $scheduledCommand): Response
+    public function initEditScheduledCommandAction(ScheduledCommand|null $scheduledCommand): Response
     {
+        #dump($scheduledCommand);
+        #echo $scheduledCommand;
         return $this->forward(
             self::class.'::indexAction',
             [
@@ -108,7 +111,7 @@ class DetailController extends AbstractBaseController
             $this->get('session')->getFlashBag()
                 ->add('success', $this->translator->trans('flash.success', [], 'JMoseCommandScheduler'));
 
-            $this->redirectToRoute('jmose_command_scheduler_list', [], 301);
+            return $this->redirectToRoute('jmose_command_scheduler_list');
         }
 
         // Redirect to indexAction with the form object that has validation errors

@@ -109,7 +109,10 @@ class ExecuteCommand extends Command
 
         $noneExecution = true;
         foreach ($commands as $command) {
-            $this->em->refresh($this->em->find(ScheduledCommand::class, $command));
+            // PullRequest: fix command refresh #183
+            # https://github.com/j-guyon/CommandSchedulerBundle/pull/183/commits/b194e340df50533e576ee419a11fd1a1f4bf7c6e
+            #$this->em->refresh($this->em->find(ScheduledCommand::class, $command));
+            $command = $this->em->find(ScheduledCommand::class, $command->getId());
             if ($command->isDisabled() || $command->isLocked()) {
                 continue;
             }
@@ -183,7 +186,7 @@ class ExecuteCommand extends Command
             $this->em->persist($scheduledCommand);
             $this->em->flush();
             $this->em->getConnection()->commit();
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->em->getConnection()->rollBack();
             $output->writeln(
                 sprintf(
@@ -238,7 +241,11 @@ class ExecuteCommand extends Command
                 .' '.$scheduledCommand->getArguments().'</comment>'
             );
             $result = $command->run($input, $logOutput);
-        } catch (\Exception $e) {
+
+            // PullRequest: Clear ORM after run scheduled command #187
+            # https://github.com/j-guyon/CommandSchedulerBundle/pull/187/commits/ccb0c7f561bafb3c2d5534b2ddd919b8c060963f
+            $this->em->clear();
+        } catch (\Throwable $e) {
             $logOutput->writeln($e->getMessage());
             $logOutput->writeln($e->getTraceAsString());
             $result = -1;
@@ -250,6 +257,11 @@ class ExecuteCommand extends Command
         }
 
         // Reactivate the command in DB
+
+        // PullRequest: Fix repeated jobs #181
+        // https://github.com/j-guyon/CommandSchedulerBundle/pull/181/commits/ca325d94e78f8c3113b250ae48152bf818fa1f44
+        $scheduledCommand = $this->em->find(ScheduledCommand::class, $scheduledCommand);
+
         $scheduledCommand->setLastReturnCode($result);
         $scheduledCommand->setLocked(false);
         $scheduledCommand->setExecuteImmediately(false);

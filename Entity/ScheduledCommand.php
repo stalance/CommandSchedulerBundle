@@ -64,7 +64,6 @@ class ScheduledCommand
      *
      * @param $id
      * @return ScheduledCommand
-     * @return ScheduledCommand
      */
     public function setId(int $id): static
     {
