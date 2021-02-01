@@ -1,13 +1,13 @@
-<?php
+<?php /** @noinspection PhpMissingFieldTypeInspection */
 
 namespace JMose\CommandSchedulerBundle\Command;
 
-use App\Event\ScheduledCommandFailedEvent;
+use JMose\CommandSchedulerBundle\Event\SchedulerCommandFailedEvent;
 use Carbon\Carbon;
 use Cron\CronExpression as CronExpressionLib;
 use Doctrine\Persistence\ObjectManager;
 use JMose\CommandSchedulerBundle\AppEvents;
-use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
@@ -35,12 +35,12 @@ class MonitorCommand extends Command
      * MonitorCommand constructor.
      *
      * @param EventDispatcherInterface $eventDispatcher
-     * @param ManagerRegistry $managerRegistry
-     * @param string          $managerName
-     * @param int | bool      $lockTimeout
-     * @param array           $receiver
-     * @param string          $mailSubject
-     * @param bool            $sendMailIfNoError
+     * @param ManagerRegistry          $managerRegistry
+     * @param string                   $managerName
+     * @param int | bool               $lockTimeout
+     * @param array                    $receiver
+     * @param string                   $mailSubject
+     * @param bool                     $sendMailIfNoError
      */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
@@ -84,8 +84,8 @@ class MonitorCommand extends Command
 
         // Fist, get all failed or potential timeout
         $failedCommands = $this->em->getRepository('JMoseCommandSchedulerBundle:ScheduledCommand')
-            ->findFailedAndTimeoutCommands($this->lockTimeout);
-        //->findAll();
+            //->findFailedAndTimeoutCommands($this->lockTimeout);
+        ->findAll();
 
         // Commands in error
         if (count($failedCommands) > 0) {
@@ -94,8 +94,8 @@ class MonitorCommand extends Command
                 $this->dump($output, $failedCommands);
             } else {
                 $this->eventDispatcher->dispatch(
-                    new ScheduledCommandFailedEvent($failedCommands),
-                    AppEvents::EVENT_SCHEDULER_COMMANDS_FAILED);
+                    new SchedulerCommandFailedEvent($failedCommands),
+                    AppEvents::SCHEDULER_COMMAND_FAILED);
             }
         } elseif ($dumpMode) {
             $output->writeln('No errors found.');
@@ -111,6 +111,8 @@ class MonitorCommand extends Command
      *
      * @param $output
      * @param array $failedCommands
+     *
+     * @throws \Exception
      */
     private function dump($output, array $failedCommands): void
     {

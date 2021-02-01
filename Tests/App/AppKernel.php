@@ -9,12 +9,14 @@ use Symfony\Component\HttpKernel\Kernel;
 class AppKernel extends Kernel
 {
     /**
-     * Register Bundles for test-configuration
+     * Register Bundles for test-configuration.
+     *
      * @return array
      */
-    public function registerBundles(): array
-    {
-        return [
+    #[Pure]
+ public function registerBundles(): array
+ {
+     return [
             new \Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new \Symfony\Bundle\SecurityBundle\SecurityBundle(),
             new \Symfony\Bundle\TwigBundle\TwigBundle(),
@@ -22,8 +24,12 @@ class AppKernel extends Kernel
             new \Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new \JMose\CommandSchedulerBundle\JMoseCommandSchedulerBundle(),
             new \Liip\TestFixturesBundle\LiipTestFixturesBundle(),
+            new \Symfony\Bundle\DebugBundle\DebugBundle(),
+            //new \Symfony\Bundle\WebProfilerBundle\WebProfilerBundle(),
+            //new \DAMA\DoctrineTestBundle\DAMADoctrineTestBundle::class => ['test' => true],
+            //Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle::class => ['all' => true],
         ];
-    }
+ }
 
     public function registerContainerConfiguration(LoaderInterface $loader)
     {

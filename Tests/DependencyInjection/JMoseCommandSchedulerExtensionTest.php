@@ -29,9 +29,9 @@ class JMoseCommandSchedulerExtensionTest extends TestCase
         }
     }
 
-
     /**
-     * Check if config files are correct
+     * Check if config files are correct.
+     *
      * @return array
      */
     public function provideConfiguration(): array

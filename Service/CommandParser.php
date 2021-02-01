@@ -18,8 +18,8 @@ class CommandParser
      * CommandParser constructor.
      *
      * @param KernelInterface $kernel
-     * @param array           $excludedNamespaces
-     * @param array           $includedNamespaces
+     * @param array|null $excludedNamespaces
+     * @param array|null $includedNamespaces
      */
     public function __construct(private KernelInterface $kernel, private array | null $excludedNamespaces = [], private array | null $includedNamespaces = [])
     {
@@ -71,8 +71,11 @@ class CommandParser
             return [];
         }
 
-        $node = new \SimpleXMLElement($xml);
+
         $commandsList = [];
+
+        try{
+        $node = new \SimpleXMLElement($xml);
 
         foreach ($node->namespaces->namespace as $namespace) {
             $namespaceId = (string) $namespace->attributes()->id;
@@ -88,6 +91,12 @@ class CommandParser
             foreach ($namespace->command as $command) {
                 $commandsList[$namespaceId][(string) $command] = (string) $command;
             }
+        }
+        }
+        catch (\Exception)
+        {
+            // return an empty CommandList
+            $commandsList = ["ERROR: please check php bin/console list --format=xml" => "error" ];
         }
 
         return $commandsList;

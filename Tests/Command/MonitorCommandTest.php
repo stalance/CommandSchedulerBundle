@@ -38,8 +38,10 @@ class MonitorCommandTest extends WebTestCase
      * This helper method abstracts the boilerplate code needed to test thetes
      * execution of a command.
      *
-     * @param array $arguments All the arguments passed when executing the command
-     * @param array $inputs The (optional) answers given to the command when it asks for the value of the missing arguments
+     * @param string $commandClass
+     * @param array  $arguments    All the arguments passed when executing the command
+     * @param array  $inputs       The (optional) answers given to the command when it asks for the value of the missing arguments
+     *
      * @return CommandTester
      */
     private function executeCommand(string $commandClass, array $arguments = [], array $inputs = []): CommandTester

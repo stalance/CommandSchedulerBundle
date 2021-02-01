@@ -27,7 +27,7 @@ class DetailController extends AbstractBaseController
      */
     public function indexAction(ScheduledCommand $scheduledCommand, Form $scheduledCommandForm = null): Response
     {
-        # new scheduledCommand
+        // new scheduledCommand
         if (null === $scheduledCommandForm) {
             $scheduledCommandForm = $this->createForm(ScheduledCommandType::class, $scheduledCommand);
         }
@@ -60,14 +60,12 @@ class DetailController extends AbstractBaseController
     /**
      * Get a ScheduledCommand object with its id and forward it to the index action (view).
      *
-     * @param ScheduledCommand $scheduledCommand
+     * @param ScheduledCommand|null $scheduledCommand
      *
      * @return Response
      */
-    public function initEditScheduledCommandAction(ScheduledCommand|null $scheduledCommand): Response
+    public function initEditScheduledCommandAction(ScheduledCommand | null $scheduledCommand): Response
     {
-        #dump($scheduledCommand);
-        #echo $scheduledCommand;
         return $this->forward(
             self::class.'::indexAction',
             [
@@ -101,6 +99,14 @@ class DetailController extends AbstractBaseController
         $scheduledCommandForm->handleRequest($request);
 
         if ($scheduledCommandForm->isSubmitted() && $scheduledCommandForm->isValid()) {
+            // check if we have an xml-read error for commands
+            if ('error' == $scheduledCommand->getCommand()) {
+                $this->get('session')->getFlashBag()
+                    ->add('error', 'ERROR: please check php bin/console list --format=xml');
+
+                return $this->redirectToRoute('jmose_command_scheduler_list');
+            }
+
             // Handle save to the database
             if (null === $scheduledCommand->getId()) {
                 $entityManager->persist($scheduledCommand);

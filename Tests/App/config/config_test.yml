@@ -49,3 +49,10 @@ services:
     JMose\CommandSchedulerBundle\Fixtures\ORM\:
         resource: '../../../Fixtures/ORM/*'
         tags: ['doctrine.fixture.orm']
+
+    #JMose\CommandSchedulerBundle\Entity\:
+        #resource: '../../../Entity/*'
+        #tags: [ 'controller.service_arguments' ]
+
+    #JMose\CommandSchedulerBundle\Entity\ScheduledCommand:
+        #tags: [ controller.service_arguments ]

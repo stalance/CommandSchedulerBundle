@@ -5,7 +5,7 @@ services:
         calls:
             - [setManagerName, ["%jmose_command_scheduler.doctrine_manager%"]]
             - [setTranslator, ["@translator"]]
-        tags: [container.service_subscriber]
+        tags: [container.service_subscriber, controller.service_arguments]
 
     JMose\CommandSchedulerBundle\Controller\ListController:
         public: true
@@ -14,7 +14,7 @@ services:
             - [setManagerName, ["%jmose_command_scheduler.doctrine_manager%"]]
             - [setTranslator, ["@translator"]]
             - [setLockTimeout, ["%jmose_command_scheduler.lock_timeout%"]]
-        tags: [container.service_subscriber]
+        tags: [container.service_subscriber, controller.service_arguments]
 
     JMose\CommandSchedulerBundle\Service\CommandParser:
         arguments:
@@ -29,6 +29,7 @@ services:
 
     JMose\CommandSchedulerBundle\Command\ExecuteCommand:
         arguments:
+            - "@event_dispatcher"
             - "@doctrine"
             - "%jmose_command_scheduler.doctrine_manager%"
             - "%jmose_command_scheduler.log_path%"
@@ -36,7 +37,7 @@ services:
 
     JMose\CommandSchedulerBundle\Command\MonitorCommand:
         arguments:
-            - "@debug.event_dispatcher"
+            - "@event_dispatcher"
             - "@doctrine"
             - "%jmose_command_scheduler.doctrine_manager%"
             - "%jmose_command_scheduler.lock_timeout%"
@@ -57,3 +58,16 @@ services:
 
     JMose\CommandSchedulerBundle\Command\StopSchedulerCommand:
         tags: [console.command]
+
+    ### New
+    JMose\CommandSchedulerBundle\Entity\ScheduledCommand:
+        tags: [ controller.service_arguments ]
+
+    JMose\CommandSchedulerBundle\EventSubscriber\SchedulerCommandSubscriber:
+        arguments:
+            - "@service_container"
+            - "@logger"
+            - "@doctrine.orm.default_entity_manager"
+            #- "@doctrine"
+            #- "%jmose_command_scheduler.doctrine_manager%"
+        tags: [kernel.event_subscriber]

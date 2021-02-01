@@ -64,7 +64,7 @@ class ListController extends AbstractBaseController
      */
     public function toggleAction(ScheduledCommand $scheduledCommand): RedirectResponse
     {
-        #$scheduledCommand = $id;
+        //$scheduledCommand = $id;
         $scheduledCommand->setDisabled(!$scheduledCommand->isDisabled());
         $this->getDoctrineManager()->flush();
 
@@ -121,7 +121,7 @@ class ListController extends AbstractBaseController
      * if a match is found, HTTP status 417 is sent along with an array which contains name, return code and locked-state.
      * if no matches found, HTTP status 200 is sent with an empty array.
      *
-     * @throws \JsonException
+     * @return JsonResponse
      */
     public function monitorAction(): JsonResponse
     {

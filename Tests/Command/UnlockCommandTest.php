@@ -44,8 +44,8 @@ class UnlockCommandTest extends WebTestCase
      * execution of a command.
      *
      * @param string $commandClass
-     * @param array $arguments All the arguments passed when executing the command
-     * @param array $inputs    The (optional) answers given to the command when it asks for the value of the missing arguments
+     * @param array  $arguments    All the arguments passed when executing the command
+     * @param array  $inputs       The (optional) answers given to the command when it asks for the value of the missing arguments
      *
      * @return CommandTester
      */

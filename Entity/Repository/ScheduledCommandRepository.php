@@ -18,9 +18,9 @@ class ScheduledCommandRepository extends EntityRepository
     /**
      * Find all enabled command ordered by priority.
      *
-     * @return ScheduledCommand[]
+     * @return array|null
      */
-    public function findEnabledCommand(): array
+    public function findEnabledCommand(): ?array
     {
         return $this->findBy(['disabled' => false, 'locked' => false], ['priority' => 'DESC']);
     }
@@ -28,9 +28,9 @@ class ScheduledCommandRepository extends EntityRepository
     /**
      * findAll override to implement the default orderBy clause.
      *
-     * @return ScheduledCommand[]
+     * @return array|null
      */
-    public function findAll(): array
+    public function findAll(): ?array
     {
         return $this->findBy([], ['priority' => 'DESC']);
     }

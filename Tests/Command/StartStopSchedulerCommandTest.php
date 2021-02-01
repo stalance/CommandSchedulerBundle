@@ -2,11 +2,11 @@
 
 namespace JMose\CommandSchedulerBundle\Tests\Command;
 
-use JMose\CommandSchedulerBundle\Command\StopSchedulerCommand;
 use JMose\CommandSchedulerBundle\Command\StartSchedulerCommand;
+use JMose\CommandSchedulerBundle\Command\StopSchedulerCommand;
 use JMose\CommandSchedulerBundle\Fixtures\ORM\LoadScheduledCommandData;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -22,8 +22,10 @@ class StartStopSchedulerCommandTest extends WebTestCase
      * This helper method abstracts the boilerplate code needed to test thetes
      * execution of a command.
      *
-     * @param array $arguments All the arguments passed when executing the command
-     * @param array $inputs The (optional) answers given to the command when it asks for the value of the missing arguments
+     * @param string $commandClass
+     * @param array  $arguments    All the arguments passed when executing the command
+     * @param array  $inputs       The (optional) answers given to the command when it asks for the value of the missing arguments
+     *
      * @return CommandTester
      */
     private function executeCommand(string $commandClass, array $arguments = [], array $inputs = []): CommandTester
@@ -38,7 +40,6 @@ class StartStopSchedulerCommandTest extends WebTestCase
 
         return $commandTester;
     }
-
 
     /**
      * Test scheduler:start and scheduler:stop.

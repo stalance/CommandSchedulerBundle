@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUnused */
 
 /** @noinspection PhpMissingFieldTypeInspection */
 
@@ -6,8 +6,14 @@ namespace JMose\CommandSchedulerBundle\Command;
 
 use Cron\CronExpression;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use Doctrine\ORM\TransactionRequiredException;
 use Doctrine\Persistence\ObjectManager;
+use JMose\CommandSchedulerBundle\AppEvents;
 use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
+use JMose\CommandSchedulerBundle\Event\SchedulerCommandExecutedEvent;
+use JMose\CommandSchedulerBundle\Event\SchedulerCommandFailedEvent;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,6 +22,7 @@ use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\StreamOutput;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class ExecuteCommand : This class is the entry point to execute all scheduled command.
@@ -29,6 +36,7 @@ class ExecuteCommand extends Command
      */
     protected static $defaultName = 'scheduler:execute';
     private ObjectManager | EntityManager $em;
+    private EventDispatcherInterface $eventDispatcher;
 
     /**
      * @var bool
@@ -44,8 +52,9 @@ class ExecuteCommand extends Command
      * @param $managerName
      * @param $logPath
      */
-    public function __construct(ManagerRegistry $managerRegistry, $managerName, private $logPath)
+    public function __construct(EventDispatcherInterface $eventDispatcher, ManagerRegistry $managerRegistry, $managerName, private $logPath)
     {
+        $this->eventDispatcher = $eventDispatcher;
         $this->em = $managerRegistry->getManager($managerName);
 
         // If logpath is not set to false, append the directory separator to it
@@ -87,6 +96,8 @@ class ExecuteCommand extends Command
 
     /**
      * {@inheritdoc}
+     * @throws \Exception
+     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -110,9 +121,14 @@ class ExecuteCommand extends Command
         $noneExecution = true;
         foreach ($commands as $command) {
             // PullRequest: fix command refresh #183
-            # https://github.com/j-guyon/CommandSchedulerBundle/pull/183/commits/b194e340df50533e576ee419a11fd1a1f4bf7c6e
-            #$this->em->refresh($this->em->find(ScheduledCommand::class, $command));
-            $command = $this->em->find(ScheduledCommand::class, $command->getId());
+            // https://github.com/j-guyon/CommandSchedulerBundle/pull/183/commits/b194e340df50533e576ee419a11fd1a1f4bf7c6e
+            //$this->em->refresh($this->em->find(ScheduledCommand::class, $command));
+            try {
+                $command = $this->em->find(ScheduledCommand::class, $command->getId());
+            } catch (OptimisticLockException $e) {
+            } catch (TransactionRequiredException $e) {
+            } catch (ORMException $e) {
+            }
             if ($command->isDisabled() || $command->isLocked()) {
                 continue;
             }
@@ -240,10 +256,11 @@ class ExecuteCommand extends Command
                 '<info>Execute</info> : <comment>'.$scheduledCommand->getCommand()
                 .' '.$scheduledCommand->getArguments().'</comment>'
             );
+
             $result = $command->run($input, $logOutput);
 
             // PullRequest: Clear ORM after run scheduled command #187
-            # https://github.com/j-guyon/CommandSchedulerBundle/pull/187/commits/ccb0c7f561bafb3c2d5534b2ddd919b8c060963f
+            // https://github.com/j-guyon/CommandSchedulerBundle/pull/187/commits/ccb0c7f561bafb3c2d5534b2ddd919b8c060963f
             $this->em->clear();
         } catch (\Throwable $e) {
             $logOutput->writeln($e->getMessage());
@@ -267,6 +284,11 @@ class ExecuteCommand extends Command
         $scheduledCommand->setExecuteImmediately(false);
         $this->em->persist($scheduledCommand);
         $this->em->flush();
+
+        $this->eventDispatcher->dispatch(
+            new SchedulerCommandExecutedEvent($scheduledCommand),
+            AppEvents::SCHEDULER_COMMAND_EXECUTED
+        );
 
         /*
          * This clear() is necessary to avoid conflict between commands and to be sure that none entity are managed

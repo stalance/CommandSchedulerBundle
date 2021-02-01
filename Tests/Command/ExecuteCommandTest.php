@@ -2,7 +2,6 @@
 
 namespace JMose\CommandSchedulerBundle\Tests\Command;
 
-use Doctrine\ORM\EntityManager;
 use JMose\CommandSchedulerBundle\Command\ExecuteCommand;
 use JMose\CommandSchedulerBundle\Fixtures\ORM\LoadScheduledCommandData;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
@@ -18,18 +17,13 @@ class ExecuteCommandTest extends WebTestCase
     use FixturesTrait;
 
     /**
-     * @var EntityManager
-     */
-    private EntityManager $em;
-
-    /**
      * {@inheritdoc}
      */
     public function setUp(): void
     {
         self::bootKernel();
 
-        $this->em = static::$kernel->getContainer()
+        $em = static::$kernel->getContainer()
             ->get('doctrine')
             ->getManager();
     }
@@ -38,8 +32,9 @@ class ExecuteCommandTest extends WebTestCase
      * This helper method abstracts the boilerplate code needed to test thetes
      * execution of a command.
      *
-     * @param array $arguments All the arguments passed when executing the command
-     * @param array $inputs    The (optional) answers given to the command when it asks for the value of the missing arguments
+     * @param string $commandClass
+     * @param array  $arguments    All the arguments passed when executing the command
+     * @param array  $inputs       The (optional) answers given to the command when it asks for the value of the missing arguments
      *
      * @return CommandTester
      */

@@ -1,4 +1,6 @@
-<?php /** @noinspection PhpComposerExtensionStubsInspection */
+<?php /** @noinspection ALL */
+
+/** @noinspection PhpComposerExtensionStubsInspection */
 
 namespace JMose\CommandSchedulerBundle\Command;
 

@@ -163,7 +163,7 @@ class ScheduledCommand
     /**
      * Set lastExecution.
      *
-     * @param \DateTimeInterface $lastExecution
+     * @param \DateTimeInterface|null $lastExecution
      * @return ScheduledCommand
      */
     public function setLastExecution(\DateTimeInterface $lastExecution = null): static

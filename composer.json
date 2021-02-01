@@ -27,7 +27,9 @@
         "ext-simplexml": "*",
         "ext-posix": "*",
         "symfony/notifier": "^5.2",
-        "nesbot/carbon": "^2.43"
+        "nesbot/carbon": "^2.43",
+        "symfony/debug-bundle": "^5.2",
+        "symfony/dotenv": "^5.2"
     },
     "require-dev": {
         "ext-pcntl": "*",
