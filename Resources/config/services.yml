@@ -68,6 +68,7 @@ services:
             - "@service_container"
             - "@logger"
             - "@doctrine.orm.default_entity_manager"
+            - "@notifier"
             #- "@doctrine"
             #- "%jmose_command_scheduler.doctrine_manager%"
         tags: [kernel.event_subscriber]

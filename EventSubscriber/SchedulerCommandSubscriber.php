@@ -2,34 +2,39 @@
 
 namespace JMose\CommandSchedulerBundle\EventSubscriber;
 
-use App\Notification\CronMonitorNotification;
 use Doctrine\ORM\EntityManagerInterface;
 use JMose\CommandSchedulerBundle\AppEvents;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use JMose\CommandSchedulerBundle\Event\SchedulerCommandCreatedEvent;
 use JMose\CommandSchedulerBundle\Event\SchedulerCommandExecutedEvent;
 use JMose\CommandSchedulerBundle\Event\SchedulerCommandFailedEvent;
+use JMose\CommandSchedulerBundle\Notification\CronMonitorNotification;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Notifier\NotifierInterface;
 
 final class SchedulerCommandSubscriber implements EventSubscriberInterface
 {
     private LoggerInterface $logger;
     private EntityManagerInterface $em;
     private ContainerInterface $container;
+    private NotifierInterface $notifier;
 
     /**
      * TODO check if parameters needed
      * SchedulerCommandSubscriber constructor.
+     *
      * @param ContainerInterface $container
      * @param LoggerInterface $logger
      * @param EntityManagerInterface $em
+     * @param NotifierInterface $notifier
      */
-    public function __construct(ContainerInterface $container, LoggerInterface $logger, EntityManagerInterface $em)
+    public function __construct(ContainerInterface $container, LoggerInterface $logger, EntityManagerInterface $em, NotifierInterface $notifier)
     {
         $this->container = $container;
         $this->logger = $logger;
         $this->em = $em;
+        $this->notifier = $notifier;
     }
 
     /**
@@ -44,7 +49,7 @@ final class SchedulerCommandSubscriber implements EventSubscriberInterface
         ];
     }
 
-    # TODO check if useful
+    // TODO check if useful
     public function onScheduledCommandCreated(SchedulerCommandCreatedEvent $event)
     {
         $this->logger->info('ScheduledCommandCreated', ['name' => $event->getCommand()->getName()]);
@@ -52,7 +57,7 @@ final class SchedulerCommandSubscriber implements EventSubscriberInterface
 
     public function onScheduledCommandFailed(SchedulerCommandFailedEvent $event)
     {
-        #$this->notifier->send(new CronMonitorNotification($event->getFailedCommands()), ["chris@sky-scripts.de"]);
+        $this->notifier->send(new CronMonitorNotification($event->getFailedCommands())); # ,['test@localhost']
 
         $this->logger->info('SchedulerCommandFailedEvent', ['details' => $event->getMessage()]);
     }
