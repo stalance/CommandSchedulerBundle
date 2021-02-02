@@ -49,6 +49,7 @@ class ScheduledCommand
     {
         $this->setLastExecution(new \DateTime());
         $this->setLocked(false);
+        $this->priority = 0;
     }
 
     /**

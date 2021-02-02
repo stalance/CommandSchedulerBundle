@@ -1,5 +1,6 @@
 <?php
 
+# TODO Check if this file is needed. LiipTestBundle?
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Symfony\Component\HttpFoundation\Request;
 

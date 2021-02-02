@@ -18,14 +18,7 @@ class ListControllerTest extends WebTestCase
 {
     use FixturesTrait;
 
-    /**
-     * @var KernelBrowser
-     */
     private KernelBrowser $client;
-
-    /**
-     * @var EntityManager
-     */
     private EntityManager $em;
 
     /**
@@ -63,6 +56,7 @@ class ListControllerTest extends WebTestCase
 
         //toggle off
         $crawler = $this->client->request('GET', '/command-scheduler/action/remove/1');
+        dump($crawler);
         $this->assertEquals(3, $crawler->filter('a[href^="/command-scheduler/action/toggle/"]')->count());
     }
 
@@ -97,7 +91,8 @@ class ListControllerTest extends WebTestCase
 
         //call execute now button
         $crawler = $this->client->request('GET', '/command-scheduler/action/execute/1');
-        $this->assertEquals(1, $crawler->filter('a[data-href="/command-scheduler/action/execute/1"] > span[class="text-muted glyphicon glyphicon-play"]')->count());
+        #$this->assertEquals(1, $crawler->filter('a[data-href="/command-scheduler/action/execute/1"] > span[class="text-muted glyphicon glyphicon-play"]')->count());
+        $this->assertEquals(1, $crawler->filterXPath('//div[contains("Command will be executed during the next")')->count());
     }
 
     /**

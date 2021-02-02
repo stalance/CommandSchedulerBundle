@@ -21,7 +21,7 @@ class DetailControllerTest extends WebTestCase
         $client = static::createClient();
         $this->loadFixtures([]);
 
-        $crawler = $client->request('GET', '/command-scheduler/detail/new');
+        $crawler = $client->request('GET', '/command-scheduler/detail/edit');
         $this->assertEquals(1, $crawler->filter('button[id="command_scheduler_detail_save"]')->count());
     }
 
@@ -36,8 +36,7 @@ class DetailControllerTest extends WebTestCase
 
         $crawler = $client->request('GET', '/command-scheduler/detail/edit/1');
 
-        $this->assertEquals(1, $crawler->filterXPath('//button[@id, "command_scheduler_detail_save"]')->count());
-        //$this->assertEquals(1, $crawler->filter('button[id="command_scheduler_detail_save"]')->count());
+        $this->assertEquals(1, $crawler->filterXPath('//button[@id="command_scheduler_detail_save"]')->count());
 
         $buttonCrawlerNode = $crawler->selectButton('Save');
         $form = $buttonCrawlerNode->form();
@@ -65,7 +64,7 @@ class DetailControllerTest extends WebTestCase
         $this->loadFixtures([]);
 
         $client->followRedirects(true);
-        $crawler = $client->request('GET', '/command-scheduler/detail/new');
+        $crawler = $client->request('GET', '/command-scheduler/detail/edit');
         $buttonCrawlerNode = $crawler->selectButton('Save');
         $form = $buttonCrawlerNode->form();
 
@@ -79,10 +78,6 @@ class DetailControllerTest extends WebTestCase
         ]);
         $crawler = $client->submit($form);
 
-        //count(//span[@class="article"])');
-        //$this->assertEquals(1, $crawler->filter('a[href^="/command-scheduler/action/toggle/"]')->count());
-
-        //$this->assertEquals(1, $crawler->filter('a[contains(@href, '/ccc/ctxxxx/Load.xxx')]/"]')->count());
         $this->assertEquals(1, $crawler->filterXPath('//a[contains(@href, "/command-scheduler/action/toggle/")]')->count());
         $this->assertEquals('wtc', trim($crawler->filter('td')->eq(1)->text()));
     }
@@ -103,9 +98,10 @@ class DetailControllerTest extends WebTestCase
         $form = $buttonCrawlerNode->form();
 
         $form->get('command_scheduler_detail[name]')->setValue('edited one');
+        #$form->get('command_scheduler_detail[cronExpression]')->setValue('* * * * *');
         $crawler = $client->submit($form);
-
-        $this->assertEquals(4, $crawler->filter('a[href^="/command-scheduler/action/toggle/"]')->count());
+        dump($crawler);
+        $this->assertEquals(4, $crawler->filterXPath('//a[contains(@href, "/command-scheduler/action/toggle/")]')->count());
         $this->assertEquals('edited one', trim($crawler->filter('td')->eq(1)->text()));
     }
 }

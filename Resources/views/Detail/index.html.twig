@@ -9,7 +9,7 @@
 
     {% set styleConfiguration = {'class': 'form-control'} %}
     <div class="col-lg-6 col-sm-12">
-        {{ form_start( scheduledCommandForm, {'action': path('jmose_command_scheduler_detail_save')} ) }}
+        {{ form_start( scheduledCommandForm) }}
 
         {# Form's fields #}
         {{ form_row( scheduledCommandForm.id ) }}
@@ -20,12 +20,10 @@
         {{ form_row( scheduledCommandForm.logFile, {'attr': styleConfiguration|merge({'placeholder': 'myFile.log'}) } ) }}
         {{ form_row( scheduledCommandForm.priority, {'attr': styleConfiguration } ) }}
         <div>
-            {{ form_widget( scheduledCommandForm.executeImmediately ) }}
-            {{ form_label( scheduledCommandForm.executeImmediately ) }}
+            {{ form_row(scheduledCommandForm.executeImmediately) }}
         </div>
         <div>
-            {{ form_widget( scheduledCommandForm.disabled ) }}
-            {{ form_label( scheduledCommandForm.disabled ) }}
+            {{ form_row(scheduledCommandForm.disabled) }}
         </div>
 
         {# Form's actions #}

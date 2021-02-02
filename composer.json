@@ -29,7 +29,10 @@
         "symfony/notifier": "^5.2",
         "nesbot/carbon": "^2.43",
         "symfony/debug-bundle": "^5.2",
-        "symfony/dotenv": "^5.2"
+        "symfony/dotenv": "^5.2",
+        "symfony/twig-pack": "^1.0",
+        "twig/cssinliner-extra": "^3.2",
+        "twig/inky-extra": "^3.2"
     },
     "require-dev": {
         "ext-pcntl": "*",

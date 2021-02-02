@@ -28,12 +28,8 @@ jmose_command_scheduler_detail_index:
 
 jmose_command_scheduler_detail_edit:
     path:  /command-scheduler/detail/edit/{id}
-    defaults: { _controller: JMose\CommandSchedulerBundle\Controller\DetailController::initEditScheduledCommandAction }
+    defaults: { _controller: JMose\CommandSchedulerBundle\Controller\DetailController::edit }
 
 jmose_command_scheduler_detail_new:
-    path:  /command-scheduler/detail/new
-    defaults: { _controller: JMose\CommandSchedulerBundle\Controller\DetailController::initNewScheduledCommandAction }
-
-jmose_command_scheduler_detail_save:
-    path:  /command-scheduler/detail/save
-    defaults: { _controller: JMose\CommandSchedulerBundle\Controller\DetailController::saveAction }
+    path:  /command-scheduler/detail/edit
+    defaults: { _controller: JMose\CommandSchedulerBundle\Controller\DetailController::edit }
