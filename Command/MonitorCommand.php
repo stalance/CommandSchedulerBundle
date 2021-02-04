@@ -133,8 +133,7 @@ class MonitorCommand extends Command
                 default => '<error>'.$command->getLastReturnCode().' (error)</error>'
             };
 
-            $nextRunDate = (new CronExpressionLib($command->getCronExpression()))->getNextRunDate();
-
+            $nextRunDate = $command->getNextRunDate();
             $table->addRow([
                 $command->getName(),
                 $lastReturnInfo,

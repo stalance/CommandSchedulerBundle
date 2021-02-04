@@ -14,6 +14,7 @@ services:
             - [setManagerName, ["%jmose_command_scheduler.doctrine_manager%"]]
             - [setTranslator, ["@translator"]]
             - [setLockTimeout, ["%jmose_command_scheduler.lock_timeout%"]]
+            - [setLogger,       ["@logger"]]
         tags: [container.service_subscriber, controller.service_arguments]
 
     JMose\CommandSchedulerBundle\Service\CommandParser:
@@ -69,6 +70,8 @@ services:
             - "@logger"
             - "@doctrine.orm.default_entity_manager"
             - "@notifier"
+            - "%jmose_command_scheduler.monitor_mail%"
+            - "%jmose_command_scheduler.monitor_mail_subject%"
             #- "@doctrine"
             #- "%jmose_command_scheduler.doctrine_manager%"
         tags: [kernel.event_subscriber]

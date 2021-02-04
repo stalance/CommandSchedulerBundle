@@ -12,6 +12,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Notifier\NotifierInterface;
+use Symfony\Component\Notifier\Recipient\Recipient;
 
 final class SchedulerCommandSubscriber implements EventSubscriberInterface
 {
@@ -24,12 +25,12 @@ final class SchedulerCommandSubscriber implements EventSubscriberInterface
      * TODO check if parameters needed
      * SchedulerCommandSubscriber constructor.
      *
-     * @param ContainerInterface $container
-     * @param LoggerInterface $logger
+     * @param ContainerInterface     $container
+     * @param LoggerInterface        $logger
      * @param EntityManagerInterface $em
-     * @param NotifierInterface $notifier
+     * @param NotifierInterface      $notifier
      */
-    public function __construct(ContainerInterface $container, LoggerInterface $logger, EntityManagerInterface $em, NotifierInterface $notifier)
+    public function __construct(ContainerInterface $container, LoggerInterface $logger, EntityManagerInterface $em, NotifierInterface $notifier, private array $monitor_mail=[], private string $monitor_mail_subject="CronMonitor:")
     {
         $this->container = $container;
         $this->logger = $logger;
@@ -57,9 +58,15 @@ final class SchedulerCommandSubscriber implements EventSubscriberInterface
 
     public function onScheduledCommandFailed(SchedulerCommandFailedEvent $event)
     {
-        $this->notifier->send(new CronMonitorNotification($event->getFailedCommands())); # ,['test@localhost']
+        #...$this->notifier->getAdminRecipients()
+        $recipients = [];
+        foreach ($this->monitor_mail as $mailadress)
+        {
+            $recipients[] = new Recipient($mailadress);
+        }
+        $this->notifier->send(new CronMonitorNotification($event->getFailedCommands(), $this->monitor_mail_subject), ...$recipients);
 
-        $this->logger->info('SchedulerCommandFailedEvent', ['details' => $event->getMessage()]);
+        #$this->logger->warning('SchedulerCommandFailedEvent', ['details' => $event->getMessage()]);
     }
 
     public function onScheduledCommandExecuted(SchedulerCommandExecutedEvent $event)
