@@ -44,9 +44,9 @@ final class SchedulerCommandSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            AppEvents::SCHEDULER_COMMAND_CREATED => ['onScheduledCommandCreated',    -10],
-            AppEvents::SCHEDULER_COMMAND_FAILED => ['onScheduledCommandFailed',     20],
-            AppEvents::SCHEDULER_COMMAND_EXECUTED => ['onScheduledCommandExecuted',   0],
+            SchedulerCommandCreatedEvent::class => ['onScheduledCommandCreated',    -10],
+            SchedulerCommandFailedEvent::class => ['onScheduledCommandFailed',     20],
+            SchedulerCommandExecutedEvent::class => ['onScheduledCommandExecuted',   0],
         ];
     }
 

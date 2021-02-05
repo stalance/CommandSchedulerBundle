@@ -10,7 +10,6 @@ use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\TransactionRequiredException;
 use Doctrine\Persistence\ObjectManager;
-use JMose\CommandSchedulerBundle\AppEvents;
 use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
 use JMose\CommandSchedulerBundle\Event\SchedulerCommandExecutedEvent;
 use JMose\CommandSchedulerBundle\Event\SchedulerCommandFailedEvent;
@@ -285,10 +284,7 @@ class ExecuteCommand extends Command
         $this->em->persist($scheduledCommand);
         $this->em->flush();
 
-        $this->eventDispatcher->dispatch(
-            new SchedulerCommandExecutedEvent($scheduledCommand),
-            AppEvents::SCHEDULER_COMMAND_EXECUTED
-        );
+        $this->eventDispatcher->dispatch(new SchedulerCommandExecutedEvent($scheduledCommand));
 
         /*
          * This clear() is necessary to avoid conflict between commands and to be sure that none entity are managed

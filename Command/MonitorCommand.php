@@ -6,7 +6,6 @@ use JMose\CommandSchedulerBundle\Event\SchedulerCommandFailedEvent;
 use Carbon\Carbon;
 use Cron\CronExpression as CronExpressionLib;
 use Doctrine\Persistence\ObjectManager;
-use JMose\CommandSchedulerBundle\AppEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Console\Command\Command;
@@ -93,9 +92,7 @@ class MonitorCommand extends Command
             if ($dumpMode) {
                 $this->dump($output, $failedCommands);
             } else {
-                $this->eventDispatcher->dispatch(
-                    new SchedulerCommandFailedEvent($failedCommands),
-                    AppEvents::SCHEDULER_COMMAND_FAILED);
+                $this->eventDispatcher->dispatch(new SchedulerCommandFailedEvent($failedCommands));
             }
         } elseif ($dumpMode) {
             $output->writeln('No errors found.');
