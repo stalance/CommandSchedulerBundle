@@ -4,8 +4,7 @@ namespace JMose\CommandSchedulerBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
@@ -25,8 +24,9 @@ class JMoseCommandSchedulerExtension extends Extension
         $config = $this->processConfiguration(new Configuration(), $configs);
 
         // Custom
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.yml');
+        //$loader->load(__DIR__ . '/../Resources/config/events.php');
+        $loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('services.php');
 
         foreach ($config as $key => $value) {
             $container->setParameter('jmose_command_scheduler.'.$key, $value);
