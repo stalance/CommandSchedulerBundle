@@ -1,7 +1,8 @@
-includes:
-    - vendor/thecodingmachine/phpstan-strict-rules/phpstan-strict-rules.neon
-    - vendor/thecodingmachine/phpstan-safe-rule/phpstan-safe-rule.neon
 parameters:
+    #https://phpstan.org/config-reference
     excludes_analyse:
-        - %currentWorkingDirectory%/src/Migrations/*.php
-        - %currentWorkingDirectory%/src/Kernel.php
+        - %currentWorkingDirectory%/build/*.php
+        - %currentWorkingDirectory%/vendor/*.php
+        - %currentWorkingDirectory%/Resources
+        - %currentWorkingDirectory%/Tests/app_test.php
+        - %currentWorkingDirectory%/Tests/App/AppKernel.php
