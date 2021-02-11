@@ -57,7 +57,7 @@
     },
     "scripts": {
         "cscheck": "phpcs",
-        "csfix": "phpcbf --standard=PSR2 --ignore=vendor/**,build,.github .",
+        "csfix": "phpcbf --standard=PSR2 --ignore=vendor/**,build,.github,Resources/** .",
         "phpstan": "phpstan analyse ./ -c phpstan.neon --level=4 --no-progress -vvv --memory-limit=2048M"
     },
     "autoload": {

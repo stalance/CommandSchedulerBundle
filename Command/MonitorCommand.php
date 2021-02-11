@@ -45,10 +45,10 @@ class MonitorCommand extends Command
         EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $managerRegistry,
         string $managerName,
-        private int | bool $lockTimeout,
-        private array $receiver,
-        private string $mailSubject,
-        private bool $sendMailIfNoError = false
+    private int | bool $lockTimeout,
+    private array $receiver,
+    private string $mailSubject,
+    private bool $sendMailIfNoError = false
     ) {
         $this->em = $managerRegistry->getManager($managerName);
         $this->eventDispatcher = $eventDispatcher;
