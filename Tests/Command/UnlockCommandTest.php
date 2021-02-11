@@ -111,8 +111,10 @@ class UnlockCommandTest extends WebTestCase
         $this->loadFixtures([LoadScheduledCommandData::class]);
 
         // One command is locked in fixture with last execution two days ago (2), another have a -1 return code as lastReturn (4)
-        $output = $this->executeCommand(UnlockCommand::class,
-            ['name' => 'two', '--lock-timeout' => 3 * 24 * 60 * 60])
+        $output = $this->executeCommand(
+            UnlockCommand::class,
+            ['name' => 'two', '--lock-timeout' => 3 * 24 * 60 * 60]
+        )
             ->getDisplay();
 
         $this->assertMatchesRegularExpression('/Skipping/', $output);

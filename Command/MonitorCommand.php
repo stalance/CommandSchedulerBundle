@@ -120,18 +120,18 @@ class MonitorCommand extends Command
         foreach ($failedCommands as $command) {
             $lockedInfo = match ($command->getLocked()) {
                 true => '<error>LOCKED</error>',
-                default => ''
+            default => ''
             };
 
-            $lastReturnInfo = match ($command->getLastReturnCode()) {
+                $lastReturnInfo = match ($command->getLastReturnCode()) {
                 '', false, null => '',
                 0 => '<info>0 (success)</info>',
                 // no break
-                default => '<error>'.$command->getLastReturnCode().' (error)</error>'
+            default => '<error>'.$command->getLastReturnCode().' (error)</error>'
             };
 
-            $nextRunDate = $command->getNextRunDate();
-            $table->addRow([
+                $nextRunDate = $command->getNextRunDate();
+                $table->addRow([
                 $command->getName(),
                 $lastReturnInfo,
                 $lockedInfo,
@@ -139,7 +139,7 @@ class MonitorCommand extends Command
                     .Carbon::instance($command->getLastExecution())->diffForHumans().')',
                 $nextRunDate->format('Y-m-d H:i').' ('
                     .Carbon::instance($nextRunDate)->diffForHumans().')',
-            ]);
+                ]);
         }
 
         $table->render();

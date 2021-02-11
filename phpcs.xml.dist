@@ -10,10 +10,20 @@
 
     <rule ref="PSR2"/>
 
-    <file>bin/</file>
-    <file>config/</file>
-    <file>public/</file>
-    <file>src/</file>
-    <file>tests/</file>
+    <file>Command/</file>
+    <file>Controller/</file>
+    <file>DependencyInjection/</file>
+    <file>Entity/</file>
+    <file>Event/</file>
+    <file>EventSubscriber/</file>
+    <file>Fixtures/</file>
+    <file>Form/</file>
+    <file>Notification/</file>
+    <file>Resources/</file>
+    <file>Service/</file>
+    <file>Tests/</file>
+    <file>Validator/</file>
+
+    <exclude-pattern>*\.(inc|css|js)$</exclude-pattern>
 
 </ruleset>

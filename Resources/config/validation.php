@@ -8,7 +8,8 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->extension('namespaces', ['CommandSchedulerConstraints' => 'JMose\CommandSchedulerBundle\Validator\Constraints\\']);
 
-    $containerConfigurator->extension(ScheduledCommand::class,
+    $containerConfigurator->extension(
+        ScheduledCommand::class,
         ['properties' => [
             'cronExpression' => [
                 ['NotBlank' => null],
@@ -18,5 +19,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'command' => [['NotBlank' => null]],
             'priority' => [['Type' => ['type' => 'integer']]],
         ],
-        ]);
+        ]
+    );
 };

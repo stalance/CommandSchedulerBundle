@@ -79,7 +79,7 @@ class UnlockCommand extends Command
         $this->lockTimeout = intval($input->getOption('lock-timeout'));
 
         if (0 == $this->lockTimeout) {
-         $this->lockTimeout = self::DEFAULT_LOCK_TIME;
+            $this->lockTimeout = self::DEFAULT_LOCK_TIME;
         }
     }
 
@@ -107,10 +107,9 @@ class UnlockCommand extends Command
             # Unlock all locked commands
             $failedCommands = $repository->findLockedCommand();
 
-            if($failedCommands)
-            {
+            if ($failedCommands) {
                 foreach ($failedCommands as $failedCommand) {
-                 $this->unlock($failedCommand, $io);
+                    $this->unlock($failedCommand, $io);
                 }
             }
         } else {

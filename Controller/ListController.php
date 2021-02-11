@@ -146,7 +146,7 @@ class ListController extends AbstractBaseController
                 'DH_LAST_EXECUTION' => $command->getLastExecution(),
                 'DH_NEXT_EXECUTION' => $command->getNextRunDate(),
                 'LOGFILE' => $command->getLogFile(),
-            ];
+                ];
             }
 
             $this->logger->debug('MonitorCommand found locked or timed out commands', ['amount' => count($failedCommands)]);

@@ -49,11 +49,18 @@ class LoadScheduledCommandData implements FixtureInterface
      * @return bool
      */
     protected function createScheduledCommand(
-        string $name, string $command, string $arguments, string $cronExpression,
-        string $logFile, int $priority = 0, ?\DateTime $lastExecution = null,
-        bool $locked = false, bool $disabled = false, bool $executeNow = false,
-        ?int $lastReturnCode = null): bool
-    {
+        string $name,
+        string $command,
+        string $arguments,
+        string $cronExpression,
+        string $logFile,
+        int $priority = 0,
+        ?\DateTime $lastExecution = null,
+        bool $locked = false,
+        bool $disabled = false,
+        bool $executeNow = false,
+        ?int $lastReturnCode = null
+    ): bool {
         $this->manager->getConnection()->beginTransaction();
         try {
             $scheduledCommand = new ScheduledCommand();

@@ -14,9 +14,9 @@ class AppKernel extends Kernel
      * @return array
      */
     #[Pure]
- public function registerBundles(): array
- {
-     return [
+    public function registerBundles(): array
+    {
+        return [
             new \Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new \Symfony\Bundle\SecurityBundle\SecurityBundle(),
             new \Symfony\Bundle\TwigBundle\TwigBundle(),
@@ -29,7 +29,7 @@ class AppKernel extends Kernel
             //new \DAMA\DoctrineTestBundle\DAMADoctrineTestBundle::class => ['test' => true],
             //Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle::class => ['all' => true],
         ];
- }
+    }
 
     public function registerContainerConfiguration(LoaderInterface $loader)
     {

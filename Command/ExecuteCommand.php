@@ -104,8 +104,8 @@ class ExecuteCommand extends Command
 
         // Before continue, we check that the output file is valid and writable (except for gaufrette)
         if (false !== $this->logPath && !str_starts_with($this->logPath, 'gaufrette:') && !is_writable(
-                $this->logPath
-            )
+            $this->logPath
+        )
         ) {
             $output->writeln(
                 '<error>'.$this->logPath.
@@ -245,7 +245,8 @@ class ExecuteCommand extends Command
                     $this->logPath.$scheduledCommand->getLogFile(),
                     'a',
                     false
-                ), $this->commandsVerbosity
+                ),
+                $this->commandsVerbosity
             );
         }
 

@@ -36,7 +36,6 @@ class StopSchedulerCommand extends Command
     {
         $pidFile = sys_get_temp_dir().DIRECTORY_SEPARATOR.StartSchedulerCommand::PID_FILE;
         if (!file_exists($pidFile)) {
-
             $output->writeln(sprintf('<info>%s</info>', 'Command scheduler is not running'));
 
             return Command::SUCCESS;

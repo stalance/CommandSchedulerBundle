@@ -56,8 +56,9 @@
         "ext-pcntl": "For using the scheduler daemon"
     },
     "scripts": {
-        "cscheck": "phpcs --ignore=vendor/**,build,.github .",
-        "phpstan": "phpstan analyse ./ -c phpstan.neon --level=7 --no-progress -vvv --memory-limit=2048M"
+        "cscheck": "phpcs",
+        "csfix": "phpcbf --standard=PSR2 --ignore=vendor/**,build,.github .",
+        "phpstan": "phpstan analyse ./ -c phpstan.neon --level=4 --no-progress -vvv --memory-limit=2048M"
     },
     "autoload": {
         "psr-4": {

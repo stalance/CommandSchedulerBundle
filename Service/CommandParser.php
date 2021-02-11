@@ -74,27 +74,24 @@ class CommandParser
 
         $commandsList = [];
 
-        try{
-        $node = new \SimpleXMLElement($xml);
+        try {
+            $node = new \SimpleXMLElement($xml);
 
-        foreach ($node->namespaces->namespace as $namespace) {
-            $namespaceId = (string) $namespace->attributes()->id;
+            foreach ($node->namespaces->namespace as $namespace) {
+                $namespaceId = (string) $namespace->attributes()->id;
 
-            if (
-                (count($this->excludedNamespaces) > 0 && in_array($namespaceId, $this->excludedNamespaces))
+                if ((count($this->excludedNamespaces) > 0 && in_array($namespaceId, $this->excludedNamespaces))
                 ||
                 (count($this->includedNamespaces) > 0 && !in_array($namespaceId, $this->includedNamespaces))
-            ) {
-                continue;
-            }
+                ) {
+                    continue;
+                }
 
-            foreach ($namespace->command as $command) {
-                $commandsList[$namespaceId][(string) $command] = (string) $command;
+                foreach ($namespace->command as $command) {
+                    $commandsList[$namespaceId][(string) $command] = (string) $command;
+                }
             }
-        }
-        }
-        catch (\Exception)
-        {
+        } catch (\Exception) {
             // return an empty CommandList
             $commandsList = ["ERROR: please check php bin/console list --format=xml" => "error" ];
         }

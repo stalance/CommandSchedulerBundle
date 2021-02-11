@@ -11,7 +11,6 @@ class SchedulerCommandFailedEvent
      */
     public function __construct(private array $failedCommands = [])
     {
-
     }
 
     public function getFailedCommands(): array

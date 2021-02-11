@@ -25,14 +25,14 @@ class DetailController extends AbstractBaseController
      */
     public function edit(Request $request, ScheduledCommand $scheduledCommand = null): Response
     {
-        if(!$scheduledCommand)
-        {$scheduledCommand = new ScheduledCommand();}
+        if (!$scheduledCommand) {
+            $scheduledCommand = new ScheduledCommand();
+        }
 
         $form = $this->createForm(ScheduledCommandType::class, $scheduledCommand);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             // check if we have an xml-read error for commands
             if ('error' == $scheduledCommand->getCommand()) {
                 $this->addFlash('error', 'ERROR: please check php bin/console list --format=xml');
@@ -50,7 +50,8 @@ class DetailController extends AbstractBaseController
             return $this->redirectToRoute('jmose_command_scheduler_list');
         }
 
-        return $this->render('@JMoseCommandScheduler/Detail/index.html.twig',
+        return $this->render(
+            '@JMoseCommandScheduler/Detail/index.html.twig',
             ['scheduledCommandForm' => $form->createView()]
         );
     }
