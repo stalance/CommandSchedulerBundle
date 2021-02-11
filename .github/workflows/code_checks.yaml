@@ -27,8 +27,10 @@ jobs:
           coverage: pcov # none, disable xdebug, pcov
 
       # if we 2 steps like this, we can better see if composer failed or tests
-      -   run: composer install --no-progress
-      -   run: vendor/bin/phpunit
+      - run: composer install --no-progress
+      #- run: vendor/bin/phpunit
+      - run: vendor/bin/phpunit --coverage-clover coverage.xml build/logs/clover.xml
+
 
 
   cs:
@@ -70,3 +72,4 @@ jobs:
       - uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+
