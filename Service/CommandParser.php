@@ -18,8 +18,8 @@ class CommandParser
      * CommandParser constructor.
      *
      * @param KernelInterface $kernel
-     * @param array|null $excludedNamespaces
-     * @param array|null $includedNamespaces
+     * @param array|null      $excludedNamespaces
+     * @param array|null      $includedNamespaces
      */
     public function __construct(private KernelInterface $kernel, private array | null $excludedNamespaces = [], private array | null $includedNamespaces = [])
     {
@@ -67,10 +67,9 @@ class CommandParser
      */
     private function extractCommandsFromXML(string $xml): array
     {
-        if ('' == $xml) {
+        if ('' === $xml) {
             return [];
         }
-
 
         $commandsList = [];
 
@@ -93,7 +92,7 @@ class CommandParser
             }
         } catch (\Exception) {
             // return an empty CommandList
-            $commandsList = ["ERROR: please check php bin/console list --format=xml" => "error" ];
+            $commandsList = ['ERROR: please check php bin/console list --format=xml' => 'error'];
         }
 
         return $commandsList;

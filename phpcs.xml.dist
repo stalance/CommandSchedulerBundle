@@ -8,6 +8,8 @@
     <arg name="colors"/>
     <arg name="extensions" value="php"/>
 
+    <extensions>php</extensions>
+
     <rule ref="PSR2"/>
 
     <file>Command/</file>
@@ -24,7 +26,5 @@
     <file>Service/</file>
     <file>Tests/</file>
     <file>Validator/</file>
-
-    <exclude-pattern>*\.(inc|css|js)$</exclude-pattern>
 
 </ruleset>

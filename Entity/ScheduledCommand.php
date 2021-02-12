@@ -25,7 +25,7 @@ class ScheduledCommand
      */
     private ?string $cronExpression = null;
 
-    private ?\DateTime $lastExecution = null;
+    private ?DateTime $lastExecution = null;
 
     private ?int $lastReturnCode = null;
 
@@ -46,7 +46,7 @@ class ScheduledCommand
      */
     public function __construct()
     {
-        $this->setLastExecution(new \DateTime());
+        $this->setLastExecution(new DateTime());
         $this->setLocked(false);
         $this->priority = 0;
     }

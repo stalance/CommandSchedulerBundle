@@ -2,6 +2,7 @@
 
 namespace JMose\CommandSchedulerBundle\Notification;
 
+use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Notifier\Message\ChatMessage;
 use Symfony\Component\Notifier\Message\EmailMessage;
 use Symfony\Component\Notifier\Notification\ChatNotificationInterface;
@@ -18,15 +19,16 @@ class CronMonitorNotification extends Notification implements EmailNotificationI
     /**
      * CronMonitorNotification constructor.
      *
-     * @param array $scheduledCommands
+     * @param array  $scheduledCommands
      * @param string $subject
      */
-    public function __construct(array $scheduledCommands, private string $subject)
-    {
-        $this->scheduledCommands = $scheduledCommands;
+    #[Pure]
+ public function __construct(array $scheduledCommands, private string $subject)
+ {
+     $this->scheduledCommands = $scheduledCommands;
 
-        parent::__construct(sprintf($subject, gethostname(), date('Y-m-d H:i:s')));
-    }
+     parent::__construct(sprintf($subject, gethostname(), date('Y-m-d H:i:s')));
+ }
 
     public function getImportance(): string
     {
@@ -68,9 +70,6 @@ class CronMonitorNotification extends Notification implements EmailNotificationI
      */
     public function asEmailMessage(Recipient | EmailRecipientInterface $recipient, string $transport = null): ?EmailMessage
     {
-        $message = EmailMessage::fromNotification($this, $recipient);
-        #$message->transport($transport);
-
-        return $message;
+        return EmailMessage::fromNotification($this, $recipient);
     }
 }

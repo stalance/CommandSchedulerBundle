@@ -159,7 +159,7 @@ class ListController extends AbstractBaseController
         try {
             $response->setContent(json_encode($jsonArray, JSON_THROW_ON_ERROR));
         } catch (\JsonException $e) {
-            $this->logger->error('MonitorCommand failed', $e->getMessage());
+            $this->logger->error('MonitorCommand failed', ['message' => $e->getMessage()]);
         }
 
         // StatusCode 417 (error)

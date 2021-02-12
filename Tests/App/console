@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-# used from symfony 5.2.2
+// used from symfony 5.2.2
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Dotenv\Dotenv;
@@ -13,7 +13,7 @@ if (!in_array(PHP_SAPI, ['cli', 'phpdbg', 'embed'], true)) {
 
 set_time_limit(0);
 
-# custom: changed path
+// custom: changed path
 require dirname(__DIR__).'/../vendor/autoload.php';
 
 if (!class_exists(Application::class) || !class_exists(Dotenv::class)) {
@@ -39,6 +39,7 @@ if ($_SERVER['APP_DEBUG']) {
     }
 }
 
+/** @noinspection PhpFullyQualifiedNameUsageInspection */
 $kernel = new \App\Tests\App\AppKernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
 
 $application = new Application($kernel);

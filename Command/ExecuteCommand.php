@@ -1,20 +1,24 @@
-<?php /** @noinspection PhpUnused */
+<?php
+
+/** @noinspection PhpUnused */
 
 /** @noinspection PhpMissingFieldTypeInspection */
 
 namespace JMose\CommandSchedulerBundle\Command;
 
 use Cron\CronExpression;
+use Doctrine\DBAL\ConnectionException;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\TransactionRequiredException;
+use Doctrine\Persistence\Mapping\MappingException;
 use Doctrine\Persistence\ObjectManager;
 use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
 use JMose\CommandSchedulerBundle\Event\SchedulerCommandExecutedEvent;
-use JMose\CommandSchedulerBundle\Event\SchedulerCommandFailedEvent;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\StringInput;
@@ -47,7 +51,8 @@ class ExecuteCommand extends Command
     /**
      * ExecuteCommand constructor.
      *
-     * @param ManagerRegistry $managerRegistry
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param ManagerRegistry          $managerRegistry
      * @param $managerName
      * @param $logPath
      */
@@ -95,8 +100,9 @@ class ExecuteCommand extends Command
 
     /**
      * {@inheritdoc}
+     *
      * @throws \Exception
-     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
+     * @throws ExceptionInterface
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -124,8 +130,7 @@ class ExecuteCommand extends Command
             //$this->em->refresh($this->em->find(ScheduledCommand::class, $command));
             try {
                 $command = $this->em->find(ScheduledCommand::class, $command->getId());
-            } catch (OptimisticLockException $e) {
-            } catch (TransactionRequiredException $e) {
+            } catch (OptimisticLockException | TransactionRequiredException $e) {
             } catch (ORMException $e) {
             }
             if ($command->isDisabled() || $command->isLocked()) {
@@ -173,12 +178,12 @@ class ExecuteCommand extends Command
      * @param OutputInterface  $output
      * @param InputInterface   $input
      *
-     * @throws \Doctrine\DBAL\ConnectionException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \Doctrine\ORM\TransactionRequiredException
-     * @throws \Doctrine\Persistence\Mapping\MappingException
-     * @throws \Symfony\Component\Console\Exception\ExceptionInterface
+     * @throws ConnectionException
+     * @throws ORMException
+     * @throws OptimisticLockException
+     * @throws TransactionRequiredException
+     * @throws MappingException
+     * @throws ExceptionInterface
      */
     private function executeCommand(ScheduledCommand $scheduledCommand, OutputInterface $output, InputInterface $input): void
     {

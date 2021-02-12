@@ -4,7 +4,6 @@ namespace JMose\CommandSchedulerBundle\Controller;
 
 use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
 use JMose\CommandSchedulerBundle\Form\Type\ScheduledCommandType;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -18,7 +17,7 @@ class DetailController extends AbstractBaseController
     /**
      * Handle display of new/existing ScheduledCommand object.
      *
-     * @param Request $request
+     * @param Request               $request
      * @param ScheduledCommand|null $scheduledCommand
      *
      * @return Response

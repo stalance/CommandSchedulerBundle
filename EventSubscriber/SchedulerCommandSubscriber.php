@@ -3,6 +3,7 @@
 namespace JMose\CommandSchedulerBundle\EventSubscriber;
 
 use Doctrine\ORM\EntityManagerInterface;
+use JetBrains\PhpStorm\ArrayShape;
 use JMose\CommandSchedulerBundle\Event\SchedulerCommandCreatedEvent;
 use JMose\CommandSchedulerBundle\Event\SchedulerCommandExecutedEvent;
 use JMose\CommandSchedulerBundle\Event\SchedulerCommandFailedEvent;
@@ -28,6 +29,8 @@ final class SchedulerCommandSubscriber implements EventSubscriberInterface
      * @param LoggerInterface        $logger
      * @param EntityManagerInterface $em
      * @param NotifierInterface      $notifier
+     * @param array                  $monitor_mail
+     * @param string                 $monitor_mail_subject
      */
     public function __construct(ContainerInterface $container, LoggerInterface $logger, EntityManagerInterface $em, NotifierInterface $notifier, private array $monitor_mail = [], private string $monitor_mail_subject = 'CronMonitor:')
     {
@@ -40,14 +43,19 @@ final class SchedulerCommandSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
-    {
-        return [
+    #[ArrayShape([
+        SchedulerCommandCreatedEvent::class => 'array',
+        SchedulerCommandFailedEvent::class => 'array',
+        SchedulerCommandExecutedEvent::class => 'array',
+    ])]
+ public static function getSubscribedEvents()
+ {
+     return [
             SchedulerCommandCreatedEvent::class => ['onScheduledCommandCreated',    -10],
             SchedulerCommandFailedEvent::class => ['onScheduledCommandFailed',     20],
             SchedulerCommandExecutedEvent::class => ['onScheduledCommandExecuted',   0],
         ];
-    }
+ }
 
     // TODO check if useful
     public function onScheduledCommandCreated(SchedulerCommandCreatedEvent $event)

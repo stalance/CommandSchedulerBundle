@@ -1,12 +1,12 @@
-<?php /** @noinspection PhpMissingFieldTypeInspection */
+<?php
+
+/** @noinspection PhpMissingFieldTypeInspection */
 
 namespace JMose\CommandSchedulerBundle\Command;
 
-use JMose\CommandSchedulerBundle\Event\SchedulerCommandFailedEvent;
 use Carbon\Carbon;
-use Cron\CronExpression as CronExpressionLib;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use JMose\CommandSchedulerBundle\Event\SchedulerCommandFailedEvent;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
@@ -14,6 +14,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class MonitorCommand : This class is used for monitoring scheduled commands if they run for too long or failed to execute.
@@ -70,6 +71,9 @@ class MonitorCommand extends Command
      * @param OutputInterface $output
      *
      * @return int
+     *
+     * @throws \Exception
+     * @throws \Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -123,15 +127,15 @@ class MonitorCommand extends Command
             default => ''
             };
 
-                $lastReturnInfo = match ($command->getLastReturnCode()) {
+            $lastReturnInfo = match ($command->getLastReturnCode()) {
                 '', false, null => '',
                 0 => '<info>0 (success)</info>',
                 // no break
             default => '<error>'.$command->getLastReturnCode().' (error)</error>'
             };
 
-                $nextRunDate = $command->getNextRunDate();
-                $table->addRow([
+            $nextRunDate = $command->getNextRunDate();
+            $table->addRow([
                 $command->getName(),
                 $lastReturnInfo,
                 $lockedInfo,
