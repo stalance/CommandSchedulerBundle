@@ -30,7 +30,8 @@ jobs:
       - run: composer install --no-progress
       #- run: vendor/bin/phpunit
       #- run: vendor/bin/phpunit --coverage-clover coverage.xml build/logs/clover.xml
-      - run: vendor/bin/phpunit --coverage-clover coverage.xml clover.xml
+      - run: vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+      #- run: vendor/bin/phpunit --coverage-clover coverage.xml clover.xml
 
 
 
