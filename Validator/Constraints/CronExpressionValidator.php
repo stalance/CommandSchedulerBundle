@@ -5,6 +5,7 @@ namespace JMose\CommandSchedulerBundle\Validator\Constraints;
 use Cron\CronExpression as CronExpressionLib;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use JMose\CommandSchedulerBundle\Validator\Constraints\CronExpression;
 
 /**
  * Class CronExpressionValidator.
@@ -24,6 +25,10 @@ class CronExpressionValidator extends ConstraintValidator
         if ('' === $value) {
             return;
         }
+
+       if(!($constraint instanceof CronExpression)){
+           return;
+       }
 
         try {
             new CronExpressionLib($value);

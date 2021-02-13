@@ -4,42 +4,98 @@ namespace JMose\CommandSchedulerBundle\Entity;
 
 use Cron\CronExpression as CronExpressionLib;
 use DateTime;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Entity ScheduledCommand.
+ * @ORM\Entity(repositoryClass="JMose\CommandSchedulerBundle\Repository\ScheduledCommandRepository")
+ * @ORM\Table(name="scheduled_command")
  *
  * @author  Julien Guyon <julienguyon@hotmail.com>
  */
+##[ORM\Entity(repositoryClass="JMose\CommandSchedulerBundle\Repository\ScheduledCommandRepository")]
+##[ORM\Table(name="scheduled_command")]
 class ScheduledCommand
 {
+    /**
+     * @var ?int
+     *
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
     private ?int $id = null;
 
+    /**
+     * @var ?string
+     *
+     * @ORM\Column(type="string", length=150)
+     */
     private ?string $name = null;
 
+    /**
+     * @var ?string
+     *
+     * @ORM\Column(type="string", length=200)
+     */
     private ?string $command = null;
 
+    /**
+     * @var ?string
+     *
+     * @ORM\Column(type="text", nullable=true)
+     */
     private ?string $arguments = null;
 
     /**
+     * @var ?string
+     *
+     * @ORM\Column(type="string", length=200)
      * @see http://www.abunchofutils.com/utils/developer/cron-expression-helper/
      */
     private ?string $cronExpression = null;
 
+    /**
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
     private ?DateTime $lastExecution = null;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
     private ?int $lastReturnCode = null;
 
-    // Log's file name (without path).
+    /**
+     * Log's file name (without path).
+     * @var ?string
+     *
+     * @ORM\Column(type="string", length=150, nullable=true)
+     */
     private ?string $logFile = null;
 
-    private ?int $priority = 0;
+    /**
+     * @ORM\Column(type="integer", nullable=false)
+     */
+    private ?int $priority;
 
-    // If true, command will be execute next time regardless cron expression.
+    /**
+     * If true, command will be execute next time regardless cron expression.
+     *
+     * @ORM\Column(type="boolean", nullable=false)
+     */
     private bool $executeImmediately = false;
 
-    private ?bool $disabled = null;
+    /**
+     *
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    private ?bool $disabled = false;
 
-    private ?bool $locked = null;
+    /**
+     *
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    private ?bool $locked = false;
 
     /**
      * Init new ScheduledCommand.
@@ -62,11 +118,11 @@ class ScheduledCommand
     /**
      * Set id.
      *
-     * @param $id
+     * @param int $id
      *
      * @return ScheduledCommand
      */
-    public function setId(int $id): static
+    public function setId(int $id): ScheduledCommand
     {
         $this->id = $id;
 
@@ -88,7 +144,7 @@ class ScheduledCommand
      *
      * @return ScheduledCommand
      */
-    public function setName(string $name): static
+    public function setName(string $name): ScheduledCommand
     {
         $this->name = $name;
 
@@ -110,7 +166,7 @@ class ScheduledCommand
      *
      * @return ScheduledCommand
      */
-    public function setCommand(string $command): static
+    public function setCommand(string $command): ScheduledCommand
     {
         $this->command = $command;
 
@@ -132,7 +188,7 @@ class ScheduledCommand
      *
      * @return ScheduledCommand
      */
-    public function setArguments(string $arguments): static
+    public function setArguments(string $arguments): ScheduledCommand
     {
         $this->arguments = $arguments;
 
@@ -154,7 +210,7 @@ class ScheduledCommand
      *
      * @return ScheduledCommand
      */
-    public function setCronExpression(string $cronExpression): static
+    public function setCronExpression(string $cronExpression): ScheduledCommand
     {
         $this->cronExpression = $cronExpression;
 
@@ -172,11 +228,11 @@ class ScheduledCommand
     /**
      * Set lastExecution.
      *
-     * @param \DateTimeInterface|null $lastExecution
+     * @param \DateTime|null $lastExecution
      *
      * @return ScheduledCommand
      */
-    public function setLastExecution(\DateTimeInterface $lastExecution = null): static
+    public function setLastExecution(\DateTime|null $lastExecution = null): ScheduledCommand
     {
         $this->lastExecution = $lastExecution;
 
@@ -198,7 +254,7 @@ class ScheduledCommand
      *
      * @return ScheduledCommand
      */
-    public function setLogFile(string $logFile): static
+    public function setLogFile(string $logFile): ScheduledCommand
     {
         $this->logFile = $logFile;
 
@@ -220,7 +276,7 @@ class ScheduledCommand
      *
      * @return ScheduledCommand
      */
-    public function setLastReturnCode(?int $lastReturnCode): static
+    public function setLastReturnCode(?int $lastReturnCode): ScheduledCommand
     {
         $this->lastReturnCode = $lastReturnCode;
 
@@ -242,7 +298,7 @@ class ScheduledCommand
      *
      * @return ScheduledCommand
      */
-    public function setPriority(int $priority): static
+    public function setPriority(int $priority): ScheduledCommand
     {
         $this->priority = $priority;
 
@@ -268,11 +324,11 @@ class ScheduledCommand
     /**
      * Set executeImmediately.
      *
-     * @param $executeImmediately
+     * @param bool $executeImmediately
      *
      * @return ScheduledCommand
      */
-    public function setExecuteImmediately(bool $executeImmediately): static
+    public function setExecuteImmediately(bool $executeImmediately): ScheduledCommand
     {
         $this->executeImmediately = $executeImmediately;
 
@@ -302,7 +358,7 @@ class ScheduledCommand
      *
      * @return ScheduledCommand
      */
-    public function setDisabled(bool $disabled): static
+    public function setDisabled(bool $disabled): ScheduledCommand
     {
         $this->disabled = $disabled;
 
@@ -332,7 +388,7 @@ class ScheduledCommand
      *
      * @return ScheduledCommand
      */
-    public function setLocked(bool $locked): static
+    public function setLocked(bool $locked): ScheduledCommand
     {
         $this->locked = $locked;
 
@@ -341,6 +397,7 @@ class ScheduledCommand
 
     /**
      * @return DateTime|null
+     *
      * @throws \Exception
      */
     public function getNextRunDate(): ?DateTime

@@ -48,14 +48,14 @@ final class SchedulerCommandSubscriber implements EventSubscriberInterface
         SchedulerCommandFailedEvent::class => 'array',
         SchedulerCommandExecutedEvent::class => 'array',
     ])]
- public static function getSubscribedEvents()
- {
-     return [
+    public static function getSubscribedEvents(): array
+    {
+        return [
             SchedulerCommandCreatedEvent::class => ['onScheduledCommandCreated',    -10],
             SchedulerCommandFailedEvent::class => ['onScheduledCommandFailed',     20],
             SchedulerCommandExecutedEvent::class => ['onScheduledCommandExecuted',   0],
         ];
- }
+    }
 
     // TODO check if useful
     public function onScheduledCommandCreated(SchedulerCommandCreatedEvent $event)

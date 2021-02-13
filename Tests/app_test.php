@@ -1,4 +1,5 @@
-<?php /** @noinspection PhpIncludeInspection */
+<?php /** @noinspection ALL */
+/** @noinspection PhpIncludeInspection */
 
 // TODO Check if this file is needed. LiipTestBundle?
 use Doctrine\Common\Annotations\AnnotationRegistry;

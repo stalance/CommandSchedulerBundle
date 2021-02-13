@@ -3,6 +3,7 @@
 namespace JMose\CommandSchedulerBundle\Tests\Command;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\Persistence\Mapping\MappingException;
 use JMose\CommandSchedulerBundle\Command\UnlockCommand;
 use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
 use JMose\CommandSchedulerBundle\Fixtures\ORM\LoadScheduledCommandData;
@@ -77,7 +78,11 @@ class UnlockCommandTest extends WebTestCase
         $this->assertDoesNotMatchRegularExpression('/"one"/', $output);
         $this->assertDoesNotMatchRegularExpression('/"three"/', $output);
 
-        $this->em->clear();
+        try {
+            $this->em->clear();
+        } catch (MappingException $e) {
+            echo 'Error with Mapping '.$e->getMessage();
+        }
         $two = $this->em->getRepository(ScheduledCommand::class)->findOneBy(['name' => 'two']);
 
         $this->assertFalse($two->isLocked());
@@ -96,7 +101,11 @@ class UnlockCommandTest extends WebTestCase
 
         $this->assertMatchesRegularExpression('/"two"/', $output);
 
-        $this->em->clear();
+        try {
+            $this->em->clear();
+        } catch (MappingException $e) {
+            echo 'Error with Mapping '.$e->getMessage();
+        }
         $two = $this->em->getRepository(ScheduledCommand::class)->findOneBy(['name' => 'two']);
 
         $this->assertFalse($two->isLocked());
@@ -120,7 +129,11 @@ class UnlockCommandTest extends WebTestCase
         $this->assertMatchesRegularExpression('/Skipping/', $output);
         $this->assertMatchesRegularExpression('/"two"/', $output);
 
-        $this->em->clear();
+        try {
+            $this->em->clear();
+        } catch (MappingException $e) {
+            echo 'Error with Mapping '.$e->getMessage();
+        }
         $two = $this->em->getRepository(ScheduledCommand::class)->findOneBy(['name' => 'two']);
 
         $this->assertTrue($two->isLocked());

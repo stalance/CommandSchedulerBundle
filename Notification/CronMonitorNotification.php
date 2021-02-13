@@ -23,12 +23,12 @@ class CronMonitorNotification extends Notification implements EmailNotificationI
      * @param string $subject
      */
     #[Pure]
- public function __construct(array $scheduledCommands, private string $subject)
- {
-     $this->scheduledCommands = $scheduledCommands;
+    public function __construct(array $scheduledCommands, private string $subject)
+    {
+        $this->scheduledCommands = $scheduledCommands;
 
-     parent::__construct(sprintf($subject, gethostname(), date('Y-m-d H:i:s')));
- }
+        parent::__construct(sprintf($subject, gethostname(), date('Y-m-d H:i:s')));
+    }
 
     public function getImportance(): string
     {
@@ -68,8 +68,10 @@ class CronMonitorNotification extends Notification implements EmailNotificationI
      *
      * @return EmailMessage|null
      */
-    public function asEmailMessage(Recipient | EmailRecipientInterface $recipient, string $transport = null): ?EmailMessage
-    {
+    public function asEmailMessage(
+        Recipient | EmailRecipientInterface $recipient,
+        string $transport = null
+    ): ?EmailMessage {
         return EmailMessage::fromNotification($this, $recipient);
     }
 }

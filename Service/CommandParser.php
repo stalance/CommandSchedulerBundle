@@ -2,6 +2,7 @@
 
 namespace JMose\CommandSchedulerBundle\Service;
 
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\StreamOutput;
@@ -21,7 +22,9 @@ class CommandParser
      * @param array|null      $excludedNamespaces
      * @param array|null      $includedNamespaces
      */
-    public function __construct(private KernelInterface $kernel, private array | null $excludedNamespaces = [], private array | null $includedNamespaces = [])
+    public function __construct(private KernelInterface $kernel,
+        private array | null $excludedNamespaces = [],
+        private array | null $includedNamespaces = [])
     {
         if (count($this->excludedNamespaces) > 0 && count($this->includedNamespaces) > 0) {
             throw new \InvalidArgumentException('Cannot combine excludedNamespaces with includedNamespaces');
@@ -33,7 +36,7 @@ class CommandParser
      *
      * @return array[]
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function getCommands(): array
     {
@@ -47,15 +50,17 @@ class CommandParser
             ]
         );
 
-        $output = new StreamOutput(fopen('php://memory', 'w+'));
+
         try {
+            $output = new StreamOutput(fopen('php://memory', 'w+'));
             $application->run($input, $output);
-        } catch (\Exception $e) {
+
+            rewind($output->getStream());
+
+            return $this->extractCommandsFromXML(stream_get_contents($output->getStream()));
+        } catch (\Throwable) {
+            throw new Exception('Listing of commands could not be read');
         }
-
-        rewind($output->getStream());
-
-        return $this->extractCommandsFromXML(stream_get_contents($output->getStream()));
     }
 
     /**
@@ -90,7 +95,7 @@ class CommandParser
                     $commandsList[$namespaceId][(string) $command] = (string) $command;
                 }
             }
-        } catch (\Exception) {
+        } catch (Exception) {
             // return an empty CommandList
             $commandsList = ['ERROR: please check php bin/console list --format=xml' => 'error'];
         }

@@ -1,4 +1,6 @@
-<?php /** @noinspection PhpFullyQualifiedNameUsageInspection */
+<?php
+
+/** @noinspection PhpFullyQualifiedNameUsageInspection */
 
 namespace App\Tests\App;
 
@@ -7,7 +9,7 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel;
 
 /**
- * Class AppKernel
+ * Class AppKernel.
  */
 class AppKernel extends Kernel
 {
@@ -36,6 +38,7 @@ class AppKernel extends Kernel
 
     /**
      * @param LoaderInterface $loader
+     *
      * @throws \Exception
      */
     public function registerContainerConfiguration(LoaderInterface $loader)

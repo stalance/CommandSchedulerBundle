@@ -5,6 +5,7 @@ namespace JMose\CommandSchedulerBundle\Tests\Controller;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
 use JMose\CommandSchedulerBundle\Fixtures\ORM\LoadScheduledCommandData;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -56,7 +57,7 @@ class ListControllerTest extends WebTestCase
 
         //toggle off
         $crawler = $this->client->request('GET', '/command-scheduler/action/remove/1');
-        dump($crawler);
+
         $this->assertEquals(3, $crawler->filter('a[href^="/command-scheduler/action/toggle/"]')->count());
     }
 
@@ -72,7 +73,9 @@ class ListControllerTest extends WebTestCase
 
         //toggle off
         $crawler = $this->client->request('GET', '/command-scheduler/action/toggle/1');
-        $this->assertEquals(1, $crawler->filter('a[href="/command-scheduler/action/toggle/1"] > span[class="text-danger glyphicon glyphicon-off"]')->count());
+        $this->assertEquals(1, $crawler->filter(
+            'a[href="/command-scheduler/action/toggle/1"] > span[class="text-danger glyphicon glyphicon-off"]')
+            ->count());
 
         //toggle on
         $crawler = $this->client->request('GET', '/command-scheduler/action/toggle/1');
@@ -140,8 +143,8 @@ class ListControllerTest extends WebTestCase
         // DataFixtures create 4 records
         $this->loadFixtures([LoadScheduledCommandData::class]);
 
-        $two = $this->em->getRepository('JMoseCommandSchedulerBundle:ScheduledCommand')->find(2);
-        $four = $this->em->getRepository('JMoseCommandSchedulerBundle:ScheduledCommand')->find(4);
+        $two = $this->em->getRepository(ScheduledCommand::class)->find(2);
+        $four = $this->em->getRepository(ScheduledCommand::class)->find(4);
         $two->setLocked(false);
         $four->setLastReturnCode(0);
         try {

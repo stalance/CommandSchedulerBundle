@@ -50,14 +50,15 @@
         "phpstan/phpstan": "^0.12.65",
         "escapestudios/symfony2-coding-standard": "^3.12",
         "symfony/browser-kit": "^5.2",
-        "symplify/config-transformer": "^9.0"
+        "symplify/config-transformer": "^9.0",
+        "jetbrains/phpstorm-attributes": "^1.0"
     },
     "suggest": {
         "ext-pcntl": "For using the scheduler daemon"
     },
     "scripts": {
         "cscheck": "phpcs",
-        "csfix": "phpcbf --standard=PSR2 --ignore=vendor/**,build,.github,Resources/** .",
+        "csfix": "phpcbf",
         "phpstan": "phpstan analyse ./ -c phpstan.neon --level=4 --no-progress -vvv --memory-limit=2048M"
     },
     "autoload": {

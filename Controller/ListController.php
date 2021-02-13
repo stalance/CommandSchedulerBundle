@@ -20,7 +20,7 @@ class ListController extends AbstractBaseController
     private LoggerInterface $logger;
 
     /**
-     * @param $lockTimeout int
+     * @param int $lockTimeout
      */
     public function setLockTimeout(int $lockTimeout): void
     {
@@ -28,7 +28,7 @@ class ListController extends AbstractBaseController
     }
 
     /**
-     * @param $logger LoggerInterface
+     * @param LoggerInterface $logger
      */
     public function setLogger(LoggerInterface $logger): void
     {
@@ -123,7 +123,7 @@ class ListController extends AbstractBaseController
 
     /**
      * method checks if there are jobs which are enabled but did not return 0 on last execution or are locked.
-     * if a match is found, HTTP status 417 is sent along with an array which contains name, return code and locked-state.
+     * if a match is found, HTTP status 417 is sent along with an array
      * if no matches found, HTTP status 200 is sent with an empty array.
      *
      * @return JsonResponse
@@ -149,7 +149,10 @@ class ListController extends AbstractBaseController
                 ];
             }
 
-            $this->logger->debug('MonitorCommand found locked or timed out commands', ['amount' => count($failedCommands)]);
+            $this->logger->debug(
+                'MonitorCommand found locked or timed out commands',
+                ['amount' => count($failedCommands)]
+            );
         } else {
             // HTTP_OK: no failed or timeout commands
             return new JsonResponse();

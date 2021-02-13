@@ -13,11 +13,13 @@ use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+//use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
 
 /**
- * Class MonitorCommand : This class is used for monitoring scheduled commands if they run for too long or failed to execute.
+ * Class MonitorCommand
+ * This class is used for monitoring scheduled commands if they run for too long or failed to execute.
  *
  * @author  Daniel Fischer <dfischer000@gmail.com>
  */
@@ -29,7 +31,7 @@ class MonitorCommand extends Command
     protected static $defaultName = 'scheduler:monitor';
     private ObjectManager $em;
     private EventDispatcherInterface $eventDispatcher;
-    private ParameterBagInterface $params;
+    //private ParameterBagInterface $params;
 
     /**
      * MonitorCommand constructor.
@@ -46,10 +48,10 @@ class MonitorCommand extends Command
         EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $managerRegistry,
         string $managerName,
-    private int | bool $lockTimeout,
-    private array $receiver,
-    private string $mailSubject,
-    private bool $sendMailIfNoError = false
+        private int | bool $lockTimeout,
+        private array $receiver,
+        private string $mailSubject,
+        private bool $sendMailIfNoError = false
     ) {
         $this->em = $managerRegistry->getManager($managerName);
         $this->eventDispatcher = $eventDispatcher;
@@ -86,9 +88,9 @@ class MonitorCommand extends Command
         }
 
         // Fist, get all failed or potential timeout
-        $failedCommands = $this->em->getRepository('JMoseCommandSchedulerBundle:ScheduledCommand')
-            //->findFailedAndTimeoutCommands($this->lockTimeout);
-        ->findAll();
+        $failedCommands = $this->em->getRepository(ScheduledCommand::class)
+            ->findFailedAndTimeoutCommands($this->lockTimeout);
+        //->findAll(); // for notification testing
 
         // Commands in error
         if (count($failedCommands) > 0) {
@@ -110,12 +112,12 @@ class MonitorCommand extends Command
     /**
      * Print a table of locked Commands to console.
      *
-     * @param $output
-     * @param array $failedCommands
+     * @param OutputInterface $output
+     * @param array           $failedCommands
      *
      * @throws \Exception
      */
-    private function dump($output, array $failedCommands): void
+    private function dump(OutputInterface $output, array $failedCommands): void
     {
         $table = new Table($output);
         $table->setStyle('box');

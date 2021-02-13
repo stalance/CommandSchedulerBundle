@@ -9,6 +9,7 @@ namespace JMose\CommandSchedulerBundle\Command;
 use Cron\CronExpression;
 use Doctrine\DBAL\ConnectionException;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\TransactionRequiredException;
@@ -17,6 +18,7 @@ use Doctrine\Persistence\ObjectManager;
 use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
 use JMose\CommandSchedulerBundle\Event\SchedulerCommandExecutedEvent;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
+#use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\InputInterface;
@@ -38,13 +40,15 @@ class ExecuteCommand extends Command
      * @var string
      */
     protected static $defaultName = 'scheduler:execute';
-    private ObjectManager | EntityManager $em;
+    #private ObjectManager | EntityManager $em;
+    #private EntityManager $em;
+    private ObjectManager $em;
     private EventDispatcherInterface $eventDispatcher;
 
     /**
-     * @var bool
+     * @var string
      */
-    private $dumpMode;
+    private string $dumpMode;
 
     private ?int $commandsVerbosity = null;
 
@@ -53,13 +57,20 @@ class ExecuteCommand extends Command
      *
      * @param EventDispatcherInterface $eventDispatcher
      * @param ManagerRegistry          $managerRegistry
-     * @param $managerName
-     * @param $logPath
+     * @param string                   $managerName
+     * @param string | bool            $logPath
      */
-    public function __construct(EventDispatcherInterface $eventDispatcher, ManagerRegistry $managerRegistry, $managerName, private $logPath)
-    {
+    public function __construct(
+        EventDispatcherInterface $eventDispatcher,
+        ManagerRegistry $managerRegistry,
+        string $managerName,
+    private string | bool $logPath
+    ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->em = $managerRegistry->getManager($managerName);
+        #$this->em = $managerRegistry->getManagerForClass(ScheduledCommand::class);
+        #EntityManagerInterface
+        #$this->em = $this->getDoctrine()->getManager($managerName);
 
         // If logpath is not set to false, append the directory separator to it
         if (false !== $this->logPath) {
@@ -88,7 +99,7 @@ class ExecuteCommand extends Command
      */
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
-        $this->dumpMode = $input->getOption('dump');
+        $this->dumpMode = (string) $input->getOption('dump');
 
         // Store the original verbosity before apply the quiet parameter
         $this->commandsVerbosity = $output->getVerbosity();
@@ -109,9 +120,9 @@ class ExecuteCommand extends Command
         $output->writeln('<info>Start : '.($this->dumpMode ? 'Dump' : 'Execute').' all scheduled command</info>');
 
         // Before continue, we check that the output file is valid and writable (except for gaufrette)
-        if (false !== $this->logPath && !str_starts_with($this->logPath, 'gaufrette:') && !is_writable(
-            $this->logPath
-        )
+        if (false !== $this->logPath &&
+            !str_starts_with($this->logPath, 'gaufrette:') &&
+            !is_writable($this->logPath)
         ) {
             $output->writeln(
                 '<error>'.$this->logPath.
@@ -130,8 +141,7 @@ class ExecuteCommand extends Command
             //$this->em->refresh($this->em->find(ScheduledCommand::class, $command));
             try {
                 $command = $this->em->find(ScheduledCommand::class, $command->getId());
-            } catch (OptimisticLockException | TransactionRequiredException $e) {
-            } catch (ORMException $e) {
+            } catch (OptimisticLockException | TransactionRequiredException | ORMException) {
             }
             if ($command->isDisabled() || $command->isLocked()) {
                 continue;
@@ -185,8 +195,11 @@ class ExecuteCommand extends Command
      * @throws MappingException
      * @throws ExceptionInterface
      */
-    private function executeCommand(ScheduledCommand $scheduledCommand, OutputInterface $output, InputInterface $input): void
-    {
+    private function executeCommand(
+        ScheduledCommand $scheduledCommand,
+        OutputInterface $output,
+        InputInterface $input
+    ): void {
         //reload command from database before every execution to avoid parallel execution
         $this->em->getConnection()->beginTransaction();
         try {
@@ -195,7 +208,8 @@ class ExecuteCommand extends Command
                 ->getRepository(ScheduledCommand::class)
                 ->getNotLockedCommand($scheduledCommand);
 
-            //$notLockedCommand will be locked for avoiding parallel calls: http://dev.mysql.com/doc/refman/5.7/en/innodb-locking-reads.html
+            //$notLockedCommand will be locked for avoiding parallel calls:
+            // http://dev.mysql.com/doc/refman/5.7/en/innodb-locking-reads.html
             if (null === $notLockedCommand) {
                 throw new \Exception();
             }

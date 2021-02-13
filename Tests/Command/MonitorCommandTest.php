@@ -4,6 +4,7 @@ namespace JMose\CommandSchedulerBundle\Tests\Command;
 
 use Doctrine\ORM\EntityManager;
 use JMose\CommandSchedulerBundle\Command\MonitorCommand;
+use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
 use JMose\CommandSchedulerBundle\Fixtures\ORM\LoadScheduledCommandData;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -40,7 +41,8 @@ class MonitorCommandTest extends WebTestCase
      *
      * @param string $commandClass
      * @param array  $arguments    All the arguments passed when executing the command
-     * @param array  $inputs       The (optional) answers given to the command when it asks for the value of the missing arguments
+     * @param array  $inputs       The (optional) answers given to the command when it
+     *                             asks for the value of the missing arguments
      *
      * @return CommandTester
      */
@@ -80,8 +82,8 @@ class MonitorCommandTest extends WebTestCase
         // DataFixtures create 4 records
         $this->loadFixtures([LoadScheduledCommandData::class]);
 
-        $two = $this->em->getRepository('JMoseCommandSchedulerBundle:ScheduledCommand')->find(2);
-        $four = $this->em->getRepository('JMoseCommandSchedulerBundle:ScheduledCommand')->find(4);
+        $two = $this->em->getRepository(ScheduledCommand::class)->find(2);
+        $four = $this->em->getRepository(ScheduledCommand::class)->find(4);
         $two->setLocked(false);
         $four->setLastReturnCode(0);
         $this->em->flush();

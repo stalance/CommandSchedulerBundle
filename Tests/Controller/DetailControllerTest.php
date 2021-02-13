@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpCSValidationInspection */
 
 namespace JMose\CommandSchedulerBundle\Tests\Controller;
 

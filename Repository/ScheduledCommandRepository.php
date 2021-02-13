@@ -1,6 +1,6 @@
 <?php
 
-namespace JMose\CommandSchedulerBundle\Entity\Repository;
+namespace JMose\CommandSchedulerBundle\Repository;
 
 use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityRepository;
@@ -53,8 +53,10 @@ class ScheduledCommandRepository extends EntityRepository
     public function findFailedCommand(): ?array
     {
         return $this->createQueryBuilder('command')
-            ->where('command.disabled = false')
-            ->andWhere('command.lastReturnCode != 0')
+            ->where('command.disabled = :disabled')
+            ->andWhere('command.lastReturnCode != :lastReturnCode')
+            ->setParameter('lastReturnCode', 0)
+            ->setParameter('disabled', false)
             ->getQuery()
             ->getResult();
     }
