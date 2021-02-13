@@ -74,7 +74,7 @@ jobs:
 
       - run: composer require --dev php-coveralls/php-coveralls:^2.4
       - run: composer install --no-progress
-      - run: vendor/bin/php-coveralls --coverage-clover=clover.xml -v
+      - run: vendor/bin/php-coveralls --coverage_clover=clover.xml -v
 
       #- run: lcov --no-external --capture --quiet --output-file coverage.info
 
