@@ -28,6 +28,11 @@ abstract class AbstractBaseController extends AbstractController
         $this->managerName = $managerName;
     }
 
+    public function getManagerName()
+    {
+        return $this->managerName;
+    }
+
     /**
      * @param ContractsTranslatorInterface $translator
      */

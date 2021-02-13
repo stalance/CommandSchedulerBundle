@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Class ListController.
  *
- * @author  Julien Guyon <julienguyon@hotmail.com>
+ * @author Julien Guyon <julienguyon@hotmail.com>
  */
 class ListController extends AbstractBaseController
 {
@@ -38,8 +38,11 @@ class ListController extends AbstractBaseController
     public function indexAction(): Response
     {
         $scheduledCommands = $this->getDoctrineManager()->getRepository(
-            'JMoseCommandSchedulerBundle:ScheduledCommand'
+            #'JMoseCommandSchedulerBundle:ScheduledCommand'
+            ScheduledCommand::class
         )->findAll();
+
+        #dump(count($scheduledCommands));
 
         return $this->render(
             '@JMoseCommandScheduler/List/index.html.twig',
@@ -54,9 +57,19 @@ class ListController extends AbstractBaseController
      */
     public function removeAction(ScheduledCommand $scheduledCommand): RedirectResponse
     {
+        if(!$scheduledCommand->getId())
+        {
+            return $this->redirectToRoute('jmose_command_scheduler_list');
+        }
+
         $entityManager = $this->getDoctrineManager();
         $entityManager->remove($scheduledCommand);
         $entityManager->flush();
+
+        $scheduledCommands = $this->getDoctrineManager()->getRepository(ScheduledCommand::class)->findAll();
+
+        #echo("BB");
+        #echo(count($scheduledCommands));
 
         // Add a flash message and do a redirect to the list
         $this->addFlash('success', $this->translator->trans('flash.deleted', [], 'JMoseCommandScheduler'));
