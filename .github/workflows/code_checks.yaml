@@ -70,10 +70,14 @@ jobs:
 
             # Coveralls.io
           # https://github.com/rectorphp/rector/blob/master/.github/workflows/weekly_code_coverage.yaml
-
-
+      #- run: composer require --dev nimut/phpunit-merger
       - run: composer require --dev php-coveralls/php-coveralls:^2.4
       - run: composer install --no-progress
+
+      #- run: vendor/bin/phpunit --coverage-php build/logs/lcov.cov rules
+      - run: vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+
+      #- run: vendor/bin/phpunit --coverage-php build/logs/rules.cov
       - run: vendor/bin/php-coveralls --coverage_clover=clover.xml -v
 
       #- run: lcov --no-external --capture --quiet --output-file coverage.info
