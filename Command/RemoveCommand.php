@@ -69,11 +69,11 @@ class RemoveCommand extends Command
             $this->em->remove($command);
             $this->em->flush();
 
-            $io->success('The Command '.$commandName.' is deleted successfully');
+            $io->success(sprintf('The Command %s is deleted successfully', $commandName));
 
             return Command::SUCCESS;
         } catch (\Exception) {
-            $io->error('Could not find/delete the command '.$commandName);
+            $io->error(sprintf('Could not find/delete the command %s', $commandName));
 
             return Command::FAILURE;
         }
