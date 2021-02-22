@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use JMose\CommandSchedulerBundle\Command\ExecuteCommand;
 use JMose\CommandSchedulerBundle\Command\MonitorCommand;
+use JMose\CommandSchedulerBundle\Command\RemoveCommand;
 use JMose\CommandSchedulerBundle\Command\StartSchedulerCommand;
 use JMose\CommandSchedulerBundle\Command\StopSchedulerCommand;
 use JMose\CommandSchedulerBundle\Command\UnlockCommand;
@@ -81,6 +82,15 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 service('doctrine'),
                 '%jmose_command_scheduler.doctrine_manager%',
                 '%jmose_command_scheduler.lock_timeout%',
+            ]
+        )
+        ->tag('console.command');
+
+    $services->set(RemoveCommand::class)
+        ->args(
+            [
+                service('doctrine'),
+                '%jmose_command_scheduler.doctrine_manager%'
             ]
         )
         ->tag('console.command');
