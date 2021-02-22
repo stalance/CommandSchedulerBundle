@@ -1,5 +1,5 @@
 #!/usr/bin/env php
-/** @noinspection PhpUnhandledExceptionInspection */<?php
+<?php
 
 // used from symfony 5.2.2
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -40,7 +40,8 @@ if ($_SERVER['APP_DEBUG']) {
 }
 
 /** @noinspection PhpFullyQualifiedNameUsageInspection */
-$kernel = new \App\Tests\App\AppKernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
+#$kernel = new \App\Tests\App\AppKernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
+$kernel = new \App\Tests\App\AppKernel();
 
 $application = new Application($kernel);
 $application->run($input);

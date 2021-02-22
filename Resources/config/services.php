@@ -15,6 +15,7 @@ use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
 use JMose\CommandSchedulerBundle\EventSubscriber\SchedulerCommandSubscriber;
 use JMose\CommandSchedulerBundle\Form\Type\CommandChoiceType;
 use JMose\CommandSchedulerBundle\Service\CommandParser;
+use JMose\CommandSchedulerBundle\Command\ListCommand;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
@@ -77,6 +78,15 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         )
         ->tag('console.command');
 
+    $services->set(ListCommand::class)
+        ->args(
+            [
+                service('doctrine'),
+                '%jmose_command_scheduler.doctrine_manager%'
+            ]
+        )
+        ->tag('console.command');
+
     $services->set(UnlockCommand::class)
         ->args(
             [
@@ -91,7 +101,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->args(
             [
                 service('doctrine'),
-                '%jmose_command_scheduler.doctrine_manager%'
+                '%jmose_command_scheduler.doctrine_manager%',
             ]
         )
         ->tag('console.command');
@@ -100,7 +110,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->args(
             [
                 service('doctrine'),
-                '%jmose_command_scheduler.doctrine_manager%'
+                '%jmose_command_scheduler.doctrine_manager%',
             ]
         )
         ->tag('console.command');
