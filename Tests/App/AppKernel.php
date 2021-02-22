@@ -5,6 +5,7 @@
 namespace App\Tests\App;
 
 use JetBrains\PhpStorm\Pure;
+use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel;
 
@@ -13,6 +14,14 @@ use Symfony\Component\HttpKernel\Kernel;
  */
 class AppKernel extends Kernel
 {
+    use MicroKernelTrait;
+
+    #[Pure]
+    public function __construct()
+    {
+        parent::__construct('test', true);
+    }
+
     /**
      * Register Bundles for test-configuration.
      *
