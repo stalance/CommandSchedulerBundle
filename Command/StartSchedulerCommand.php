@@ -16,6 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * Adaption to CommandSchedulerBundle by Christoph Singer <singer@webagentur72.de>
  */
+##[ConsoleCommand(name: 'scheduler:start', description: 'Starts command scheduler')]
 class StartSchedulerCommand extends Command
 {
     /**
@@ -30,7 +31,15 @@ class StartSchedulerCommand extends Command
     protected function configure(): void
     {
         $this->setDescription('Starts command scheduler')
-            ->addOption('blocking', 'b', InputOption::VALUE_NONE, 'Run in blocking mode.');
+            ->addOption('blocking', 'b', InputOption::VALUE_NONE, 'Run in blocking mode.')
+        ->setHelp(<<<'HELP'
+The <info>%command.name%</info> is for running the manual command scheduler:
+
+You can enable the blocking mode with
+<info>php %command.full_name%</info> <comment>-b, --blocking</comment>
+
+HELP
+    );
     }
 
     /**
@@ -39,7 +48,7 @@ class StartSchedulerCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if ($input->getOption('blocking')) {
-            $output->writeln(sprintf('<info>%s</info>', 'Starting command scheduler in blocking mode.'));
+            $output->writeln(sprintf('<info>%s</info>', 'Starting command scheduler in blocking mode. Press CTRL+C to cancel'));
             $this->scheduler($output->isVerbose() ? $output : new NullOutput(), null);
 
             return Command::SUCCESS;
@@ -74,10 +83,10 @@ class StartSchedulerCommand extends Command
 
     /**
      * @param OutputInterface $output
-     * @param string $pidFile
+     * @param ?string $pidFile
      * @throws \Symfony\Component\Console\Exception\ExceptionInterface
      */
-    private function scheduler(OutputInterface $output, string $pidFile): void
+    private function scheduler(OutputInterface $output, ?string $pidFile): void
     {
         $input = new ArrayInput([]);
 

@@ -1,4 +1,6 @@
-<?php /** @noinspection PhpMissingFieldTypeInspection */
+<?php
+
+/** @noinspection PhpMissingFieldTypeInspection */
 
 namespace JMose\CommandSchedulerBundle\Command;
 
@@ -17,6 +19,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author  Marcel Pfeiffer <m.pfeiffer@strucnamics.de>
  */
+##[ConsoleCommand(name: 'scheduler:unlock', description: 'Unlock one or all scheduled commands that have surpassed the lock timeout.')]
 class UnlockCommand extends Command
 {
     /**
@@ -24,7 +27,9 @@ class UnlockCommand extends Command
      */
     protected static $defaultName = 'scheduler:unlock';
     private ObjectManager $em;
-    const DEFAULT_LOCK_TIME = 3600; # 1 hour
+    const DEFAULT_LOCK_TIME = 3600; // 1 hour
+    /** @var SymfonyStyle */
+    private $io;
 
     /**
      * @var bool true if all locked commands should be unlocked
@@ -32,19 +37,22 @@ class UnlockCommand extends Command
     private bool $unlockAll;
 
     /**
-     * @var array|string|null name of the command to be unlocked
+     * @var string|null name of the command to be unlocked
      */
-    private array|string|null $scheduledCommandName = [];
+    private string | null $scheduledCommandName = null;
 
     /**
      * UnlockCommand constructor.
      *
      * @param ManagerRegistry $managerRegistry
-     * @param string $managerName
-     * @param int $lockTimeout Number of seconds after a command is considered as timeout
+     * @param string          $managerName
+     * @param int             $lockTimeout     Number of seconds after a command is considered as timeout
      */
-    public function __construct(ManagerRegistry $managerRegistry, string $managerName, private int $lockTimeout = self::DEFAULT_LOCK_TIME)
-    {
+    public function __construct(
+        ManagerRegistry $managerRegistry,
+        string $managerName,
+        private int $lockTimeout = self::DEFAULT_LOCK_TIME
+    ) {
         $this->em = $managerRegistry->getManager($managerName);
 
         parent::__construct();
@@ -68,7 +76,8 @@ class UnlockCommand extends Command
 
     /**
      * Initialize parameters and services used in execute function.
-     * @param InputInterface $input
+     *
+     * @param InputInterface  $input
      * @param OutputInterface $output
      */
     protected function initialize(InputInterface $input, OutputInterface $output): void
@@ -81,22 +90,26 @@ class UnlockCommand extends Command
         if (0 == $this->lockTimeout) {
             $this->lockTimeout = self::DEFAULT_LOCK_TIME;
         }
+
+        $this->io = new SymfonyStyle($input, $output);
     }
 
     /**
-     *
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
+     *
      * @return int
+     *
      * @throws \Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io = new SymfonyStyle($input, $output);
-        #$io->title(self::$defaultName);
+        
+        //$this->io->title(self::$defaultName);
 
         if (!$this->unlockAll && empty($this->scheduledCommandName)) {
-            $io->error('Either the name of a scheduled command or the --all option must be set.');
+            $this->io->error('Either the name of a scheduled command or the --all option must be set.'.
+                        PHP_EOL.'List all locked Commands: php console scheduler:monitor --dump');
 
             return Command::FAILURE;
         }
@@ -104,18 +117,18 @@ class UnlockCommand extends Command
         $repository = $this->em->getRepository(ScheduledCommand::class);
 
         if ($this->unlockAll) {
-            # Unlock all locked commands
+            // Unlock all locked commands
             $failedCommands = $repository->findLockedCommand();
 
             if ($failedCommands) {
                 foreach ($failedCommands as $failedCommand) {
-                    $this->unlock($failedCommand, $io);
+                    $this->unlock($failedCommand);
                 }
             }
         } else {
             $scheduledCommand = $repository->findOneBy(['name' => $this->scheduledCommandName, 'disabled' => false]);
             if (null === $scheduledCommand) {
-                $io->error(
+                $this->io->error(
                     sprintf(
                         'Scheduled Command with name "%s" not found or is disabled.',
                         $this->scheduledCommandName
@@ -125,7 +138,7 @@ class UnlockCommand extends Command
                 return Command::FAILURE;
             }
 
-            $this->unlock($scheduledCommand, $io);
+            $this->unlock($scheduledCommand);
         }
 
         $this->em->flush();
@@ -135,14 +148,15 @@ class UnlockCommand extends Command
 
     /**
      * @param ScheduledCommand $command command to be unlocked
-     * @param SymfonyStyle $io
+     *
      * @return bool true if unlock success
+     *
      * @throws \Exception
      */
-    protected function unlock(ScheduledCommand $command, SymfonyStyle $io): bool
+    protected function unlock(ScheduledCommand $command): bool
     {
         if (!$command->isLocked()) {
-            $io->warning(sprintf('Skipping: Scheduled Command "%s" is not locked.', $command->getName()));
+            $this->io->warning(sprintf('Skipping: Scheduled Command "%s" is not locked.', $command->getName()));
 
             return false;
         }
@@ -153,7 +167,7 @@ class UnlockCommand extends Command
                 new \DateInterval(sprintf('PT%dS', $this->lockTimeout))
             )
         ) {
-            $io->error(
+            $this->io->error(
                 sprintf('Skipping: Timout for scheduled Command "%s" has not run out.', $command->getName())
             );
 
@@ -161,7 +175,7 @@ class UnlockCommand extends Command
         }
 
         $command->setLocked(false);
-        $io->success(sprintf('Scheduled Command "%s" has been unlocked.', $command->getName()));
+        $this->io->success(sprintf('Scheduled Command "%s" has been unlocked.', $command->getName()));
 
         return true;
     }

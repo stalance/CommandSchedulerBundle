@@ -28,7 +28,7 @@ abstract class AbstractBaseController extends AbstractController
         $this->managerName = $managerName;
     }
 
-    public function getManagerName()
+    public function getManagerName(): string
     {
         return $this->managerName;
     }

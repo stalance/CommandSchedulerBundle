@@ -15,6 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * Adaption to CommandSchedulerBundle by Christoph Singer <singer@webagentur72.de>
  */
+##[ConsoleCommand(name: 'scheduler:stop', description: 'Stops command scheduler')]
 class StopSchedulerCommand extends Command
 {
     /**
@@ -26,7 +27,12 @@ class StopSchedulerCommand extends Command
      */
     protected function configure(): void
     {
-        $this->setDescription('Stops command scheduler');
+        $this->setDescription('Stops command scheduler')
+        ->setHelp(<<<'HELP'
+The <info>%command.name%</info> stopps the manual scheduler which was startet via <comment>scheduler:start</comment>
+
+HELP
+        );
     }
 
     /**

@@ -55,6 +55,9 @@ class ListControllerTest extends WebTestCase
 
         $this->client->followRedirects(true);
 
+        $command = $this->em->getRepository(ScheduledCommand::class)->findOneById(1);
+
+
         //toggle off
         $crawler = $this->client->request('GET', '/command-scheduler/action/remove/1');
 

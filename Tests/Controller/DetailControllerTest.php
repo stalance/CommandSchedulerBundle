@@ -2,6 +2,7 @@
 
 namespace JMose\CommandSchedulerBundle\Tests\Controller;
 
+use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
 use JMose\CommandSchedulerBundle\Fixtures\ORM\LoadScheduledCommandData;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -92,6 +93,9 @@ class DetailControllerTest extends WebTestCase
         // DataFixtures create 4 records
         $this->loadFixtures([LoadScheduledCommandData::class]);
 
+        $scheduledCommands = $this->getDoctrine()->getRepository(ScheduledCommand::class)->findOneById(1);
+
+
         $client->followRedirects(true);
         $crawler = $client->request('GET', '/command-scheduler/detail/edit/1');
         $buttonCrawlerNode = $crawler->selectButton('Save');
@@ -100,7 +104,7 @@ class DetailControllerTest extends WebTestCase
         $form->get('command_scheduler_detail[name]')->setValue('edited one');
         //$form->get('command_scheduler_detail[cronExpression]')->setValue('* * * * *');
         $crawler = $client->submit($form);
-        dump($crawler);
+        #dump($crawler);
         $this->assertEquals(4, $crawler->filterXPath('//a[contains(@href, "/command-scheduler/action/toggle/")]')->count());
         $this->assertEquals('edited one', trim($crawler->filter('td')->eq(1)->text()));
     }

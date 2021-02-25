@@ -12,8 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @author  Julien Guyon <julienguyon@hotmail.com>
  */
-##[ORM\Entity(repositoryClass="JMose\CommandSchedulerBundle\Repository\ScheduledCommandRepository")]
-##[ORM\Table(name="scheduled_command")]
+//#[ORM\Entity(repositoryClass="JMose\CommandSchedulerBundle\Repository\ScheduledCommandRepository")]
+//#[ORM\Table(name="scheduled_command")]
 class ScheduledCommand
 {
     /**
@@ -50,12 +50,12 @@ class ScheduledCommand
      * @var ?string
      *
      * @ORM\Column(type="string", length=200, nullable=true)
+     *
      * @see http://www.abunchofutils.com/utils/developer/cron-expression-helper/
      */
     private ?string $cronExpression = null;
 
     /**
-     *
      * @ORM\Column(type="datetime", nullable=true)
      */
     private ?DateTime $lastExecution = null;
@@ -67,6 +67,7 @@ class ScheduledCommand
 
     /**
      * Log's file name (without path).
+     *
      * @var ?string
      *
      * @ORM\Column(type="string", length=150, nullable=true)
@@ -86,13 +87,11 @@ class ScheduledCommand
     private bool $executeImmediately = false;
 
     /**
-     *
      * @ORM\Column(type="boolean", nullable=false)
      */
     private ?bool $disabled = false;
 
     /**
-     *
      * @ORM\Column(type="boolean", nullable=false)
      */
     private ?bool $locked = false;
@@ -232,7 +231,7 @@ class ScheduledCommand
      *
      * @return ScheduledCommand
      */
-    public function setLastExecution(\DateTime|null $lastExecution = null): ScheduledCommand
+    public function setLastExecution(\DateTime | null $lastExecution = null): ScheduledCommand
     {
         $this->lastExecution = $lastExecution;
 
@@ -396,12 +395,19 @@ class ScheduledCommand
     }
 
     /**
+     * Returns the next run time of the scheduled command
+     * @param bool $checkExecuteImmediately Check if immediately excecution is set
+     *
      * @return DateTime|null
      *
      * @throws \Exception
      */
-    public function getNextRunDate(): ?DateTime
+    public function getNextRunDate(bool $checkExecuteImmediately = true): ?DateTime
     {
+        if ($checkExecuteImmediately && $this->getExecuteImmediately()) {
+            return new DateTime();
+        }
+
         return (new CronExpressionLib($this->getCronExpression()))->getNextRunDate();
     }
 }

@@ -23,6 +23,7 @@ use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
  *
  * @author  Daniel Fischer <dfischer000@gmail.com>
  */
+##[ConsoleCommand(name: 'scheduler:monitor', description: 'Monitor scheduled commands')]
 class MonitorCommand extends Command
 {
     /**
@@ -65,7 +66,17 @@ class MonitorCommand extends Command
     {
         $this->setDescription('Monitor scheduled commands')
             ->addOption('dump', null, InputOption::VALUE_NONE, 'Display result instead of send mail')
-            ->setHelp('This class is for monitoring all active commands.');
+            ->setHelp(<<<'HELP'
+The <info>%command.name%</info> is reporting failed and timedout scheduled commands:
+
+  <info>php %command.full_name%</info>
+
+By default the command sends the info via symfony messanger to the configured recipients.
+You can just print the infos on the console via the <comment>--dump</comment> option:
+
+  <info>php %command.full_name%</info> <comment>--dump</comment>
+
+HELP);
     }
 
     /**
@@ -82,7 +93,7 @@ class MonitorCommand extends Command
         // If not in dump mode and none receiver is set, exit.
         $dumpMode = (bool) $input->getOption('dump');
         if (!$dumpMode && 0 === count($this->receiver)) {
-            $output->writeln('Please add receiver in configuration');
+            $output->writeln('<error>Please add receiver in configuration. Or use --dump option</error>');
 
             return Command::FAILURE;
         }
@@ -101,7 +112,7 @@ class MonitorCommand extends Command
                 $this->eventDispatcher->dispatch(new SchedulerCommandFailedEvent($failedCommands));
             }
         } elseif ($dumpMode) {
-            $output->writeln('No errors found.');
+            $output->writeln('<info>No errors found.</info>');
         } /*elseif ($this->params->get('sendMailIfNoError')) {
             $this->sendMails('No errors found.');
         }*/

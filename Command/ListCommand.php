@@ -17,6 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Class ListCommand
  * This class is for listing all commands.
  */
+##[ConsoleCommand(name: 'scheduler:list', description: 'List scheduled commands')]
 class ListCommand extends Command
 {
     /**
@@ -31,10 +32,8 @@ class ListCommand extends Command
      * @param ManagerRegistry $managerRegistry
      * @param string          $managerName
      */
-    public function __construct(
-        ManagerRegistry $managerRegistry,
-        string $managerName
-    ) {
+    public function __construct(ManagerRegistry $managerRegistry, string $managerName)
+    {
         $this->em = $managerRegistry->getManager($managerName);
         parent::__construct();
     }
@@ -53,7 +52,6 @@ class ListCommand extends Command
      * @param OutputInterface $output
      *
      * @return int
-     *
      * @throws \Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -63,33 +61,29 @@ class ListCommand extends Command
         $table = new Table($output);
         $table->setStyle('box');
         $table->setHeaders(['Name', 'Command', 'Arguments',
-            'LastReturnCode', 'Locked', 'LastExecution', 'NextExecution' ]);
+            'Locked', 'LastExecution', 'NextExecution' ]);
 
         foreach ($commands as $command) {
             $lockedInfo = match ($command->getLocked())
             {
                 true => '<error>LOCKED</error>',
-                default => ''
+                default => '<info>NO</info>'
             };
 
-            $lastReturnInfo = match ($command->getLastReturnCode()) {
-                '', false, null => '',
-                0 => '<info>0 (success)</info>',
-                // no break
-                default => '<error>'.$command->getLastReturnCode().' (error)</error>'
-            };
+                $lastReturnName = match ($command->getLastReturnCode()) {
+                '', false, null => '<info>'.$command->getName().'</info>',
+                0 => '<info>'.$command->getName().'</info>',
+                default => '<error>'.$command->getName().'</error>'
+                };
 
-            $nextRunDate = $command->getNextRunDate();
-            $table->addRow([
-                $command->getName(),
+                $nextRunDate = $command->getNextRunDate();
+                $table->addRow([
+                $lastReturnName,
                 $command->getCommand(),
                 $command->getArguments(),
-                $lastReturnInfo,
                 $lockedInfo,
-                $command->getLastExecution()->format('Y-m-d H:i').' ('
-                .Carbon::instance($command->getLastExecution())->diffForHumans().')',
-                $nextRunDate->format('Y-m-d H:i').' ('
-                .Carbon::instance($nextRunDate)->diffForHumans().')',
+                Carbon::instance($command->getLastExecution())->diffForHumans(),
+                Carbon::instance($nextRunDate)->diffForHumans(),
                 ]);
         }
 

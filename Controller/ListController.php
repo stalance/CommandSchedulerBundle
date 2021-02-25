@@ -57,6 +57,7 @@ class ListController extends AbstractBaseController
      */
     public function removeAction(ScheduledCommand $scheduledCommand): RedirectResponse
     {
+        var_dump($scheduledCommand);
         if(!$scheduledCommand->getId())
         {
             return $this->redirectToRoute('jmose_command_scheduler_list');
@@ -69,7 +70,7 @@ class ListController extends AbstractBaseController
         $scheduledCommands = $this->getDoctrineManager()->getRepository(ScheduledCommand::class)->findAll();
 
         #echo("BB");
-        #echo(count($scheduledCommands));
+        echo(count($scheduledCommands));
 
         // Add a flash message and do a redirect to the list
         $this->addFlash('success', $this->translator->trans('flash.deleted', [], 'JMoseCommandScheduler'));

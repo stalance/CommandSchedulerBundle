@@ -12,6 +12,13 @@ framework:
     validation:      { enable_annotations: true }
     session:
         storage_id: session.storage.filesystem
+        #storage_id: session.storage.mock_file
+        #name: MOCKSESSION
+    profiler:
+        enabled: true
+        collect: true
+
+#liip_functional_test: ~
 
 doctrine:
     dbal:
@@ -20,9 +27,11 @@ doctrine:
         user:     root
         charset:  UTF8
         path:     "%database_path%"
+        url:      null
     orm:
         auto_generate_proxy_classes: true
         auto_mapping: true
+        naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
 
 security:
     firewalls:
@@ -46,6 +55,16 @@ liip_test_fixtures:
         sqlite: liip_test_fixtures.services_database_backup.sqlite
 
 services:
+    # default configuration for services in *this* file
+    _defaults:
+        # automatically injects dependencies in your services
+        autowire: true
+        # automatically registers your services as commands, event subscribers, etc.
+        autoconfigure: true
+        # this means you cannot fetch services directly from the container via $container->get()
+        # if you need to do this, you can override this setting on individual services
+        public: true
+
     JMose\CommandSchedulerBundle\Fixtures\ORM\:
         resource: '../../../Fixtures/ORM/*'
         tags: ['doctrine.fixture.orm']

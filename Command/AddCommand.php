@@ -14,8 +14,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
- * Remove a command.
+ * Add a command.
  */
+##[ConsoleCommand(name: 'scheduler:add', description: 'Add a scheduled command')]
 class AddCommand extends Command
 {
     /**
@@ -51,7 +52,9 @@ class AddCommand extends Command
             ->addArgument('priority', InputArgument::OPTIONAL, 'priority', 0)
             ->addArgument('executeImmediately', InputArgument::OPTIONAL, 'executeImmediately', false)
             ->addArgument('disabled', InputArgument::OPTIONAL, 'disabled', false)
-        ;
+            # TODO Think about Update?
+            #->addOption("--force", "-f", null, 'Force override', null)
+            ;
     }
 
     /**

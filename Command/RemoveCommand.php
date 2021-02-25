@@ -16,6 +16,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 /**
  * Remove a command.
  */
+##[ConsoleCommand(name: 'scheduler:remove', description: 'Remove a scheduled command', alias='scheduler:delete')]
 class RemoveCommand extends Command
 {
     /**
@@ -23,6 +24,8 @@ class RemoveCommand extends Command
      */
     protected static $defaultName = 'scheduler:remove';
     private ObjectManager $em;
+    /** @var SymfonyStyle */
+    private $io;
 
     /**
      * UnlockCommand constructor.
@@ -44,7 +47,49 @@ class RemoveCommand extends Command
     {
         $this->setDescription('Remove a scheduled command. Hard delete from Database')
             ->addArgument('name', InputArgument::REQUIRED, 'Name of the command to remove')
+            ->setHelp(<<<'HELP'
+The <info>%command.name%</info> command deletes scheduled command from the database:
+
+  <info>php %command.full_name%</info> <comment>name</comment>
+
+If you omit the argument, the command will ask you to provide the missing value:
+
+  <info>php %command.full_name%</info>
+
+You can list all available commands with
+
+  <info>php console scheduler:list</info>
+
+HELP
+            )
            ;
+    }
+
+
+    protected function initialize(InputInterface $input, OutputInterface $output): void
+    {
+        $this->io = new SymfonyStyle($input, $output);
+    }
+
+    protected function interact(InputInterface $input, OutputInterface $output)
+    {
+        if (null !== $input->getArgument('name')) {
+            return;
+        }
+
+        $this->io->title('Delete Scheduled Command Interactive Wizard');
+        $this->io->text([
+            'If you prefer to not use this interactive wizard, provide the',
+            'arguments required by this command as follows:',
+            '',
+            ' <info>$ php bin/console '.self::$defaultName.' name</info>',
+            '',
+            'Now we\'ll ask you for the value of all the missing command arguments.',
+            '',
+        ]);
+
+        $name = $this->io->ask('Name of Scheduled Command', null);
+        $input->setArgument('name', $name);
     }
 
     /**

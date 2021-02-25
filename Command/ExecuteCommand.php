@@ -28,14 +28,18 @@ use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Console\Command\LockableTrait;
 
 /**
  * Class ExecuteCommand : This class is the entry point to execute all scheduled command.
  *
  * @author  Julien Guyon <julienguyon@hotmail.com>
  */
+##[ConsoleCommand(name: 'scheduler:execute', description: 'Execute scheduled commands')]
 class ExecuteCommand extends Command
 {
+    use LockableTrait;
+
     /**
      * @var string
      */
@@ -88,7 +92,14 @@ class ExecuteCommand extends Command
         $this->setDescription('Execute scheduled commands')
             ->addOption('dump', null, InputOption::VALUE_NONE, 'Display next execution')
             ->addOption('no-output', null, InputOption::VALUE_NONE, 'Disable output message from scheduler')
-            ->setHelp('This class is the entry point to execute all scheduled command');
+            ->setHelp(<<<'HELP'
+The <info>%command.name%</info> is the entry point to execute all scheduled command:
+
+You can list the commands with last and next exceution time with
+<info>php bin/console scheduler:list</info>
+
+HELP
+            );
     }
 
     /**
@@ -117,6 +128,18 @@ class ExecuteCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        /**
+         * Be sure that there are no overlapping Execution of commands.
+         * The command is released at the end of this function
+         * @see https://symfony.com/doc/current/console/lockable_trait.html
+         */
+        if (!$this->lock()) {
+            $output->writeln('The command is already running in another process.');
+
+            return Command::SUCCESS;
+        }
+
+
         $output->writeln('<info>Start : '.($this->dumpMode ? 'Dump' : 'Execute').' all scheduled command</info>');
 
         // Before continue, we check that the output file is valid and writable (except for gaufrette)
@@ -179,6 +202,8 @@ class ExecuteCommand extends Command
         if ($noneExecution) {
             $output->writeln('Nothing to do.');
         }
+
+        $this->release();
 
         return Command::SUCCESS;
     }

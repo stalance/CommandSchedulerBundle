@@ -11,7 +11,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 /**
  * Class AddCommandTest.
  */
-class AbstractCommandTest extends WebTestCase
+abstract class AbstractCommandTest extends WebTestCase
 {
     use FixturesTrait;
 
