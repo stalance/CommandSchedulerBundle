@@ -38,6 +38,17 @@ The <info>%command.name%</info> is for running the manual command scheduler:
 You can enable the blocking mode with
 <info>php %command.full_name%</info> <comment>-b, --blocking</comment>
 
+Deamon (Beta) : If you don't want to set up a cron job, you can use 
+<comment>scheduler:start</comment> and <comment>scheduler:stop</comment> commands.
+This commands manage a deamon process that will call scheduler:execute every minute. 
+It require the pcntlphp extension.
+Note that with this mode, if a command with an error, it will stop all the scheduler.
+
+Note : Each command is locked just before his execution (and unlocked after). 
+This system avoid to have simultaneous process for the same command. Thus, 
+if an non-catchable error occurs, the command won't be executed again unless the problem 
+is solved and the task is unlocked manually
+
 HELP
     );
     }

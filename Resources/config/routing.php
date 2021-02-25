@@ -9,7 +9,10 @@ return static function (RoutingConfigurator $routingConfigurator): void {
         ->defaults(['_controller' => 'JMose\CommandSchedulerBundle\Controller\ListController::indexAction']);
 
     $routingConfigurator->add('jmose_command_scheduler_monitor', '/command-scheduler/monitor')
-        ->defaults(['_controller' => 'JMose\CommandSchedulerBundle\Controller\ListController::monitorAction']);
+        ->defaults(['_controller' => 'JMose\CommandSchedulerBundle\Controller\ApiController::monitorAction']);
+
+    $routingConfigurator->add('jmose_command_scheduler_api_list', '/command-scheduler/api/list')
+        ->defaults(['_controller' => 'JMose\CommandSchedulerBundle\Controller\ApiController::listAction']);
 
     $routingConfigurator->add('jmose_command_scheduler_action_toggle', '/command-scheduler/action/toggle/{id}')
         ->defaults(['_controller' => 'JMose\CommandSchedulerBundle\Controller\ListController::toggleAction']);

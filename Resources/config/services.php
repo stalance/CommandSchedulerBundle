@@ -10,6 +10,7 @@ use JMose\CommandSchedulerBundle\Command\StartSchedulerCommand;
 use JMose\CommandSchedulerBundle\Command\StopSchedulerCommand;
 use JMose\CommandSchedulerBundle\Command\UnlockCommand;
 use JMose\CommandSchedulerBundle\Controller\DetailController;
+use JMose\CommandSchedulerBundle\Controller\ApiController;
 use JMose\CommandSchedulerBundle\Controller\ListController;
 use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
 use JMose\CommandSchedulerBundle\EventSubscriber\SchedulerCommandSubscriber;
@@ -38,6 +39,15 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->call('setLockTimeout', ['%jmose_command_scheduler.lock_timeout%'])
         ->call('setLogger', [service('logger')])
         ->tag('container.service_subscriber')
+        ->tag('controller.service_arguments');
+
+    $services->set(ApiController::class)
+        ->public()
+        ->autowire()
+        ->call('setManagerName', ['%jmose_command_scheduler.doctrine_manager%'])
+        ->call('setTranslator', [service('translator')])
+        ->call('setLockTimeout', ['%jmose_command_scheduler.lock_timeout%'])
+        ->call('setLogger', [service('logger')])
         ->tag('controller.service_arguments');
 
     $services->set(CommandParser::class)
