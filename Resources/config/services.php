@@ -8,6 +8,7 @@ use JMose\CommandSchedulerBundle\Command\MonitorCommand;
 use JMose\CommandSchedulerBundle\Command\RemoveCommand;
 use JMose\CommandSchedulerBundle\Command\StartSchedulerCommand;
 use JMose\CommandSchedulerBundle\Command\StopSchedulerCommand;
+use JMose\CommandSchedulerBundle\Command\TestCommand;
 use JMose\CommandSchedulerBundle\Command\UnlockCommand;
 use JMose\CommandSchedulerBundle\Controller\DetailController;
 use JMose\CommandSchedulerBundle\Controller\ApiController;
@@ -17,6 +18,7 @@ use JMose\CommandSchedulerBundle\EventSubscriber\SchedulerCommandSubscriber;
 use JMose\CommandSchedulerBundle\Form\Type\CommandChoiceType;
 use JMose\CommandSchedulerBundle\Service\CommandParser;
 use JMose\CommandSchedulerBundle\Command\ListCommand;
+use JMose\CommandSchedulerBundle\Service\CommandSchedulerExcecution;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
@@ -59,6 +61,21 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ]
         );
 
+    $services->set(CommandSchedulerExcecution::class)
+        ->args(
+            [
+                service('kernel'),
+                service('service_container'),
+                service('logger'),
+                service('event_dispatcher'),
+                service('doctrine'),
+                '%jmose_command_scheduler.doctrine_manager%',
+                '%jmose_command_scheduler.log_path%',
+            ]
+        )
+        #->alias("CommandSchedulerExcecution")
+    ;
+
     $services->set(CommandChoiceType::class)
         ->autowire()
         ->tag('form.type', ['alias' => 'command_choice']);
@@ -66,6 +83,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(ExecuteCommand::class)
         ->args(
             [
+                service('JMose\CommandSchedulerBundle\Service\CommandSchedulerExcecution'),
                 service('event_dispatcher'),
                 service('doctrine'),
                 '%jmose_command_scheduler.doctrine_manager%',
@@ -129,6 +147,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->tag('console.command');
 
     $services->set(StopSchedulerCommand::class)
+        ->tag('console.command');
+
+    $services->set(TestCommand::class)
         ->tag('console.command');
 
     $services->set(ScheduledCommand::class)

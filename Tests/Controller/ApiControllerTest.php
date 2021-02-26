@@ -65,8 +65,9 @@ class ApiControllerTest extends WebTestCase
 
         // One command is locked in fixture (2), another have a -1 return code as lastReturn (4)
         $this->client->request('GET', '/command-scheduler/monitor');
-        $this->assertEquals(Response::HTTP_EXPECTATION_FAILED, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseStatusCodeSame(Response::HTTP_EXPECTATION_FAILED);
 
+        // We expect 2 commands
         $jsonResponse = $this->client->getResponse()->getContent();
         $jsonArray = json_decode($jsonResponse, true);
         $this->assertEquals(2, count($jsonArray));
@@ -93,7 +94,7 @@ class ApiControllerTest extends WebTestCase
 
         // One command is locked in fixture (2), another have a -1 return code as lastReturn (4)
         $this->client->request('GET', '/command-scheduler/monitor');
-        $this->assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $this->assertResponseIsSuccessful();
 
         $jsonResponse = $this->client->getResponse()->getContent();
         $jsonArray = json_decode($jsonResponse, true);

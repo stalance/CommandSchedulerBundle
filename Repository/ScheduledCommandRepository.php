@@ -2,6 +2,7 @@
 
 namespace JMose\CommandSchedulerBundle\Repository;
 
+use Cron\CronExpression;
 use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
@@ -62,6 +63,36 @@ class ScheduledCommandRepository extends EntityRepository
     }
 
     /**
+     * Find all enabled commands that need to be exceuted ordered by priority.
+     *
+     * @return array|null
+     */
+    public function findCommandsToExecute(): ?array
+    {
+        $enabledCommands = $this->findEnabledCommand();
+        $commands = [];
+        $now = new \DateTime();
+
+        # Get commands which runtime is in the past or
+        # execution is forced onetimes via isExecuteImmediately
+        foreach ($enabledCommands as $command) {
+            if ($command->isExecuteImmediately()) {
+                $commands[] = $command;
+            } else {
+                $cron = new CronExpression($command->getCronExpression());
+                $nextRunDate = $cron->getNextRunDate($command->getLastExecution());
+
+                if ($nextRunDate < $now) {
+                    $commands[] = $command;
+                }
+            }
+        }
+
+        return $commands;
+    }
+
+
+    /**
      * @param int|bool $lockTimeout
      *
      * @return array
@@ -101,6 +132,7 @@ class ScheduledCommandRepository extends EntityRepository
             ->setParameter('id', $command->getId())
             ->getQuery();
 
+        # https://www.doctrine-project.org/projects/doctrine-orm/en/2.8/reference/transactions-and-concurrency.html
         $query->setLockMode(LockMode::PESSIMISTIC_WRITE);
 
         return $query->getOneOrNullResult();

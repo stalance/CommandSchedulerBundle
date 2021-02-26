@@ -26,6 +26,13 @@ class ScheduledCommand
     private ?int $id = null;
 
     /**
+     * @ORM\Version
+     * @ORM\Column(type="integer")
+     * @see https://www.doctrine-project.org/projects/doctrine-orm/en/2.8/reference/transactions-and-concurrency.html
+     */
+    private ?int $version;
+
+    /**
      * @var ?string
      *
      * @ORM\Column(type="string", length=150)
