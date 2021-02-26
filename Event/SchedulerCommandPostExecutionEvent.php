@@ -14,12 +14,14 @@ class SchedulerCommandPostExecutionEvent extends AbstractSchedulerCommandEvent
      * @param ScheduledCommand $command
      * @param int $result
      * @param OutputInterface|null $log
+     * @param array|null $profiling
      */
     #[Pure]
     public function __construct(
         private ScheduledCommand $command,
         private int $result,
-        private ?OutputInterface $log = null)
+        private ?OutputInterface $log = null,
+        private ?array $profiling = null)
     {
         return parent::__construct($command);
     }
@@ -39,4 +41,15 @@ class SchedulerCommandPostExecutionEvent extends AbstractSchedulerCommandEvent
     {
         return $this->log;
     }
+
+    public function getProfiling(): ?array
+    {
+        return $this->profiling;
+    }
+
+    public function getRuntime(): ?\DateInterval
+    {
+        return $this->profiling["runtime"] ?? null;
+    }
+
 }

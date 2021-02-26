@@ -20,6 +20,7 @@ class TestCommand extends Command
     protected static $defaultName = 'scheduler:test';
     private SymfonyStyle $io;
     private int $runtime;
+    private bool|int $returnFail;
 
     /**
      * {@inheritdoc}
@@ -28,6 +29,7 @@ class TestCommand extends Command
     {
         $this->setDescription('Test a long running command')
             ->addArgument('runtime', InputArgument::OPTIONAL, 'Runtime in Seconds', 10)
+            ->addArgument('returnFail', InputArgument::OPTIONAL, 'Fake Fail Return', false)
             ->setHidden(true)
         ;
     }
@@ -41,6 +43,7 @@ class TestCommand extends Command
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->runtime = (int) $input->getArgument('runtime') ?? 10;
+        $this->returnFail = (bool) $input->getArgument('returnFail') ?? false;
 
         $this->io = new SymfonyStyle($input, $output);
     }
@@ -64,6 +67,14 @@ class TestCommand extends Command
             $this->io->info('Output after '.$i.' Seconds');
         }
 
-        return Command::SUCCESS;
+        # fake fail?
+        if ($this->returnFail)
+        {
+         return Command::FAILURE;
+        }
+        else
+        {
+         return Command::SUCCESS;
+        }
     }
 }

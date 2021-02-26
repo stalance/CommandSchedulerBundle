@@ -55,8 +55,8 @@ final class SchedulerCommandSubscriber implements EventSubscriberInterface
         return [
             SchedulerCommandCreatedEvent::class => ['onScheduledCommandCreated',    -10],
             SchedulerCommandFailedEvent::class => ['onScheduledCommandFailed',     20],
-            SchedulerCommandPreExecutionEvent::class => ['onScheduledCommandPreExecution',   0],
-            SchedulerCommandPostExecutionEvent::class => ['onScheduledCommandPostExecution',   0],
+            SchedulerCommandPreExecutionEvent::class => ['onScheduledCommandPreExecution',   10],
+            SchedulerCommandPostExecutionEvent::class => ['onScheduledCommandPostExecution',   30],
         ];
     }
 
@@ -80,13 +80,19 @@ final class SchedulerCommandSubscriber implements EventSubscriberInterface
 
     public function onScheduledCommandPreExecution(SchedulerCommandPreExecutionEvent $event)
     {
-        var_dump('ScheduledCommandPreExecution');
+        #var_dump('ScheduledCommandPreExecution');
         $this->logger->info('ScheduledCommandPreExecution', ['name' => $event->getCommand()->getName()]);
     }
 
     public function onScheduledCommandPostExecution(SchedulerCommandPostExecutionEvent $event)
     {
-        var_dump('ScheduledCommandPostExecution');
-        $this->logger->info('ScheduledCommandPostExecution', ['name' => $event->getCommand()->getName(), "result" => $event->getResult()]);
+        #var_dump('ScheduledCommandPostExecution');
+
+        $this->logger->info('ScheduledCommandPostExecution', [
+            'name' => $event->getCommand()->getName(),
+            "result" => $event->getResult(),
+            #"log" => $event->getLog(),
+            "runtime" => $event->getRuntime()->format('%S seconds')
+        ]);
     }
 }

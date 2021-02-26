@@ -12,9 +12,11 @@ use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\LockableTrait;
 use Symfony\Component\Console\Exception\ExceptionInterface;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -130,16 +132,17 @@ HELP
             return Command::SUCCESS;
         }
 
-        $this->output->writeln('<info>Start : '.($this->dumpMode ? 'Dump' : 'Execute').' all scheduled command</info>');
+
+        $sectionListing = $this->output->section();
+        $io = new SymfonyStyle($this->input, $sectionListing);
 
         // Before continue, we check that the "log_path" is valid and writable (except for gaufrette)
         if (false !== $this->logPath &&
             !str_starts_with($this->logPath, 'gaufrette:') &&
             !is_writable($this->logPath)
         ) {
-            $this->output->writeln(
-                '<error>'.$this->logPath.
-                ' not found or not writable. You should override `log_path` in your config.yml'.'</error>'
+            $io->error(
+                $this->logPath.' not found or not writable. Check `log_path` in your config.yml'
             );
 
             return Command::FAILURE;
@@ -147,27 +150,56 @@ HELP
 
         $commandsToExceute = $this->em->getRepository(ScheduledCommand::class)
             ->findCommandsToExecute();
+        $amountCommands = count($commandsToExceute);
 
+
+
+
+        $io->title('Start : '.($this->dumpMode ? 'Dump' : 'Execute').' of '.$amountCommands.' scheduled command(s)');
+
+
+        if (is_iterable($commandsToExceute) && $amountCommands >= 1)
+        {
         # dry-run ?
         if ($this->input->getOption('dump'))
         {
-            # TODO add some debug infos
-
+            foreach ($commandsToExceute as $command)
+            {
+                $io->info($command->getName().': '.$command->getCommand().' '.$command->getArguments());
+            }
         }
         else
         {
-            if (is_iterable($commandsToExceute))
-            {
-            foreach ($commandsToExceute as $command) {
+            # Exceute
+            $sectionProgressbar = $this->output->section();
+            $progress = new ProgressBar($sectionProgressbar);
+            $progress->setMessage('Start');
+            $progress->start($amountCommands);
 
-                $this->output->writeln('Start Exceution of <comment>'.$command->getCommand().' '.$command->getArguments().' </comment>');
-                $result = $this->commandSchedulerExcecution->executeCommand($command, $this->input->getOption('env'), $this->commandsVerbosity);
-                $this->output->writeln('Result: <comment>'.$result.'</comment>');
-            }
-        } else {
-            $this->output->writeln('Nothing to do.');
+                foreach ($commandsToExceute as $command) {
+
+                    $progress->setMessage('Start Exceution of '.$command->getCommand().' '.$command->getArguments());
+
+                    $result = $this->commandSchedulerExcecution->executeCommand($command, $this->input->getOption('env'), $this->commandsVerbosity);
+
+                if($result==0)
+                {$io->success($command->getName().': '.$command->getCommand().' '.$command->getArguments());}
+                else
+                {$io->error($command->getName().': ERROR '.$result.': '.$command->getCommand().' '.$command->getArguments());}
+
+                    $progress->advance();
+                }
+
+            $progress->finish();
+            $sectionProgressbar->clear();
+
+            $io->section('Finished Excecutions');
+
+        }}
+        else {
+            $io->success('Nothing to do.');
         }
-        }
+
 
         $this->release();
 

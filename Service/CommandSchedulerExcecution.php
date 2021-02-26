@@ -183,9 +183,10 @@ class CommandSchedulerExcecution
 
         $logOutput = $this->getLog($scheduledCommand, $commandsVerbosity);
 
+        $startRun = new \DateTimeImmutable();
+
         // Execute command and get return code
         try {
-
             $this->eventDispatcher->dispatch(new SchedulerCommandPreExecutionEvent($scheduledCommand));
 
             $result = $command->run($input, $logOutput);
@@ -196,7 +197,15 @@ class CommandSchedulerExcecution
             $logOutput->writeln($e->getTraceAsString());
             $result = -1;
         } finally {
-            $this->eventDispatcher->dispatch(new SchedulerCommandPostExecutionEvent($scheduledCommand, $result, $logOutput));
+            $endRun = new \DateTimeImmutable();
+
+            $profiling = [
+                "startRun" => $startRun,
+                "endRun"   => $endRun,
+                "runtime" => $startRun->diff($endRun),
+                ];
+
+            $this->eventDispatcher->dispatch(new SchedulerCommandPostExecutionEvent($scheduledCommand, $result, $logOutput, $profiling));
         }
 
         return $result;
