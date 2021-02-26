@@ -10,7 +10,8 @@ use Doctrine\Persistence\Mapping\MappingException;
 use Doctrine\Persistence\ObjectManager;
 use Exception;
 use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
-use JMose\CommandSchedulerBundle\Event\SchedulerCommandExecutedEvent;
+use JMose\CommandSchedulerBundle\Event\SchedulerCommandPostExecutionEvent;
+use JMose\CommandSchedulerBundle\Event\SchedulerCommandPreExecutionEvent;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -185,6 +186,7 @@ class CommandSchedulerExcecution
         // Execute command and get return code
         try {
 
+            $this->eventDispatcher->dispatch(new SchedulerCommandPreExecutionEvent($scheduledCommand));
 
             $result = $command->run($input, $logOutput);
 
@@ -193,6 +195,8 @@ class CommandSchedulerExcecution
             $logOutput->writeln($e->getMessage());
             $logOutput->writeln($e->getTraceAsString());
             $result = -1;
+        } finally {
+            $this->eventDispatcher->dispatch(new SchedulerCommandPostExecutionEvent($scheduledCommand, $result, $logOutput));
         }
 
         return $result;
@@ -244,9 +248,13 @@ class CommandSchedulerExcecution
      * @param ScheduledCommand $scheduledCommand
      * @param string $env
      * @param string $commandsVerbosity
+     * @return int Result
      */
-    public function executeCommand(ScheduledCommand $scheduledCommand, string $env, string $commandsVerbosity = OutputInterface::VERBOSITY_NORMAL): void {
-
+    public function executeCommand(
+        ScheduledCommand $scheduledCommand,
+        string $env,
+        string $commandsVerbosity = OutputInterface::VERBOSITY_NORMAL): int
+    {
         $this->env = $env;
         $this->prepareExcecution($scheduledCommand);
 
@@ -269,7 +277,6 @@ class CommandSchedulerExcecution
         $this->em->persist($scheduledCommand);
         $this->em->flush();
 
-        $this->eventDispatcher->dispatch(new SchedulerCommandExecutedEvent($scheduledCommand));
 
         /*
          * This clear() is necessary to avoid conflict between commands and to be sure that none entity are managed
@@ -279,5 +286,7 @@ class CommandSchedulerExcecution
 
         unset($command);
         gc_collect_cycles();
+
+        return $result;
     }
 }

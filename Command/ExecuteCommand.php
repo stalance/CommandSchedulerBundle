@@ -161,7 +161,8 @@ HELP
             foreach ($commandsToExceute as $command) {
 
                 $this->output->writeln('Start Exceution of <comment>'.$command->getCommand().' '.$command->getArguments().' </comment>');
-                $this->commandSchedulerExcecution->executeCommand($command, $this->input->getOption('env'), $this->commandsVerbosity);
+                $result = $this->commandSchedulerExcecution->executeCommand($command, $this->input->getOption('env'), $this->commandsVerbosity);
+                $this->output->writeln('Result: <comment>'.$result.'</comment>');
             }
         } else {
             $this->output->writeln('Nothing to do.');
