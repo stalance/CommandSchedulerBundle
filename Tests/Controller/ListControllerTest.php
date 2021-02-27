@@ -55,9 +55,6 @@ class ListControllerTest extends WebTestCase
 
         $this->client->followRedirects(true);
 
-        $command = $this->em->getRepository(ScheduledCommand::class)->findOneById(1);
-
-
         //toggle off
         $crawler = $this->client->request('GET', '/command-scheduler/action/remove/1');
 
@@ -97,8 +94,11 @@ class ListControllerTest extends WebTestCase
 
         //call execute now button
         $crawler = $this->client->request('GET', '/command-scheduler/action/execute/1');
+
+        #
+        $this->assertStringContainsString('Command -one- will be executed during the next', $this->client->getResponse()->getContent());
+
         //$this->assertEquals(1, $crawler->filter('a[data-href="/command-scheduler/action/execute/1"] > span[class="text-muted glyphicon glyphicon-play"]')->count());
-        $this->assertTrue(false);
         //$this->assertEquals(1, $crawler->filterXPath('//div[contains("Command will be executed during the next")')->count());
     }
 
@@ -119,5 +119,4 @@ class ListControllerTest extends WebTestCase
         $crawler = $this->client->request('GET', '/command-scheduler/action/unlock/2');
         $this->assertEquals(0, $crawler->filter('a[data-href="/command-scheduler/action/unlock/2"]')->count());
     }
-
 }

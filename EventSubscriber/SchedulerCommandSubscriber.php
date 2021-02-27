@@ -92,7 +92,8 @@ final class SchedulerCommandSubscriber implements EventSubscriberInterface
             'name' => $event->getCommand()->getName(),
             "result" => $event->getResult(),
             #"log" => $event->getLog(),
-            "runtime" => $event->getRuntime()->format('%S seconds')
+            "runtime" => $event->getRuntime()->format('%S seconds'),
+            "exception" => $event->getException()?->getMessage() ?? null
         ]);
     }
 }

@@ -41,7 +41,7 @@ class AppKernel extends Kernel
             new \Symfony\Bundle\DebugBundle\DebugBundle(),
             //new \Symfony\Bundle\WebProfilerBundle\WebProfilerBundle(),
             //new \DAMA\DoctrineTestBundle\DAMADoctrineTestBundle::class => ['test' => true],
-            #new \Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle::class => ['all' => true],
+            new \Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
         ];
     }
 

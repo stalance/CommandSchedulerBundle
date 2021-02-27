@@ -184,6 +184,7 @@ class CommandSchedulerExcecution
         $logOutput = $this->getLog($scheduledCommand, $commandsVerbosity);
 
         $startRun = new \DateTimeImmutable();
+        $exception = null;
 
         // Execute command and get return code
         try {
@@ -193,6 +194,7 @@ class CommandSchedulerExcecution
 
             $this->em->clear();
         } catch (\Throwable $e) {
+            $exception = $e;
             $logOutput->writeln($e->getMessage());
             $logOutput->writeln($e->getTraceAsString());
             $result = -1;
@@ -205,7 +207,7 @@ class CommandSchedulerExcecution
                 "runtime" => $startRun->diff($endRun),
                 ];
 
-            $this->eventDispatcher->dispatch(new SchedulerCommandPostExecutionEvent($scheduledCommand, $result, $logOutput, $profiling));
+            $this->eventDispatcher->dispatch(new SchedulerCommandPostExecutionEvent($scheduledCommand, $result, $logOutput, $profiling, $exception));
         }
 
         return $result;

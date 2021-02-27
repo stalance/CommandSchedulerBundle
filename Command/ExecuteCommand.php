@@ -18,6 +18,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\StreamOutput;
 
 /**
  * Class ExecuteCommand : This class is the entry point to execute all scheduled command.
@@ -41,6 +43,10 @@ class ExecuteCommand extends Command
     private $output;
     private InputInterface $input;
     private CommandSchedulerExcecution $commandSchedulerExcecution;
+    /**
+     * @var bool|string|string[]|null
+     */
+    private null|bool|array|string $env;
 
     /**
      * ExecuteCommand constructor.
@@ -105,6 +111,15 @@ HELP
 
         $this->dumpMode = (string) $this->input->getOption('dump');
 
+        try{
+            $this->env = $this->input->getOption('env');
+        }
+        catch (\Exception)
+        {
+            $this->env = "test";
+        }
+
+
         // Store the original verbosity before apply the quiet parameter
         $this->commandsVerbosity = $this->output->getVerbosity();
 
@@ -133,8 +148,20 @@ HELP
         }
 
 
-        $sectionListing = $this->output->section();
-        $io = new SymfonyStyle($this->input, $sectionListing);
+       if(is_a($this->output, ConsoleOutput::class))
+        {
+            $sectionListing = $this->output->section();
+            $sectionProgressbar = $this->output->section();
+            $io = new SymfonyStyle($this->input, $sectionListing);
+        }
+       else
+        {
+            $sectionProgressbar = $this->output;
+            $io = new SymfonyStyle($this->input, $this->output);
+            #$this->env="test";
+        }
+
+
 
         // Before continue, we check that the "log_path" is valid and writable (except for gaufrette)
         if (false !== $this->logPath &&
@@ -171,16 +198,16 @@ HELP
         else
         {
             # Exceute
-            $sectionProgressbar = $this->output->section();
+            #$sectionProgressbar = $this->output->section();
             $progress = new ProgressBar($sectionProgressbar);
             $progress->setMessage('Start');
             $progress->start($amountCommands);
 
                 foreach ($commandsToExceute as $command) {
 
-                    $progress->setMessage('Start Exceution of '.$command->getCommand().' '.$command->getArguments());
+                    $progress->setMessage('Start Excecution of '.$command->getCommand().' '.$command->getArguments());
 
-                    $result = $this->commandSchedulerExcecution->executeCommand($command, $this->input->getOption('env'), $this->commandsVerbosity);
+                    $result = $this->commandSchedulerExcecution->executeCommand($command, $this->env, $this->commandsVerbosity);
 
                 if($result==0)
                 {$io->success($command->getName().': '.$command->getCommand().' '.$command->getArguments());}
@@ -191,7 +218,10 @@ HELP
                 }
 
             $progress->finish();
-            $sectionProgressbar->clear();
+
+
+            if(!is_a($this->output, StreamOutput::class))
+            {$sectionProgressbar->clear();}
 
             $io->section('Finished Excecutions');
 

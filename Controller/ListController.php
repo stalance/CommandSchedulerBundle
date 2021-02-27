@@ -57,20 +57,9 @@ class ListController extends AbstractBaseController
      */
     public function removeAction(ScheduledCommand $scheduledCommand): RedirectResponse
     {
-        var_dump($scheduledCommand);
-        if(!$scheduledCommand->getId())
-        {
-            return $this->redirectToRoute('jmose_command_scheduler_list');
-        }
-
         $entityManager = $this->getDoctrineManager();
         $entityManager->remove($scheduledCommand);
         $entityManager->flush();
-
-        $scheduledCommands = $this->getDoctrineManager()->getRepository(ScheduledCommand::class)->findAll();
-
-        #echo("BB");
-        echo(count($scheduledCommands));
 
         // Add a flash message and do a redirect to the list
         $this->addFlash('success', $this->translator->trans('flash.deleted', [], 'JMoseCommandScheduler'));
@@ -105,7 +94,7 @@ class ListController extends AbstractBaseController
         $this->getDoctrineManager()->flush();
 
         // Add a flash message and do a redirect to the list
-        $this->addFlash('success', $this->translator->trans('flash.execute', [], 'JMoseCommandScheduler'));
+        $this->addFlash('success', $this->translator->trans('flash.execute', ["%name%" => $scheduledCommand->getName()], 'JMoseCommandScheduler'));
 
         if ($request->query->has('referer')) {
             return $this->redirect($request->getSchemeAndHttpHost().urldecode($request->query->get('referer')));

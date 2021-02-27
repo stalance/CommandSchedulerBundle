@@ -93,18 +93,15 @@ class DetailControllerTest extends WebTestCase
         // DataFixtures create 4 records
         $this->loadFixtures([LoadScheduledCommandData::class]);
 
-        $scheduledCommands = $this->getDoctrine()->getRepository(ScheduledCommand::class)->findOneById(1);
-
-
         $client->followRedirects(true);
         $crawler = $client->request('GET', '/command-scheduler/detail/edit/1');
         $buttonCrawlerNode = $crawler->selectButton('Save');
         $form = $buttonCrawlerNode->form();
 
         $form->get('command_scheduler_detail[name]')->setValue('edited one');
-        //$form->get('command_scheduler_detail[cronExpression]')->setValue('* * * * *');
+        $form->get('command_scheduler_detail[cronExpression]')->setValue('* * * * *');
         $crawler = $client->submit($form);
-        #dump($crawler);
+
         $this->assertEquals(4, $crawler->filterXPath('//a[contains(@href, "/command-scheduler/action/toggle/")]')->count());
         $this->assertEquals('edited one', trim($crawler->filter('td')->eq(1)->text()));
     }

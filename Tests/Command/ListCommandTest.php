@@ -3,7 +3,7 @@
 namespace JMose\CommandSchedulerBundle\Tests\Command;
 
 use JMose\CommandSchedulerBundle\Fixtures\ORM\LoadScheduledCommandData;
-use Symfony\Component\Console\Command\ListCommand;
+use JMose\CommandSchedulerBundle\Command\ListCommand;
 
 /**
  * Class ListCommandTest.

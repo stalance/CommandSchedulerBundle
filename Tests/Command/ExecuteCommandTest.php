@@ -24,11 +24,9 @@ class ExecuteCommandTest extends AbstractCommandTest
 
         $output = $this->executeCommand(ExecuteCommand::class)->getDisplay();
 
-        $this->assertStringStartsWith('Start : Execute all scheduled command', $output);
-        $this->assertMatchesRegularExpression('/debug:container should be executed/', $output);
-        #$this->assertMatchesRegularExpression('/Execute : debug:container --help/', $output);
-        $this->assertMatchesRegularExpression('/Immediately execution asked for : debug:router/', $output);
-        #$this->assertMatchesRegularExpression('/Execute : debug:router/', $output);
+        $this->assertStringContainsString('Start : Execute', $output);
+        $this->assertMatchesRegularExpression('/one: debug:container/', $output);
+        $this->assertMatchesRegularExpression('/four: debug:router/', $output);
 
         $output = $this->executeCommand(ExecuteCommand::class)->getDisplay();
         $this->assertMatchesRegularExpression('/Nothing to do/', $output);
@@ -60,8 +58,8 @@ class ExecuteCommandTest extends AbstractCommandTest
 
         $output = $this->executeCommand(ExecuteCommand::class, ['--dump' => true])->getDisplay();
 
-        $this->assertStringStartsWith('Start : Dump all scheduled command', $output);
-        $this->assertMatchesRegularExpression('/Command debug:container should be executed/', $output);
-        $this->assertMatchesRegularExpression('/Immediately execution asked for : debug:router/', $output);
+        $this->assertStringContainsString('Start : Dump', $output);
+        $this->assertMatchesRegularExpression('/ one:/', $output);
+        $this->assertMatchesRegularExpression('/ four:/', $output);
     }
 }
