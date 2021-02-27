@@ -29,9 +29,9 @@ jobs:
       # if we 2 steps like this, we can better see if composer failed or tests
       - run: composer install --no-progress
       - run: vendor/bin/phpunit
-      #- run: vendor/bin/phpunit --coverage-clover coverage.xml build/logs/clover.xml
-      #- run: vendor/bin/phpunit --coverage-clover build/logs/clover.xml
-      #- run: vendor/bin/phpunit --coverage-clover coverage.xml clover.xml
+      - run: vendor/bin/phpunit --coverage-clover coverage.xml build/logs/clover.xml
+      - run: vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+      - run: vendor/bin/phpunit --coverage-clover coverage.xml clover.xml
 
 
 
@@ -47,43 +47,13 @@ jobs:
       #- run: composer cscheck
 
 
-  phpstan:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: 8.0
-          coverage: none # disable xdebug, pcov
-      - run: composer install --no-progress
-      - run: composer phpstan
-
-
-  code_coverage:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: 8.0
-          coverage: pcov
-
-            # Coveralls.io
-          # https://github.com/rectorphp/rector/blob/master/.github/workflows/weekly_code_coverage.yaml
-      #- run: composer require --dev nimut/phpunit-merger
-      - run: composer require --dev php-coveralls/php-coveralls:^2.4
-      - run: composer install --no-progress
-
-      #- run: vendor/bin/phpunit --coverage-php build/logs/lcov.cov
-      - run: vendor/bin/phpunit --coverage-clover build/logs/clover.xml
-
-      #- run: vendor/bin/phpunit --coverage-php build/logs/rules.cov
-      - run: vendor/bin/php-coveralls --coverage_clover=clover.xml -v
-
-      #- run: lcov --no-external --capture --quiet --output-file coverage.info
-
-      # https://kizu514.com/blog/pcov-is-better-than-phpdbg-and-xdebug-for-code-coverage/
-      - uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
+  #phpstan:
+    #runs-on: ubuntu-latest
+    #steps:
+      #- uses: actions/checkout@v2
+      #- uses: shivammathur/setup-php@v2
+        #with:
+          #php-version: 8.0
+          #coverage: none # disable xdebug, pcov
+      #- run: composer install --no-progress
+      #- run: composer phpstan
