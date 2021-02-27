@@ -22,10 +22,9 @@ jobs:
       - run: composer require --dev php-coveralls/php-coveralls:^2.4
       - run: composer install --no-progress
 
-      - run: vendor/bin/phpunit --coverage-clover build/logs/clover.xml
-      - run: vendor/bin/php-coveralls --coverage_clover=build/logs/clover.xml -v
-
+      - run: |
+             vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+             vendor/bin/php-coveralls --coverage_clover=build/logs/clover.xml -v
       - uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          #github-token: ${{ secrets.COVERALL_REPO_TOKEN }}

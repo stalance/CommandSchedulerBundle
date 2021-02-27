@@ -29,10 +29,6 @@ jobs:
       # if we 2 steps like this, we can better see if composer failed or tests
       - run: composer install --no-progress
       - run: vendor/bin/phpunit
-      #- run: vendor/bin/phpunit --coverage-clover coverage.xml build/logs/clover.xml
-      #- run: vendor/bin/phpunit --coverage-clover build/logs/clover.xml
-      #- run: vendor/bin/phpunit --coverage-clover coverage.xml clover.xml
-
 
 
   #cs:
