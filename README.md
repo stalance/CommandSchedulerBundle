@@ -1,25 +1,21 @@
 CommandSchedulerBundle
 ======================
 
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/8d984140-0e19-4c4f-8b05-605025eebeb5/mini.png)](https://insight.sensiolabs.com/projects/8d984140-0e19-4c4f-8b05-605025eebeb5)
-[![Build Status](https://travis-ci.org/j-guyon/CommandSchedulerBundle.svg)](https://travis-ci.org/j-guyon/CommandSchedulerBundle)
-[![Coverage Status](https://coveralls.io/repos/J-Mose/CommandSchedulerBundle/badge.svg)](https://coveralls.io/r/J-Mose/CommandSchedulerBundle)
-[![Latest Stable Version](https://poser.pugx.org/jmose/command-scheduler-bundle/v/stable)](https://packagist.org/packages/jmose/command-scheduler-bundle)
-
 This bundle will allow you to easily manage scheduling for Symfony's console commands (native or not) with cron expression.
+See [Wiki](https://github.com/Chris53897/CommandSchedulerBundle/wiki) for Details
 
 ## Versions & Dependencies
 
-This fork is for modernising and low maintenance.
-So only Php > 8.0 and Symfony > 5.0
+Version 4.x has the goal to use modern Php and Symfony features and low maintenance.
+So only Php >= 8.0 and Symfony >= 5.0 are supported at the moment.
 
 The following table shows the compatibilities of different versions of the bundle :
 
 | Version                                                                                 | Symfony          | PHP    |
 | --------------------------------------------------------------------------------------- |  --------------- | ------ |
 | [4.0 (master)](https://github.com/Chris53897/CommandSchedulerBundle/tree/master)        | ^5.0             | >=8.0  |
-| [3.0 (master)](https://github.com/J-Mose/CommandSchedulerBundle/tree/master)            | ^3.4\|^4.3\|^5.0 | >=7.2  |
-| [2.2.x](https://github.com/J-Mose/CommandSchedulerBundle/tree/2.2)                      | ^3.4\|^4.3       | >=7.1  |
+| [3.0 (master)](https://github.com/Chris53897/CommandSchedulerBundle/tree/master)        | ^3.4\|^4.3\|^5.0 | >=7.2  |
+| [2.2.x](https://github.com/Chris53897/CommandSchedulerBundle/tree/2.2)                  | ^3.4\|^4.3       | >=7.1  |
 
 
 ## Install
@@ -39,6 +35,17 @@ Check new URL /command-scheduler/list
 
 ## Features
 
+New in Version 4: 
+- Event-Handling (preExcecution, postExceution). You can subscribe your own Events
+- Monitoring: Notifications with the [Symfony Notifier](https://symfony.com/doc/current/notifier.html) Component. Derfault: E-Mail
+- Refactored Exceution of Commands to Services. You can use them now from other Services.
+- Handled error in Command Parsing. So there is no 500 Error while parsing commands. 
+- You CLI-commands for add, remove and list scheduled commands
+- Improved UI of command-exceutions in cli
+- Create Command-Listing as Json for API usage
+
+
+Version 3:
 - An admin interface to add, edit, enable/disable or delete scheduled commands.
 - For each command, you define : 
   - name
@@ -47,7 +54,7 @@ Check new URL /command-scheduler/list
   - output file (for `$output->write`)
   - priority
 - A new console command `scheduler:execute [--dump] [--no-output]` which will be the single entry point to all commands
-- Management of queuing and prioritization between tasks 
+- Management of queuing and prioritization between tasks
 - Locking system, to stop scheduling a command that has returned an error
 - Monitoring with timeout or failed commands (Json URL and command with mailing)
 - Translated in french, english, german and spanish
@@ -63,7 +70,7 @@ Check new URL /command-scheduler/list
 
 ## Documentation
 
-See the [documentation here](Resources/doc/index.md).
+See the [documentation here](https://github.com/Chris53897/CommandSchedulerBundle/wiki).
 
 ## License
 

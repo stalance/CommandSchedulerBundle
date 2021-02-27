@@ -34,11 +34,11 @@
         "twig/cssinliner-extra": "^3.2",
         "twig/inky-extra": "^3.2",
         "symfony/lock": "^5.2",
-        "sensio/framework-extra-bundle": "^6.1"
+        "sensio/framework-extra-bundle": "^5.0|^6.1"
     },
     "require-dev": {
         "ext-pcntl": "*",
-        "phpunit/phpunit": "^9.5.0",
+        "phpunit/phpunit": "^9.0",
         "php-coveralls/php-coveralls": "^2.4",
         "doctrine/doctrine-fixtures-bundle": "^3.4.0",
         "symfony/css-selector": "^5.2",
