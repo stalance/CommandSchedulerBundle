@@ -1,6 +1,9 @@
 CommandSchedulerBundle
 ======================
 
+[![Code_Checks](https://github.com/Chris53897/CommandSchedulerBundle/actions/workflows/code_checks.yaml/badge.svg?branch=master)](https://github.com/Chris53897/CommandSchedulerBundle/actions/workflows/code_checks.yaml)
+
+
 This bundle will allow you to easily manage scheduling for Symfony's console commands (native or not) with cron expression.
 See [Wiki](https://github.com/Chris53897/CommandSchedulerBundle/wiki) for Details
 
