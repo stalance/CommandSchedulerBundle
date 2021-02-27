@@ -114,9 +114,9 @@ class ListControllerTest extends WebTestCase
 
         // One command is locked in fixture (2)
         $crawler = $this->client->request('GET', '/command-scheduler/list');
-        $this->assertEquals(1, $crawler->filter('a[data-href="/command-scheduler/action/unlock/2"]')->count());
+        $this->assertEquals(1, $crawler->filter('a[href="/command-scheduler/action/unlock/2"]')->count());
 
         $crawler = $this->client->request('GET', '/command-scheduler/action/unlock/2');
-        $this->assertEquals(0, $crawler->filter('a[data-href="/command-scheduler/action/unlock/2"]')->count());
+        $this->assertEquals(0, $crawler->filter('a[href="/command-scheduler/action/unlock/2"]')->count());
     }
 }
