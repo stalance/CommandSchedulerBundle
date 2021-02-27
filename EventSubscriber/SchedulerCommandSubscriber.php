@@ -60,7 +60,7 @@ final class SchedulerCommandSubscriber implements EventSubscriberInterface
         ];
     }
 
-    // TODO check if useful
+    // TODO check if useful (could be handled by doctrine lifecycle events)
     public function onScheduledCommandCreated(SchedulerCommandCreatedEvent $event)
     {
         $this->logger->info('ScheduledCommandCreated', ['name' => $event->getCommand()->getName()]);

@@ -38,6 +38,7 @@ class MonitorCommandTest extends AbstractCommandTest
         $four = $this->em->getRepository(ScheduledCommand::class)->find(4);
         $two->setLocked(false);
         $four->setLastReturnCode(0);
+        /** @noinspection PhpUnhandledExceptionInspection */
         $this->em->flush();
 
         // None command should be in error status here.

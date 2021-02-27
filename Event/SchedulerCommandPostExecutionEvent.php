@@ -25,7 +25,7 @@ class SchedulerCommandPostExecutionEvent extends AbstractSchedulerCommandEvent
         private ?array $profiling = null,
         private ?\Exception $exception = null)
     {
-        return parent::__construct($command);
+        parent::__construct($command);
     }
 
     /**

@@ -73,7 +73,10 @@ class CommandSchedulerExcecution
     }
 
 
-
+    /**
+     * @param $scheduledCommand
+     * @return Command|null
+     */
     private function getCommand($scheduledCommand): ?Command
     {
         try {
@@ -110,7 +113,7 @@ class CommandSchedulerExcecution
                 $commandsVerbosity
             );
         }
-# todo check bufferoutout for logger
+
         return $logOutput;
     }
 
@@ -171,11 +174,11 @@ class CommandSchedulerExcecution
     /**
      * Do the real excecution of a command
      *
-     * @param $scheduledCommand
-     * @param $commandsVerbosity
+     * @param ScheduledCommand $scheduledCommand
+     * @param int $commandsVerbosity
      * @return int Result
      */
-    private function doExceution($scheduledCommand, $commandsVerbosity): int
+    private function doExceution(ScheduledCommand $scheduledCommand, int $commandsVerbosity): int
     {
         $command = $this->prepareCommandExcecution($scheduledCommand);
 
@@ -215,9 +218,9 @@ class CommandSchedulerExcecution
 
 
     /**
-     * @param $scheduledCommand
+     * @param ScheduledCommand $scheduledCommand
      */
-    private function prepareExcecution($scheduledCommand)
+    private function prepareExcecution(ScheduledCommand $scheduledCommand)
     {
         //reload command from database before every execution to avoid parallel execution
         $this->em->getConnection()->beginTransaction();

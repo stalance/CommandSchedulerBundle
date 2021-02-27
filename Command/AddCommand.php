@@ -48,7 +48,7 @@ class AddCommand extends Command
             ->addArgument('cmd', InputArgument::REQUIRED, 'command')
             ->addArgument('arguments', InputArgument::REQUIRED, 'arguments')
             ->addArgument('cronExpression', InputArgument::REQUIRED, 'cronExpression')
-            ->addArgument('logFile', InputArgument::OPTIONAL, 'logFile', null)
+            ->addArgument('logFile', InputArgument::OPTIONAL, 'logFile')
             ->addArgument('priority', InputArgument::OPTIONAL, 'priority', 0)
             ->addArgument('executeImmediately', InputArgument::OPTIONAL, 'executeImmediately', false)
             ->addArgument('disabled', InputArgument::OPTIONAL, 'disabled', false)

@@ -71,8 +71,7 @@ class ListCommand extends Command
             };
 
                 $lastReturnName = match ($command->getLastReturnCode()) {
-                '', false, null => '<info>'.$command->getName().'</info>',
-                0 => '<info>'.$command->getName().'</info>',
+                '', false, null, 0 => '<info>'.$command->getName().'</info>',
                 default => '<error>'.$command->getName().'</error>'
                 };
 

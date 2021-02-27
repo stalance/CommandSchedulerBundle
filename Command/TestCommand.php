@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpMissingFieldTypeInspection */
 
 namespace JMose\CommandSchedulerBundle\Command;
 

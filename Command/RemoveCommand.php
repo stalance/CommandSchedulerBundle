@@ -88,7 +88,7 @@ HELP
             '',
         ]);
 
-        $name = $this->io->ask('Name of Scheduled Command', null);
+        $name = $this->io->ask('Name of Scheduled Command');
         $input->setArgument('name', $name);
     }
 

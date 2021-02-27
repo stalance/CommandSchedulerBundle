@@ -66,6 +66,8 @@ class ScheduledCommandRepository extends EntityRepository
      * Find all enabled commands that need to be exceuted ordered by priority.
      *
      * @return array|null
+     * @throws \Exception
+     * @throws \Exception
      */
     public function findCommandsToExecute(): ?array
     {
@@ -80,11 +82,15 @@ class ScheduledCommandRepository extends EntityRepository
                 $commands[] = $command;
             } else {
                 $cron = new CronExpression($command->getCronExpression());
-                $nextRunDate = $cron->getNextRunDate($command->getLastExecution());
+                try {
+                    $nextRunDate = $cron->getNextRunDate($command->getLastExecution());
 
-                if ($nextRunDate < $now) {
-                    $commands[] = $command;
+                    if ($nextRunDate < $now) {
+                        $commands[] = $command;
+                    }
+                } catch (\Exception $e) {
                 }
+
             }
         }
 

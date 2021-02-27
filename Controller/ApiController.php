@@ -38,7 +38,7 @@ class ApiController extends AbstractBaseController
      *
      * @return array
      */
-    private function getCommandsAsArray(array $commands)
+    private function getCommandsAsArray(array $commands): array
     {
         $jsonArray = [];
 
