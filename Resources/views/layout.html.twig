@@ -38,19 +38,27 @@
     </div>
 </div><!-- /container -->
 
-<script type="text/javascript" src="{{ asset('bundles/jmosecommandscheduler/js/jquery-1.11.1.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/jmosecommandscheduler/js/jquery-3.5.1.slim.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/jmosecommandscheduler/js/jquery-migrate-1.4.1.min.js') }}"></script>
+
 <script type="text/javascript" src="{{ asset('bundles/jmosecommandscheduler/js/bootstrap.min.js') }}"></script>
+
 <script type="text/javascript" src="{{ asset('bundles/jmosecommandscheduler/js/bootstrap-tooltip.js') }}"></script>
-<script type="text/javascript" src="{{ asset('bundles/jmosecommandscheduler/js/bootstrap-confirmation.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/jmosecommandscheduler/js/bootstrap-confirmation.min.js') }}"></script>
 
 <script type="text/javascript">
-    // Enable bootstrap-confirmation
+    // Enable bootstrap-confirmation (https://bootstrap-confirmation.js.org/)
     $(document).ready(function () {
 
         $('[data-toggle="confirmation"]').confirmation({
             singleton: true,
             popout: true,
-            placement: 'left'
+            placement: 'left',
+            btnOkClass: 'btn btn-danger',
+            //btnOkClass: 'btn btn-sm btn-danger', //Bootstrap 4
+            btnCancelLabel: 'Cancel',
+            btnCancelClass: 'btn btn-default'
+            //btnCancelClass: 'btn btn-sm btn-secondary', //Bootstrap 4
         });
     });
 </script>
