@@ -3,6 +3,7 @@
 namespace JMose\CommandSchedulerBundle\Repository;
 
 use Cron\CronExpression;
+use DateTimeInterface;
 use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
@@ -33,7 +34,66 @@ class ScheduledCommandRepository extends EntityRepository
      */
     public function findAll(): ?array
     {
-        return $this->findBy([], ['priority' => 'DESC']);
+        return $this->findBy([], ['disabled' => 'ASC', 'priority' => 'DESC']);
+    }
+
+
+    /**
+     * Find all commands ordered by next run time
+     *
+     * @return array|null
+     * @throws \Exception
+     */
+    public function findAllSortedByNextRuntime(): ?array
+    {
+        $allCommands = $this->findAll();
+        $commands = [];
+        $now = new \DateTime();
+        $future = (new \DateTime())->add(new \DateInterval("P2Y"));
+        $futureSort = $future->format(DateTimeInterface::ATOM);
+
+        # execution is forced onetimes via isExecuteImmediately
+        foreach ($allCommands as $command) {
+
+            if($command->getDisabled() || $command->getLocked())
+            {
+                $commands[] = ["order" => $futureSort, "command" => $command];
+                continue;
+            }
+
+            if ($command->isExecuteImmediately()) {
+
+                $commands[] = ["order" => (new \DateTime())->format(DateTimeInterface::ATOM), "command" => $commands];
+            } else {
+                $cron = new CronExpression($command->getCronExpression());
+                try {
+                    $nextRunDate = $cron->getNextRunDate($command->getLastExecution());
+
+                    if ($nextRunDate)
+                    {$commands[] = ["order" => $nextRunDate->format(DateTimeInterface::ATOM), "command" => $command];}
+                    else
+                    {$commands[] = ["order" => $futureSort, "command" => $command];}
+
+                } catch (\Exception $e) {
+                   $commands[] = ["order" => $futureSort, "command" => $command];
+                }
+            }
+        }
+
+        # sort it by "order"
+        usort($commands, function($a, $b) {
+            return $a['order'] <=> $b['order'];
+        });
+
+        #var_dump($commands);
+
+        $result = [];
+        foreach($commands as $cmd)
+        {$result[] = $cmd["command"];}
+
+        #var_dump($result);
+
+        return $result;
     }
 
     /**
@@ -66,7 +126,6 @@ class ScheduledCommandRepository extends EntityRepository
      * Find all enabled commands that need to be exceuted ordered by priority.
      *
      * @return array|null
-     * @throws \Exception
      * @throws \Exception
      */
     public function findCommandsToExecute(): ?array

@@ -49,7 +49,7 @@ class ApiController extends AbstractBaseController
                     'COMMAND' => $command->getCommand(),
                     'ARGUMENTS' => $command->getArguments(),
                     'LAST_RETURN_CODE' => $command->getLastReturnCode(),
-                    'B_LOCKED' => $command->getLocked() ? 'true' : 'false',
+                    'B_LOCKED' => $command->getLocked(),
                     'DH_LAST_EXECUTION' => $command->getLastExecution(),
                     'DH_NEXT_EXECUTION' => $command->getNextRunDate(),
                     'LOGFILE' => $command->getLogFile(),

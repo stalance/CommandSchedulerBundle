@@ -75,14 +75,22 @@ class ListCommand extends Command
                 default => '<error>'.$command->getName().'</error>'
                 };
 
-                $nextRunDate = $command->getNextRunDate();
+                if($nextRunDate = $command->getNextRunDate())
+                {$nextRunDateText = Carbon::instance($nextRunDate)->diffForHumans();}
+                else {$nextRunDateText = "";}
+
+                if($lastRunDate = $command->getLastExecution())
+                {$lastRunDateText = Carbon::instance($lastRunDate)->diffForHumans();}
+                else {$lastRunDateText = "";}
+
                 $table->addRow([
                 $lastReturnName,
                 $command->getCommand(),
                 $command->getArguments(),
                 $lockedInfo,
-                Carbon::instance($command->getLastExecution())->diffForHumans(),
-                Carbon::instance($nextRunDate)->diffForHumans(),
+                $lastRunDateText,
+                $nextRunDateText,
+                $command->getNextRunDateForHumans(),
                 ]);
         }
 

@@ -79,3 +79,5 @@ See the [documentation here](https://github.com/Chris53897/CommandSchedulerBundl
 ## License
 
 This bundle is under the MIT license. See the [complete license](Resources/meta/LICENCE) for info.
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FChris53897%2FCommandSchedulerBundle.svg?type=small)](https://app.fossa.com/projects/git%2Bgithub.com%2FChris53897%2FCommandSchedulerBundle?ref=badge_small)

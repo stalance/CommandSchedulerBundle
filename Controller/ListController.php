@@ -38,11 +38,9 @@ class ListController extends AbstractBaseController
     public function indexAction(): Response
     {
         $scheduledCommands = $this->getDoctrineManager()->getRepository(
-            #'JMoseCommandSchedulerBundle:ScheduledCommand'
             ScheduledCommand::class
         )->findAll();
-
-        #dump(count($scheduledCommands));
+        #)->findAllSortedByNextRuntime();
 
         return $this->render(
             '@JMoseCommandScheduler/List/index.html.twig',

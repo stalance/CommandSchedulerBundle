@@ -30,5 +30,6 @@ jobs:
       - uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_RUN_ID: 1
-          GITHUB_EVENT_NAME: "test"
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          #GITHUB_RUN_ID: 1
+          #GITHUB_EVENT_NAME: "test"

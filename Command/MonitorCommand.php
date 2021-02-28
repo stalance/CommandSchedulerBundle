@@ -146,16 +146,34 @@ HELP);
             default => '<error>'.$command->getLastReturnCode().' (error)</error>'
             };
 
+
+            $lastRunDate = $command->getLastExecution();
+            if($lastRunDate)
+            {
+                $lastRunDateText = $lastRunDate->format('Y-m-d H:i').' ('
+                    .Carbon::instance($command->getLastExecution())->diffForHumans().')';
+            }
+            else {
+                $lastRunDateText = '';
+            }
+
             $nextRunDate = $command->getNextRunDate();
+            if($nextRunDate)
+            {
+                $nextRunDateText = $nextRunDate->format('Y-m-d H:i').' ('
+                .Carbon::instance($nextRunDate)->diffForHumans().')';
+            }
+            else {
+                $nextRunDateText = '';
+            }
+
             $table->addRow([
                 $command->getName(),
                 $lastReturnInfo,
                 $lockedInfo,
-                $command->getLastExecution()->format('Y-m-d H:i').' ('
-                    .Carbon::instance($command->getLastExecution())->diffForHumans().')',
-                $nextRunDate->format('Y-m-d H:i').' ('
-                    .Carbon::instance($nextRunDate)->diffForHumans().')',
-                ]);
+                $lastRunDateText,
+                $nextRunDateText
+            ]);
         }
 
         $table->render();

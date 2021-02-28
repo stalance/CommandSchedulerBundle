@@ -2,6 +2,7 @@
 
 namespace JMose\CommandSchedulerBundle\Entity;
 
+use Carbon\Carbon;
 use Cron\CronExpression as CronExpressionLib;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
@@ -411,10 +412,25 @@ class ScheduledCommand
      */
     public function getNextRunDate(bool $checkExecuteImmediately = true): ?DateTime
     {
+        if($this->getDisabled() || $this->getLocked())
+        {return null;}
+
         if ($checkExecuteImmediately && $this->getExecuteImmediately()) {
             return new DateTime();
         }
 
         return (new CronExpressionLib($this->getCronExpression()))->getNextRunDate();
+    }
+
+
+    public function getNextRunDateForHumans(): ?string
+    {
+        try{
+            return Carbon::instance($this->getNextRunDate())->diffForHumans();
+        }
+        catch (\Exception)
+        {}
+
+        return null;
     }
 }

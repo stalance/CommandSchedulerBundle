@@ -16,9 +16,9 @@
                 <th>{{ "detail.cronExpression"|trans }}</th>
                 <th>{{ "detail.logFile"|trans }}</th>
                 <th>{{ "detail.lastExecution"|trans }}</th>
-                <th>{{ "detail.lastReturnCode"|trans }}</th>
-                <th>{{ "detail.priority"|trans }}</th>
-                <th>{{ "detail.actions"|trans }}</th>
+                <th>{{ "detail.nextRun"|trans }}</th>
+                <th class="text-right">{{ "detail.priority"|trans }}</th>
+                <th class="text-right">{{ "detail.actions"|trans }}</th>
             </tr>
         </thead>
 
@@ -36,7 +36,13 @@
                     </a>
                 </td>
                 <td>
+                    <span style="font-size:14px;" {% if command.disabled == false %}
+                            class="label label-success" title="Command is active"
+                            {% else %}
+                            class="label label-danger" title="Command is disabled"
+                            {% endif %}>
                     {{ command.name }}
+                    </span>
                 </td>
                 <td>
                     {{ command.command }} {{ command.arguments }}
@@ -48,30 +54,37 @@
                     {{ command.logFile }}
                 </td>
                 <td>
-                    {{ command.lastExecution|date( "dateFormat"|trans ) }}
+                    <span style="font-size:14px;" class="label label-{% if command.lastReturnCode == 0 %}success{% else %}danger{% endif %}" title="Last Return Code: {{ command.lastReturnCode }}">
+                    {{ command.lastExecution is empty ? "" : command.lastExecution|date( "dateFormat"|trans ) }}
+                    </span>
                 </td>
                 <td>
-                    {{ command.lastReturnCode }}
+                    {% set nextRunDate = command.getNextRunDate() %}
+                    {% if nextRunDate is not null %}
+                    {{ nextRunDate|date( "dateFormat"|trans ) }}
+                    {% endif %}
                 </td>
-                <td>
+                <td class="text-right">
                     {{ command.priority }}
                 </td>
-                <td style="min-width: 90px;">
+                <td style="min-width: 90px;" class="text-right">
                     {% if command.locked == true %}
-                        <a href="{{ path('jmose_command_scheduler_action_unlock', {'id': command.id}) }}" data-toggle="confirmation" data-btn-ok-label="{{ "action.unlock"|trans }}" data-title="{{ "confirm.unlock"|trans }}" >
+                        <a style="display: inline-block; width: 24px; margin-left: 2px; margin-right: 2px;" href="{{ path('jmose_command_scheduler_action_unlock', {'id': command.id}) }}" data-toggle="confirmation" data-btn-ok-label="{{ "action.unlock"|trans }}" data-title="{{ "confirm.unlock"|trans }}" >
                             <span class="text-muted glyphicon glyphicon-lock"></span> <span class="sr-only">{{ "action.unlock"|trans }}</span>
                         </a>
+                    {% else %}
+                       <div style="display: inline-block;"> </div>
                     {% endif %}
-                    <a href="{{ path('jmose_command_scheduler_detail_edit', {'id': command.id}) }}" >
+                    <a style="display: inline-block; width: 24px; margin-left: 2px; margin-right: 2px;" href="{{ path('jmose_command_scheduler_detail_edit', {'id': command.id}) }}" >
                         <span class="text-info glyphicon glyphicon-pencil"></span> <span class="sr-only">{{ "action.edit"|trans }}</span>
                     </a>
-                    <a href="{{ path('jmose_command_scheduler_action_remove', {'id': command.id}) }}"
+                    <a style="display: inline-block; width: 24px; margin-left: 2px; margin-right: 2px;" href="{{ path('jmose_command_scheduler_action_remove', {'id': command.id}) }}"
                        data-toggle="confirmation"
                        data-btn-ok-label="{{ "action.delete"|trans }}"
                        data-title="{{ "confirm.delete"|trans }}" >
                         <span class="text-danger glyphicon glyphicon-trash"></span> <span class="sr-only">{{ "action.delete"|trans }}</span>
                     </a>
-                    <a href="{{ path('jmose_command_scheduler_action_execute', {'id': command.id}) }}" data-toggle="confirmation" data-btn-ok-label="{{ "action.execute"|trans }}" data-title="{{ "confirm.execute"|trans }}">
+                    <a style="display: inline-block; width: 24px; margin-left: 2px; margin-right: 2px;" href="{{ path('jmose_command_scheduler_action_execute', {'id': command.id}) }}" data-toggle="confirmation" data-btn-ok-label="{{ "action.execute"|trans }}" data-title="{{ "confirm.execute"|trans }}">
                         <span class="text-{% if command.executeImmediately == true %}muted{% else %}success{% endif %} glyphicon glyphicon-play"></span> <span class="sr-only">{{ "action.execute"|trans }}</span>
                     </a>
                 </td>
