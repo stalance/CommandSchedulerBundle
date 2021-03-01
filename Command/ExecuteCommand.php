@@ -118,11 +118,14 @@ class ExecuteCommand extends Command
 
         $noneExecution = true;
         foreach ($commands as $command) {
-            $this->em->refresh($this->em->find(ScheduledCommand::class, $command));
+
+            // PullRequest: fix command refresh #183
+            $command = $this->em->find(ScheduledCommand::class, $command->getId());
+
             if ($command->isDisabled() || $command->isLocked()) {
                 continue;
             }
-
+            $scheduledCommand = $this->em->find(ScheduledCommand::class, $scheduledCommand);
             /** @var ScheduledCommand $command */
             $cron = CronExpression::factory($command->getCronExpression());
             $nextRunDate = $cron->getNextRunDate($command->getLastExecution());
@@ -183,7 +186,10 @@ class ExecuteCommand extends Command
             $this->em->persist($scheduledCommand);
             $this->em->flush();
             $this->em->getConnection()->commit();
-        } catch (\Exception $e) {
+            // PullRequest: Clear ORM after run scheduled command #187
+            $this->em->clear();
+        } catch (\Throwable $e) {
+
             $this->em->getConnection()->rollBack();
             $output->writeln(
                 sprintf(
@@ -248,6 +254,11 @@ class ExecuteCommand extends Command
             $output->writeln('<comment>Entity manager closed by the last command.</comment>');
             $this->em = $this->em->create($this->em->getConnection(), $this->em->getConfiguration());
         }
+
+        // Reactivate the command in DB
+
+        // PullRequest: Fix repeated jobs #181
+        $scheduledCommand = $this->em->find(ScheduledCommand::class, $scheduledCommand);
 
         $scheduledCommand->setLastReturnCode($result);
         $scheduledCommand->setLocked(false);
