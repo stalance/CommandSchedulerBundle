@@ -1,6 +1,6 @@
 <?php
 
-namespace JMose\CommandSchedulerBundle\Repository;
+namespace Dukecity\CommandSchedulerBundle\Repository;
 
 use Cron\CronExpression;
 use DateTimeInterface;
@@ -8,7 +8,7 @@ use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\TransactionRequiredException;
-use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
+use Dukecity\CommandSchedulerBundle\Entity\ScheduledCommand;
 
 /**
  * Class ScheduledCommandRepository.

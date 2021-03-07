@@ -1,8 +1,8 @@
 <?php
 
-namespace JMose\CommandSchedulerBundle\Form\Type;
+namespace Dukecity\CommandSchedulerBundle\Form\Type;
 
-use JMose\CommandSchedulerBundle\Service\CommandParser;
+use Dukecity\CommandSchedulerBundle\Service\CommandParser;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;

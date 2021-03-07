@@ -1,9 +1,9 @@
 <?php /** @noinspection ALL */
 
-namespace JMose\CommandSchedulerBundle\Tests\Command;
+namespace Dukecity\CommandSchedulerBundle\Tests\Command;
 
-use JMose\CommandSchedulerBundle\Command\ExecuteCommand;
-use JMose\CommandSchedulerBundle\Fixtures\ORM\LoadScheduledCommandData;
+use Dukecity\CommandSchedulerBundle\Command\ExecuteCommand;
+use Dukecity\CommandSchedulerBundle\Fixtures\ORM\LoadScheduledCommandData;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Console\Application;

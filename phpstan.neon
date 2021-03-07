@@ -12,15 +12,15 @@ parameters:
     ignoreErrors:
         - '#Call to an undefined method Doctrine\\Persistence\\ObjectManager::getConnection\(\).#'
         - '#Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::children\(\).#'
-        - message: '#Call to an undefined method Doctrine\\Persistence\\ObjectRepository<JMose\\CommandSchedulerBundle\\Entity\\ScheduledCommand>::findFailedAndTimeoutCommands\(\).$#'
+        - message: '#Call to an undefined method Doctrine\\Persistence\\ObjectRepository<Dukecity\\CommandSchedulerBundle\\Entity\\ScheduledCommand>::findFailedAndTimeoutCommands\(\).$#'
           path: Controller/ListController.php
-        - message: '#Call to an undefined method Doctrine\\Persistence\\ObjectRepository<JMose\\CommandSchedulerBundle\\Entity\\ScheduledCommand>::findLockedCommand\(\).$#'
+        - message: '#Call to an undefined method Doctrine\\Persistence\\ObjectRepository<Dukecity\\CommandSchedulerBundle\\Entity\\ScheduledCommand>::findLockedCommand\(\).$#'
           path: Command/UnlockCommand.php
-        - message: '#Call to an undefined method Doctrine\\Persistence\\ObjectRepository<JMose\\CommandSchedulerBundle\\Entity\\ScheduledCommand>::findFailedAndTimeoutCommands\(\).$#'
+        - message: '#Call to an undefined method Doctrine\\Persistence\\ObjectRepository<Dukecity\\CommandSchedulerBundle\\Entity\\ScheduledCommand>::findFailedAndTimeoutCommands\(\).$#'
           path: Command/MonitorCommand.php
-        - message: '#Call to an undefined method Doctrine\\Persistence\\ObjectRepository<JMose\\CommandSchedulerBundle\\Entity\\ScheduledCommand>::findEnabledCommand\(\).$#'
+        - message: '#Call to an undefined method Doctrine\\Persistence\\ObjectRepository<Dukecity\\CommandSchedulerBundle\\Entity\\ScheduledCommand>::findEnabledCommand\(\).$#'
           path: Command/ExecuteCommand.php
-        - message: '#Call to an undefined method Doctrine\\Persistence\\ObjectRepository<JMose\\CommandSchedulerBundle\\Entity\\ScheduledCommand>::getNotLockedCommand\(\).$#'
+        - message: '#Call to an undefined method Doctrine\\Persistence\\ObjectRepository<Dukecity\\CommandSchedulerBundle\\Entity\\ScheduledCommand>::getNotLockedCommand\(\).$#'
           path: Command/ExecuteCommand.php
         - message: '#Call to an undefined method Doctrine\\Persistence\\ObjectManager::isOpen\(\).$#'
           path: Command/ExecuteCommand.php

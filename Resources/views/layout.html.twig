@@ -1,4 +1,4 @@
-{% trans_default_domain 'JMoseCommandScheduler' %}
+{% trans_default_domain 'DukecityCommandScheduler' %}
 <!DOCTYPE html>
 <html lang="{{ app.request.attributes.get('_locale', 'en') }}">
 <head>
@@ -6,11 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Command Scheduler</title>
-    <link href="{{ asset('bundles/jmosecommandscheduler/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('bundles/jmosecommandscheduler/css/bootstrap-theme.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/dukecitycommandscheduler/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/dukecitycommandscheduler/css/bootstrap-theme.min.css') }}" rel="stylesheet">
 </head>
 <body>
-{% include '@JMoseCommandScheduler/Navbar/navbar.html.twig' %}
+{% include '@DukecityCommandScheduler/Navbar/navbar.html.twig' %}
 <div class="jumbotron">
     <div class="container">
         <div class="row">
@@ -38,13 +38,13 @@
     </div>
 </div><!-- /container -->
 
-<script type="text/javascript" src="{{ asset('bundles/jmosecommandscheduler/js/jquery-3.5.1.slim.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('bundles/jmosecommandscheduler/js/jquery-migrate-1.4.1.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/dukecitycommandscheduler/js/jquery-3.5.1.slim.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/dukecitycommandscheduler/js/jquery-migrate-1.4.1.min.js') }}"></script>
 
-<script type="text/javascript" src="{{ asset('bundles/jmosecommandscheduler/js/bootstrap.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/dukecitycommandscheduler/js/bootstrap.min.js') }}"></script>
 
-<script type="text/javascript" src="{{ asset('bundles/jmosecommandscheduler/js/bootstrap-tooltip.js') }}"></script>
-<script type="text/javascript" src="{{ asset('bundles/jmosecommandscheduler/js/bootstrap-confirmation.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/dukecitycommandscheduler/js/bootstrap-tooltip.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/dukecitycommandscheduler/js/bootstrap-confirmation.min.js') }}"></script>
 
 <script type="text/javascript">
     // Enable bootstrap-confirmation (https://bootstrap-confirmation.js.org/)

@@ -1,10 +1,10 @@
 <?php
 
-namespace JMose\CommandSchedulerBundle\Tests\Command;
+namespace Dukecity\CommandSchedulerBundle\Tests\Command;
 
-use JMose\CommandSchedulerBundle\Command\StartSchedulerCommand;
-use JMose\CommandSchedulerBundle\Command\StopSchedulerCommand;
-use JMose\CommandSchedulerBundle\Fixtures\ORM\LoadScheduledCommandData;
+use Dukecity\CommandSchedulerBundle\Command\StartSchedulerCommand;
+use Dukecity\CommandSchedulerBundle\Command\StopSchedulerCommand;
+use Dukecity\CommandSchedulerBundle\Fixtures\ORM\LoadScheduledCommandData;
 
 /**
  * Class StartStopSchedulerCommandTest.

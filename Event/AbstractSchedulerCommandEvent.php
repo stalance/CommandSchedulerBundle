@@ -1,8 +1,8 @@
 <?php
 
-namespace JMose\CommandSchedulerBundle\Event;
+namespace Dukecity\CommandSchedulerBundle\Event;
 
-use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
+use Dukecity\CommandSchedulerBundle\Entity\ScheduledCommand;
 
 abstract class AbstractSchedulerCommandEvent
 {

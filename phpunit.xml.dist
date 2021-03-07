@@ -47,7 +47,7 @@
   </coverage>
 
   <testsuites>
-    <testsuite name="JMoseCommandSchedulerBundle test suite">
+    <testsuite name="DukecityCommandSchedulerBundle test suite">
       <directory suffix="Test.php">Tests</directory>
     </testsuite>
   </testsuites>

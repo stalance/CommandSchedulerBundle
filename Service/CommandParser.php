@@ -1,6 +1,6 @@
 <?php
 
-namespace JMose\CommandSchedulerBundle\Service;
+namespace Dukecity\CommandSchedulerBundle\Service;
 
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Console\Application;

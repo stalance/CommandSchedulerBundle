@@ -1,6 +1,6 @@
 <?php
 
-namespace JMose\CommandSchedulerBundle\Entity;
+namespace Dukecity\CommandSchedulerBundle\Entity;
 
 use Carbon\Carbon;
 use Cron\CronExpression as CronExpressionLib;
@@ -8,12 +8,12 @@ use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="JMose\CommandSchedulerBundle\Repository\ScheduledCommandRepository")
+ * @ORM\Entity(repositoryClass="Dukecity\CommandSchedulerBundle\Repository\ScheduledCommandRepository")
  * @ORM\Table(name="scheduled_command")
  *
  * @author  Julien Guyon <julienguyon@hotmail.com>
  */
-//#[ORM\Entity(repositoryClass="JMose\CommandSchedulerBundle\Repository\ScheduledCommandRepository")]
+//#[ORM\Entity(repositoryClass="Dukecity\CommandSchedulerBundle\Repository\ScheduledCommandRepository")]
 //#[ORM\Table(name="scheduled_command")]
 class ScheduledCommand
 {

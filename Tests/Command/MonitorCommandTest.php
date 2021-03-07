@@ -1,10 +1,10 @@
 <?php
 
-namespace JMose\CommandSchedulerBundle\Tests\Command;
+namespace Dukecity\CommandSchedulerBundle\Tests\Command;
 
-use JMose\CommandSchedulerBundle\Command\MonitorCommand;
-use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
-use JMose\CommandSchedulerBundle\Fixtures\ORM\LoadScheduledCommandData;
+use Dukecity\CommandSchedulerBundle\Command\MonitorCommand;
+use Dukecity\CommandSchedulerBundle\Entity\ScheduledCommand;
+use Dukecity\CommandSchedulerBundle\Fixtures\ORM\LoadScheduledCommandData;
 
 /**
  * Class MonitorCommandTest.

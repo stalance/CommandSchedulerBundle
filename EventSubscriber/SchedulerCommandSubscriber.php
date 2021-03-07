@@ -1,14 +1,14 @@
 <?php
 
-namespace JMose\CommandSchedulerBundle\EventSubscriber;
+namespace Dukecity\CommandSchedulerBundle\EventSubscriber;
 
 use Doctrine\ORM\EntityManagerInterface;
 use JetBrains\PhpStorm\ArrayShape;
-use JMose\CommandSchedulerBundle\Event\SchedulerCommandCreatedEvent;
-use JMose\CommandSchedulerBundle\Event\SchedulerCommandPostExecutionEvent;
-use JMose\CommandSchedulerBundle\Event\SchedulerCommandFailedEvent;
-use JMose\CommandSchedulerBundle\Event\SchedulerCommandPreExecutionEvent;
-use JMose\CommandSchedulerBundle\Notification\CronMonitorNotification;
+use Dukecity\CommandSchedulerBundle\Event\SchedulerCommandCreatedEvent;
+use Dukecity\CommandSchedulerBundle\Event\SchedulerCommandPostExecutionEvent;
+use Dukecity\CommandSchedulerBundle\Event\SchedulerCommandFailedEvent;
+use Dukecity\CommandSchedulerBundle\Event\SchedulerCommandPreExecutionEvent;
+use Dukecity\CommandSchedulerBundle\Notification\CronMonitorNotification;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

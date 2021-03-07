@@ -1,8 +1,8 @@
 <?php
 
-namespace JMose\CommandSchedulerBundle\Form\Type;
+namespace Dukecity\CommandSchedulerBundle\Form\Type;
 
-use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
+use Dukecity\CommandSchedulerBundle\Entity\ScheduledCommand;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -118,7 +118,7 @@ class ScheduledCommandType extends AbstractType
             [
                 'data_class' => ScheduledCommand::class,
                 'wrapper_attr' => 'default_wrapper',
-                'translation_domain' => 'JMoseCommandScheduler',
+                'translation_domain' => 'DukecityCommandScheduler',
             ]
         );
     }

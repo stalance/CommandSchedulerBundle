@@ -2,11 +2,11 @@
 
 /** @noinspection PhpMissingFieldTypeInspection */
 
-namespace JMose\CommandSchedulerBundle\Command;
+namespace Dukecity\CommandSchedulerBundle\Command;
 
 use Carbon\Carbon;
 use Doctrine\Persistence\ObjectManager;
-use JMose\CommandSchedulerBundle\Event\SchedulerCommandFailedEvent;
+use Dukecity\CommandSchedulerBundle\Event\SchedulerCommandFailedEvent;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
@@ -15,7 +15,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 //use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
+use Dukecity\CommandSchedulerBundle\Entity\ScheduledCommand;
 
 /**
  * Class MonitorCommand

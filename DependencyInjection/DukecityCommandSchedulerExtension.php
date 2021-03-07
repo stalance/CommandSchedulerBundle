@@ -1,6 +1,6 @@
 <?php /** @noinspection PhpUnhandledExceptionInspection */
 
-namespace JMose\CommandSchedulerBundle\DependencyInjection;
+namespace Dukecity\CommandSchedulerBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -13,7 +13,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  *
  * @see https://symfony.com/doc/current/bundles/configuration.html
  */
-class JMoseCommandSchedulerExtension extends Extension
+class DukecityCommandSchedulerExtension extends Extension
 {
     /**
      * {@inheritdoc}
@@ -29,7 +29,7 @@ class JMoseCommandSchedulerExtension extends Extension
         $loader->load('services.php');
 
         foreach ($config as $key => $value) {
-            $container->setParameter('jmose_command_scheduler.'.$key, $value);
+            $container->setParameter('dukecity_command_scheduler.'.$key, $value);
         }
     }
 
@@ -38,6 +38,6 @@ class JMoseCommandSchedulerExtension extends Extension
      */
     public function getAlias(): string
     {
-        return 'jmose_command_scheduler';
+        return 'dukecity_command_scheduler';
     }
 }

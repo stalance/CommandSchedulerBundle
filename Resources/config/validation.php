@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
+use Dukecity\CommandSchedulerBundle\Entity\ScheduledCommand;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
-    $containerConfigurator->extension('namespaces', ['CommandSchedulerConstraints' => 'JMose\CommandSchedulerBundle\Validator\Constraints\\']);
+    $containerConfigurator->extension('namespaces', ['CommandSchedulerConstraints' => 'Dukecity\CommandSchedulerBundle\Validator\Constraints\\']);
 
     $containerConfigurator->extension(
         ScheduledCommand::class,

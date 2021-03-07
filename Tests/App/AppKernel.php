@@ -36,7 +36,7 @@ class AppKernel extends Kernel
             new \Symfony\Bundle\TwigBundle\TwigBundle(),
             new \Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new \Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
-            new \JMose\CommandSchedulerBundle\JMoseCommandSchedulerBundle(),
+            new \Dukecity\CommandSchedulerBundle\DukecityCommandSchedulerBundle(),
             new \Liip\TestFixturesBundle\LiipTestFixturesBundle(),
             new \Symfony\Bundle\DebugBundle\DebugBundle(),
             //new \Symfony\Bundle\WebProfilerBundle\WebProfilerBundle(),

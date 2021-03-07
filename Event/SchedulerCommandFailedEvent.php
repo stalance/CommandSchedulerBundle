@@ -1,6 +1,6 @@
 <?php
 
-namespace JMose\CommandSchedulerBundle\Event;
+namespace Dukecity\CommandSchedulerBundle\Event;
 
 class SchedulerCommandFailedEvent
 {

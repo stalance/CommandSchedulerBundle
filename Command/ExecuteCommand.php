@@ -3,11 +3,11 @@
 /** @noinspection PhpUnused */
 /** @noinspection PhpMissingFieldTypeInspection */
 
-namespace JMose\CommandSchedulerBundle\Command;
+namespace Dukecity\CommandSchedulerBundle\Command;
 
 use Doctrine\Persistence\ObjectManager;
-use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
-use JMose\CommandSchedulerBundle\Service\CommandSchedulerExcecution;
+use Dukecity\CommandSchedulerBundle\Entity\ScheduledCommand;
+use Dukecity\CommandSchedulerBundle\Service\CommandSchedulerExcecution;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\LockableTrait;

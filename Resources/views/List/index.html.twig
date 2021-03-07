@@ -1,5 +1,5 @@
-{% extends "@JMoseCommandScheduler/layout.html.twig" %}
-{% trans_default_domain 'JMoseCommandScheduler' %}
+{% extends "@DukecityCommandScheduler/layout.html.twig" %}
+{% trans_default_domain 'DukecityCommandScheduler' %}
 
 {% block title %}
     {{ 'list.title'|trans }}
@@ -26,8 +26,8 @@
         {% for command in scheduledCommands %}
             <tr {% if command.disabled == true %}class="text-muted" {% endif %}>
                 <td>
-                    <!-- <a href="{{ path('jmose_command_scheduler_action_toggle', {'id': command.id}) }}" data-toggle="confirmation" data-btn-ok-label="{{ "action.unlock"|trans }}" data-title="{{ "confirm.unlock"|trans }}" > -->
-                    <a href="{{ path('jmose_command_scheduler_action_toggle', {'id': command.id}) }}" >
+                    <!-- <a href="{{ path('dukecity_command_scheduler_action_toggle', {'id': command.id}) }}" data-toggle="confirmation" data-btn-ok-label="{{ "action.unlock"|trans }}" data-title="{{ "confirm.unlock"|trans }}" > -->
+                    <a href="{{ path('dukecity_command_scheduler_action_toggle', {'id': command.id}) }}" >
                     {% if command.disabled == true %}
                         <span class="text-danger glyphicon glyphicon-off"></span> <span class="sr-only">&nbsp;</span>
                     {% else %}
@@ -69,22 +69,22 @@
                 </td>
                 <td style="min-width: 90px;" class="text-right">
                     {% if command.locked == true %}
-                        <a style="display: inline-block; width: 24px; margin-left: 2px; margin-right: 2px;" href="{{ path('jmose_command_scheduler_action_unlock', {'id': command.id}) }}" data-toggle="confirmation" data-btn-ok-label="{{ "action.unlock"|trans }}" data-title="{{ "confirm.unlock"|trans }}" >
+                        <a style="display: inline-block; width: 24px; margin-left: 2px; margin-right: 2px;" href="{{ path('dukecity_command_scheduler_action_unlock', {'id': command.id}) }}" data-toggle="confirmation" data-btn-ok-label="{{ "action.unlock"|trans }}" data-title="{{ "confirm.unlock"|trans }}" >
                             <span class="text-muted glyphicon glyphicon-lock"></span> <span class="sr-only">{{ "action.unlock"|trans }}</span>
                         </a>
                     {% else %}
                        <div style="display: inline-block;"> </div>
                     {% endif %}
-                    <a style="display: inline-block; width: 24px; margin-left: 2px; margin-right: 2px;" href="{{ path('jmose_command_scheduler_detail_edit', {'id': command.id}) }}" >
+                    <a style="display: inline-block; width: 24px; margin-left: 2px; margin-right: 2px;" href="{{ path('dukecity_command_scheduler_detail_edit', {'id': command.id}) }}" >
                         <span class="text-info glyphicon glyphicon-pencil"></span> <span class="sr-only">{{ "action.edit"|trans }}</span>
                     </a>
-                    <a style="display: inline-block; width: 24px; margin-left: 2px; margin-right: 2px;" href="{{ path('jmose_command_scheduler_action_remove', {'id': command.id}) }}"
+                    <a style="display: inline-block; width: 24px; margin-left: 2px; margin-right: 2px;" href="{{ path('dukecity_command_scheduler_action_remove', {'id': command.id}) }}"
                        data-toggle="confirmation"
                        data-btn-ok-label="{{ "action.delete"|trans }}"
                        data-title="{{ "confirm.delete"|trans }}" >
                         <span class="text-danger glyphicon glyphicon-trash"></span> <span class="sr-only">{{ "action.delete"|trans }}</span>
                     </a>
-                    <a style="display: inline-block; width: 24px; margin-left: 2px; margin-right: 2px;" href="{{ path('jmose_command_scheduler_action_execute', {'id': command.id}) }}" data-toggle="confirmation" data-btn-ok-label="{{ "action.execute"|trans }}" data-title="{{ "confirm.execute"|trans }}">
+                    <a style="display: inline-block; width: 24px; margin-left: 2px; margin-right: 2px;" href="{{ path('dukecity_command_scheduler_action_execute', {'id': command.id}) }}" data-toggle="confirmation" data-btn-ok-label="{{ "action.execute"|trans }}" data-title="{{ "confirm.execute"|trans }}">
                         <span class="text-{% if command.executeImmediately == true %}muted{% else %}success{% endif %} glyphicon glyphicon-play"></span> <span class="sr-only">{{ "action.execute"|trans }}</span>
                     </a>
                 </td>
@@ -94,5 +94,5 @@
     </table>
     </div>
 
-    <a href="{{ path('jmose_command_scheduler_detail_new') }}" class="btn btn-primary btn-lg pull-right" role="button">{{ "action.new"|trans }} »</a>
+    <a href="{{ path('dukecity_command_scheduler_detail_new') }}" class="btn btn-primary btn-lg pull-right" role="button">{{ "action.new"|trans }} »</a>
 {% endblock content %}

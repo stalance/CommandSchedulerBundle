@@ -1,9 +1,9 @@
 <?php
 
-namespace JMose\CommandSchedulerBundle\Tests\Command;
+namespace Dukecity\CommandSchedulerBundle\Tests\Command;
 
-use JMose\CommandSchedulerBundle\Fixtures\ORM\LoadScheduledCommandData;
-use JMose\CommandSchedulerBundle\Command\ListCommand;
+use Dukecity\CommandSchedulerBundle\Fixtures\ORM\LoadScheduledCommandData;
+use Dukecity\CommandSchedulerBundle\Command\ListCommand;
 
 /**
  * Class ListCommandTest.

@@ -1,9 +1,9 @@
 <?php
 
-namespace JMose\CommandSchedulerBundle\Event;
+namespace Dukecity\CommandSchedulerBundle\Event;
 
 use JetBrains\PhpStorm\Pure;
-use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
+use Dukecity\CommandSchedulerBundle\Entity\ScheduledCommand;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class SchedulerCommandPostExecutionEvent extends AbstractSchedulerCommandEvent

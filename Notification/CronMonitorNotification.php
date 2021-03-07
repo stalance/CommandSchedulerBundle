@@ -1,6 +1,6 @@
 <?php
 
-namespace JMose\CommandSchedulerBundle\Notification;
+namespace Dukecity\CommandSchedulerBundle\Notification;
 
 use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Notifier\Message\ChatMessage;

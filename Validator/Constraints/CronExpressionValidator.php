@@ -1,11 +1,11 @@
 <?php
 
-namespace JMose\CommandSchedulerBundle\Validator\Constraints;
+namespace Dukecity\CommandSchedulerBundle\Validator\Constraints;
 
 use Cron\CronExpression as CronExpressionLib;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use JMose\CommandSchedulerBundle\Validator\Constraints\CronExpression;
+use Dukecity\CommandSchedulerBundle\Validator\Constraints\CronExpression;
 
 /**
  * Class CronExpressionValidator.

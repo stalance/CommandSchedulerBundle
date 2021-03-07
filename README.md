@@ -24,10 +24,10 @@ The following table shows the compatibilities of different versions of the bundl
 
 ## Install
 
-When using Symfony Flex there is an [installation recipe](https://github.com/symfony/recipes-contrib/tree/master/jmose/command-scheduler-bundle/2.0).  
+When using Symfony Flex there is an [installation recipe](https://github.com/symfony/recipes-contrib/tree/master/dukecity/command-scheduler-bundle/2.0).  
 To use it, you have to enable contrib recipes on your project : `composer config extra.symfony.allow-contrib true`
 
-composer req jmose/command-scheduler-bundle
+composer req dukecity/command-scheduler-bundle
 
 Update Database
 php bin/console make:migration

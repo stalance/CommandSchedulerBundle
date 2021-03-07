@@ -1,10 +1,10 @@
 <?php
 
-namespace JMose\CommandSchedulerBundle\Tests\Constraints;
+namespace Dukecity\CommandSchedulerBundle\Tests\Constraints;
 
 use JetBrains\PhpStorm\Pure;
-use JMose\CommandSchedulerBundle\Validator\Constraints\CronExpression;
-use JMose\CommandSchedulerBundle\Validator\Constraints\CronExpressionValidator;
+use Dukecity\CommandSchedulerBundle\Validator\Constraints\CronExpression;
+use Dukecity\CommandSchedulerBundle\Validator\Constraints\CronExpressionValidator;
 use Symfony\Component\Validator\Test\ConstraintValidatorTestCase;
 
 /**

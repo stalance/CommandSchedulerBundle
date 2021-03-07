@@ -1,9 +1,9 @@
 <?php /** @noinspection PhpCSValidationInspection */
 
-namespace JMose\CommandSchedulerBundle\Tests\Controller;
+namespace Dukecity\CommandSchedulerBundle\Tests\Controller;
 
-use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
-use JMose\CommandSchedulerBundle\Fixtures\ORM\LoadScheduledCommandData;
+use Dukecity\CommandSchedulerBundle\Entity\ScheduledCommand;
+use Dukecity\CommandSchedulerBundle\Fixtures\ORM\LoadScheduledCommandData;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

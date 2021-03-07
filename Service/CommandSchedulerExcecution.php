@@ -1,6 +1,6 @@
 <?php
 
-namespace JMose\CommandSchedulerBundle\Service;
+namespace Dukecity\CommandSchedulerBundle\Service;
 
 use Doctrine\DBAL\ConnectionException;
 use Doctrine\ORM\OptimisticLockException;
@@ -9,9 +9,9 @@ use Doctrine\ORM\TransactionRequiredException;
 use Doctrine\Persistence\Mapping\MappingException;
 use Doctrine\Persistence\ObjectManager;
 use Exception;
-use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
-use JMose\CommandSchedulerBundle\Event\SchedulerCommandPostExecutionEvent;
-use JMose\CommandSchedulerBundle\Event\SchedulerCommandPreExecutionEvent;
+use Dukecity\CommandSchedulerBundle\Entity\ScheduledCommand;
+use Dukecity\CommandSchedulerBundle\Event\SchedulerCommandPostExecutionEvent;
+use Dukecity\CommandSchedulerBundle\Event\SchedulerCommandPreExecutionEvent;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -65,7 +65,7 @@ class CommandSchedulerExcecution
         $this->managerRegistry = $managerRegistry;
         $this->em = $managerRegistry->getManager($managerName);
         $this->container = $container;
-        $this->logPath = $this->container->getParameter('jmose_command_scheduler.log_path');
+        $this->logPath = $this->container->getParameter('dukecity_command_scheduler.log_path');
         $this->kernel = $kernel;
 
         $this->application = new Application($kernel);

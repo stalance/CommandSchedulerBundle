@@ -1,9 +1,9 @@
 <?php
 
-namespace JMose\CommandSchedulerBundle\Controller;
+namespace Dukecity\CommandSchedulerBundle\Controller;
 
-use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
-use JMose\CommandSchedulerBundle\Form\Type\ScheduledCommandType;
+use Dukecity\CommandSchedulerBundle\Entity\ScheduledCommand;
+use Dukecity\CommandSchedulerBundle\Form\Type\ScheduledCommandType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -36,7 +36,7 @@ class DetailController extends AbstractBaseController
             if ('error' == $scheduledCommand->getCommand()) {
                 $this->addFlash('error', 'ERROR: please check php bin/console list --format=xml');
 
-                return $this->redirectToRoute('jmose_command_scheduler_list');
+                return $this->redirectToRoute('dukecity_command_scheduler_list');
             }
 
             $em = $this->getDoctrine()->getManager();
@@ -44,13 +44,13 @@ class DetailController extends AbstractBaseController
             $em->flush();
 
             // Add a flash message and do a redirect to the list
-            $this->addFlash('success', $this->translator->trans('flash.success', [], 'JMoseCommandScheduler'));
+            $this->addFlash('success', $this->translator->trans('flash.success', [], 'DukecityCommandScheduler'));
 
-            return $this->redirectToRoute('jmose_command_scheduler_list');
+            return $this->redirectToRoute('dukecity_command_scheduler_list');
         }
 
         return $this->render(
-            '@JMoseCommandScheduler/Detail/index.html.twig',
+            '@DukecityCommandScheduler/Detail/index.html.twig',
             ['scheduledCommandForm' => $form->createView()]
         );
     }
