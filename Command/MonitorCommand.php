@@ -1,6 +1,6 @@
 <?php
 
-namespace JMose\CommandSchedulerBundle\Command;
+namespace Dukecity\CommandSchedulerBundle\Command;
 
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Console\Command\Command;
@@ -101,7 +101,7 @@ class MonitorCommand extends Command
         }
 
         // Fist, get all failed or potential timeout
-        $failedCommands = $this->em->getRepository('JMoseCommandSchedulerBundle:ScheduledCommand')
+        $failedCommands = $this->em->getRepository('DukecityCommandSchedulerBundle:ScheduledCommand')
             ->findFailedAndTimeoutCommands($this->lockTimeout);
 
         // Commands in error

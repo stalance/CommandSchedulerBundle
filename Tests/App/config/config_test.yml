@@ -16,7 +16,7 @@ framework:
 doctrine:
     dbal:
         driver:   pdo_sqlite
-        dbname:   jmose_command_scheduler_test
+        dbname:   dukecity_command_scheduler_test
         user:     root
         charset:  UTF8
         path:     "%database_path%"
@@ -33,7 +33,7 @@ security:
         in_memory:
              memory: ~
 
-jmose_command_scheduler:
+dukecity_command_scheduler:
     lock_timeout: 300
     excluded_command_namespaces:
         - scheduler
@@ -46,6 +46,6 @@ liip_test_fixtures:
         sqlite: liip_test_fixtures.services_database_backup.sqlite
 
 services:
-    JMose\CommandSchedulerBundle\Fixtures\ORM\:
+    Dukecity\CommandSchedulerBundle\Fixtures\ORM\:
         resource: '../../../Fixtures/ORM/*'
         tags: ['doctrine.fixture.orm']

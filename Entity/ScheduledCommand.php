@@ -1,6 +1,6 @@
 <?php
 
-namespace JMose\CommandSchedulerBundle\Entity;
+namespace Dukecity\CommandSchedulerBundle\Entity;
 
 /**
  * Entity ScheduledCommand.

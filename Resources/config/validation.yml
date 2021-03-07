@@ -1,7 +1,7 @@
 namespaces:
-    CommandSchedulerConstraints: JMose\CommandSchedulerBundle\Validator\Constraints\
+    CommandSchedulerConstraints: Dukecity\CommandSchedulerBundle\Validator\Constraints\
 
-JMose\CommandSchedulerBundle\Entity\ScheduledCommand:
+Dukecity\CommandSchedulerBundle\Entity\ScheduledCommand:
     properties:
         cronExpression:
             - NotBlank: ~

@@ -1,16 +1,16 @@
 <?php
 
-namespace JMose\CommandSchedulerBundle;
+namespace Dukecity\CommandSchedulerBundle;
 
-use JMose\CommandSchedulerBundle\DependencyInjection\JMoseCommandSchedulerExtension;
+use Dukecity\CommandSchedulerBundle\DependencyInjection\DukecityCommandSchedulerExtension;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class JMoseCommandSchedulerBundle extends Bundle
+class DukecityCommandSchedulerBundle extends Bundle
 {
     /**
      * {@inheritdoc}
      *
-     * @return JMoseCommandSchedulerExtension
+     * @return DukecityCommandSchedulerExtension
      */
     public function getContainerExtension()
     {
@@ -24,6 +24,6 @@ class JMoseCommandSchedulerBundle extends Bundle
      */
     protected function getContainerExtensionClass()
     {
-        return JMoseCommandSchedulerExtension::class;
+        return DukecityCommandSchedulerExtension::class;
     }
 }

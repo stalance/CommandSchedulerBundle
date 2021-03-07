@@ -1,6 +1,6 @@
 <?php
 
-namespace JMose\CommandSchedulerBundle\DependencyInjection;
+namespace Dukecity\CommandSchedulerBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -11,7 +11,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  * This is the class that loads and manages your bundle configuration
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}.
  */
-class JMoseCommandSchedulerExtension extends Extension
+class DukecityCommandSchedulerExtension extends Extension
 {
     /**
      * {@inheritdoc}
@@ -24,7 +24,7 @@ class JMoseCommandSchedulerExtension extends Extension
         $loader->load('services.yml');
 
         foreach ($config as $key => $value) {
-            $container->setParameter('jmose_command_scheduler.'.$key, $value);
+            $container->setParameter('dukecity_command_scheduler.'.$key, $value);
         }
     }
 
@@ -33,6 +33,6 @@ class JMoseCommandSchedulerExtension extends Extension
      */
     public function getAlias()
     {
-        return 'jmose_command_scheduler';
+        return 'dukecity_command_scheduler';
     }
 }

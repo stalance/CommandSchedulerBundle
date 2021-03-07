@@ -1,6 +1,6 @@
 <?php
 
-namespace JMose\CommandSchedulerBundle\DependencyInjection;
+namespace Dukecity\CommandSchedulerBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -17,12 +17,12 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder('jmose_command_scheduler');
+        $treeBuilder = new TreeBuilder('dukecity_command_scheduler');
         if (method_exists($treeBuilder, 'getRootNode')) {
             $rootNode = $treeBuilder->getRootNode();
         } else {
             // BC layer for symfony/config 4.1 and older
-            $rootNode = $treeBuilder->root('jmose_command_scheduler');
+            $rootNode = $treeBuilder->root('dukecity_command_scheduler');
         }
 
         $rootNode

@@ -1,8 +1,8 @@
 <?php
 
-namespace JMose\CommandSchedulerBundle\Controller;
+namespace Dukecity\CommandSchedulerBundle\Controller;
 
-use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
+use Dukecity\CommandSchedulerBundle\Entity\ScheduledCommand;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,11 +33,11 @@ class ListController extends BaseController
     public function indexAction()
     {
         $scheduledCommands = $this->getDoctrineManager()->getRepository(
-            'JMoseCommandSchedulerBundle:ScheduledCommand'
+            'DukecityCommandSchedulerBundle:ScheduledCommand'
         )->findAll();
 
         return $this->render(
-            '@JMoseCommandScheduler/List/index.html.twig',
+            '@DukecityCommandScheduler/List/index.html.twig',
             ['scheduledCommands' => $scheduledCommands]
         );
     }
@@ -57,9 +57,9 @@ class ListController extends BaseController
 
         // Add a flash message and do a redirect to the list
         $this->get('session')->getFlashBag()
-            ->add('success', $this->translator->trans('flash.deleted', [], 'JMoseCommandScheduler'));
+            ->add('success', $this->translator->trans('flash.deleted', [], 'DukecityCommandScheduler'));
 
-        return $this->redirect($this->generateUrl('jmose_command_scheduler_list'));
+        return $this->redirect($this->generateUrl('dukecity_command_scheduler_list'));
     }
 
     /**
@@ -74,7 +74,7 @@ class ListController extends BaseController
         $scheduledCommand->setDisabled(!$scheduledCommand->isDisabled());
         $entityManager->flush();
 
-        return $this->redirect($this->generateUrl('jmose_command_scheduler_list'));
+        return $this->redirect($this->generateUrl('dukecity_command_scheduler_list'));
     }
 
     /**
@@ -92,13 +92,13 @@ class ListController extends BaseController
 
         // Add a flash message and do a redirect to the list
         $this->get('session')->getFlashBag()
-            ->add('success', $this->translator->trans('flash.execute', [], 'JMoseCommandScheduler'));
+            ->add('success', $this->translator->trans('flash.execute', [], 'DukecityCommandScheduler'));
 
         if ($request->query->has('referer')) {
             return $this->redirect($request->getSchemeAndHttpHost().urldecode($request->query->get('referer')));
         }
 
-        return $this->redirect($this->generateUrl('jmose_command_scheduler_list'));
+        return $this->redirect($this->generateUrl('dukecity_command_scheduler_list'));
     }
 
     /**
@@ -116,13 +116,13 @@ class ListController extends BaseController
 
         // Add a flash message and do a redirect to the list
         $this->get('session')->getFlashBag()
-            ->add('success', $this->translator->trans('flash.unlocked', [], 'JMoseCommandScheduler'));
+            ->add('success', $this->translator->trans('flash.unlocked', [], 'DukecityCommandScheduler'));
 
         if ($request->query->has('referer')) {
             return $this->redirect($request->getSchemeAndHttpHost().urldecode($request->query->get('referer')));
         }
 
-        return $this->redirect($this->generateUrl('jmose_command_scheduler_list'));
+        return $this->redirect($this->generateUrl('dukecity_command_scheduler_list'));
     }
 
     /**

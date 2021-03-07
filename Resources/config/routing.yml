@@ -1,39 +1,39 @@
-jmose_command_scheduler_list:
+dukecity_command_scheduler_list:
     path:  /command-scheduler/list
-    defaults: { _controller: JMose\CommandSchedulerBundle\Controller\ListController::indexAction }
+    defaults: { _controller: Dukecity\CommandSchedulerBundle\Controller\ListController::indexAction }
 
-jmose_command_scheduler_monitor:
+dukecity_command_scheduler_monitor:
     path:  /command-scheduler/monitor
-    defaults: { _controller: JMose\CommandSchedulerBundle\Controller\ListController::monitorAction }
+    defaults: { _controller: Dukecity\CommandSchedulerBundle\Controller\ListController::monitorAction }
 
-jmose_command_scheduler_action_toggle:
+dukecity_command_scheduler_action_toggle:
     path:  /command-scheduler/action/toggle/{id}
-    defaults: { _controller: JMose\CommandSchedulerBundle\Controller\ListController::toggleAction }
+    defaults: { _controller: Dukecity\CommandSchedulerBundle\Controller\ListController::toggleAction }
 
-jmose_command_scheduler_action_remove:
+dukecity_command_scheduler_action_remove:
     path:  /command-scheduler/action/remove/{id}
-    defaults: { _controller: JMose\CommandSchedulerBundle\Controller\ListController::removeAction }
+    defaults: { _controller: Dukecity\CommandSchedulerBundle\Controller\ListController::removeAction }
 
-jmose_command_scheduler_action_execute:
+dukecity_command_scheduler_action_execute:
     path:  /command-scheduler/action/execute/{id}
-    defaults: { _controller: JMose\CommandSchedulerBundle\Controller\ListController::executeAction }
+    defaults: { _controller: Dukecity\CommandSchedulerBundle\Controller\ListController::executeAction }
 
-jmose_command_scheduler_action_unlock:
+dukecity_command_scheduler_action_unlock:
     path:  /command-scheduler/action/unlock/{id}
-    defaults: { _controller: JMose\CommandSchedulerBundle\Controller\ListController::unlockAction }
+    defaults: { _controller: Dukecity\CommandSchedulerBundle\Controller\ListController::unlockAction }
 
-jmose_command_scheduler_detail_index:
+dukecity_command_scheduler_detail_index:
     path:  /command-scheduler/detail/view/
-    defaults: { _controller: JMose\CommandSchedulerBundle\Controller\DetailController::indexAction }
+    defaults: { _controller: Dukecity\CommandSchedulerBundle\Controller\DetailController::indexAction }
 
-jmose_command_scheduler_detail_edit:
+dukecity_command_scheduler_detail_edit:
     path:  /command-scheduler/detail/edit/{scheduledCommandId}
-    defaults: { _controller: JMose\CommandSchedulerBundle\Controller\DetailController::initEditScheduledCommandAction }
+    defaults: { _controller: Dukecity\CommandSchedulerBundle\Controller\DetailController::initEditScheduledCommandAction }
 
-jmose_command_scheduler_detail_new:
+dukecity_command_scheduler_detail_new:
     path:  /command-scheduler/detail/new
-    defaults: { _controller: JMose\CommandSchedulerBundle\Controller\DetailController::initNewScheduledCommandAction }
+    defaults: { _controller: Dukecity\CommandSchedulerBundle\Controller\DetailController::initNewScheduledCommandAction }
 
-jmose_command_scheduler_detail_save:
+dukecity_command_scheduler_detail_save:
     path:  /command-scheduler/detail/save
-    defaults: { _controller: JMose\CommandSchedulerBundle\Controller\DetailController::saveAction }
+    defaults: { _controller: Dukecity\CommandSchedulerBundle\Controller\DetailController::saveAction }

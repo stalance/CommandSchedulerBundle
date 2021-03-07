@@ -6,7 +6,7 @@ Installation
 Allow Flex to use contrib recipes and require the bundle :  
 ``` bash
 $ composer config extra.symfony.allow-contrib true
-$ composer require jmose/command-scheduler-bundle
+$ composer require dukecity/command-scheduler-bundle
 ```
 
 The recipe will enable the bundle and its routes, so you can go directly to the [configuration section](#2---set-up-configuration)
@@ -17,7 +17,7 @@ The recipe will enable the bundle and its routes, so you can go directly to the 
 
 Add the bundle and dependencies in  your `composer.json` : 
 ``` bash
-$ composer require jmose/command-scheduler-bundle
+$ composer require dukecity/command-scheduler-bundle
 ```
 
 If you don't have composer yet, please refer to [the official Composer website](http://getcomposer.org/).
@@ -36,7 +36,7 @@ public function registerBundles()
 {
     $bundles = array(
         // ...
-        new JMose\CommandSchedulerBundle\JMoseCommandSchedulerBundle(),
+        new Dukecity\CommandSchedulerBundle\DukecityCommandSchedulerBundle(),
     );
 }
 ```
@@ -45,8 +45,8 @@ Now, you have to register the routes provided by the bundle :
 ```yaml
 # app/config/routing.yml
 
-jmose_command_scheduler:
-    resource: "@JMoseCommandSchedulerBundle/Resources/config/routing.yml"
+dukecity_command_scheduler:
+    resource: "@DukecityCommandSchedulerBundle/Resources/config/routing.yml"
     prefix:   /
 ```
 
@@ -61,7 +61,7 @@ doctrine:
             default:
                 mappings:
                     YourBundle: ~
-                    JMoseCommandSchedulerBundle: ~
+                    DukecityCommandSchedulerBundle: ~
 ```
 
 If you wish to use default texts provided in this bundle, you have to make sure you have translator enabled in your config.
@@ -103,7 +103,7 @@ See the [Usage](#usage) section to have more information
 Here is the default bundle configuration. The flex recipe will create the scheduler.yaml file in your packages directory where you can change the base configuration.
 
 ```yaml
-jmose_command_scheduler:
+dukecity_command_scheduler:
 
     # Default directory where scheduler will write output files
     #  This default value assume that php bin/console is launched from project's root and that the directory is writable
@@ -136,7 +136,7 @@ Feel free to override it (especially `log_path`) in your `config.yml` file.
 If you'd like to alter the navigation bar shown on `http://{your-app-root}/command-scheduler/list` you'll want to override the navbar template.
 This can easily be done by using standard overrides in Symfony, as described [here](http://symfony.com/doc/current/templating/overriding.html).
 
-In your project, you'll want to copy the `Navbar:navbar:html.twig` template into `app/Resources/JMoseCommandSchedulerBundle/views/Navbar/navbar.html.twig`.  Any changes to the file in this location will take precedence over the bundle's template file.
+In your project, you'll want to copy the `Navbar:navbar:html.twig` template into `app/Resources/DukecityCommandSchedulerBundle/views/Navbar/navbar.html.twig`.  Any changes to the file in this location will take precedence over the bundle's template file.
 
 ### 6 - EasyAdmin integration
 
@@ -146,9 +146,9 @@ If you want to manage your scheduled commands via [EasyAdmin](https://github.com
 easy_admin:
   entities:
     Cron:
-      translation_domain: 'JMoseCommandScheduler'
+      translation_domain: 'DukecityCommandScheduler'
       label: 'list.title'
-      class: JMose\CommandSchedulerBundle\Entity\ScheduledCommand
+      class: Dukecity\CommandSchedulerBundle\Entity\ScheduledCommand
       list:
         title: "list.title"
         fields:
@@ -162,12 +162,12 @@ easy_admin:
           - { property: 'priority', label: 'detail.priority' }
           - { property: 'disabled', label: 'detail.disabled' }
         actions:
-          - { name: 'jmose_command_scheduler_action_execute', type: 'route', label: 'action.execute' }
-          - { name: 'jmose_command_scheduler_action_unlock', type: 'route', label: 'action.unlock' }
+          - { name: 'dukecity_command_scheduler_action_execute', type: 'route', label: 'action.execute' }
+          - { name: 'dukecity_command_scheduler_action_unlock', type: 'route', label: 'action.unlock' }
       form:
         fields:
           - { property: 'name', label: 'detail.name' }
-          - { property: 'command', label: 'detail.command', type: 'JMose\CommandSchedulerBundle\Form\Type\CommandChoiceType' }
+          - { property: 'command', label: 'detail.command', type: 'Dukecity\CommandSchedulerBundle\Form\Type\CommandChoiceType' }
           - { property: 'arguments', label: 'detail.arguments' }
           - { property: 'cronExpression', label: 'detail.cronExpression' }
           - { property: 'priority', label: 'detail.priority' }

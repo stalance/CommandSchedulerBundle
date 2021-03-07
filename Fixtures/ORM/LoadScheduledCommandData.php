@@ -1,10 +1,10 @@
 <?php
 
-namespace JMose\CommandSchedulerBundle\Fixtures\ORM;
+namespace Dukecity\CommandSchedulerBundle\Fixtures\ORM;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
+use Dukecity\CommandSchedulerBundle\Entity\ScheduledCommand;
 
 /**
  * Class LoadScheduledCommandData.

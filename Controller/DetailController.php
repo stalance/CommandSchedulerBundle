@@ -1,9 +1,9 @@
 <?php
 
-namespace JMose\CommandSchedulerBundle\Controller;
+namespace Dukecity\CommandSchedulerBundle\Controller;
 
-use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
-use JMose\CommandSchedulerBundle\Form\Type\ScheduledCommandType;
+use Dukecity\CommandSchedulerBundle\Entity\ScheduledCommand;
+use Dukecity\CommandSchedulerBundle\Form\Type\ScheduledCommandType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,7 +31,7 @@ class DetailController extends BaseController
         }
 
         return $this->render(
-            '@JMoseCommandScheduler/Detail/index.html.twig',
+            '@DukecityCommandScheduler/Detail/index.html.twig',
             [
                 'scheduledCommandForm' => $scheduledCommandForm->createView(),
             ]
@@ -107,9 +107,9 @@ class DetailController extends BaseController
 
             // Add a flash message and do a redirect to the list
             $this->get('session')->getFlashBag()
-                ->add('success', $this->translator->trans('flash.success', [], 'JMoseCommandScheduler'));
+                ->add('success', $this->translator->trans('flash.success', [], 'DukecityCommandScheduler'));
 
-            return $this->redirect($this->generateUrl('jmose_command_scheduler_list'));
+            return $this->redirect($this->generateUrl('dukecity_command_scheduler_list'));
         }
 
         // Redirect to indexAction with the form object that has validation errors

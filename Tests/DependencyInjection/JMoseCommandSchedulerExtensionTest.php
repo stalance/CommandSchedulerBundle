@@ -1,13 +1,13 @@
 <?php
 
-namespace JMose\CommandSchedulerBundle\DependencyInjection\Tests;
+namespace Dukecity\CommandSchedulerBundle\DependencyInjection\Tests;
 
-use JMose\CommandSchedulerBundle\DependencyInjection\JMoseCommandSchedulerExtension;
+use Dukecity\CommandSchedulerBundle\DependencyInjection\DukecityCommandSchedulerExtension;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Yaml\Yaml;
 
-class JMoseCommandSchedulerExtensionTest extends TestCase
+class DukecityCommandSchedulerExtensionTest extends TestCase
 {
     /**
      * @dataProvider provideConfiguration
@@ -20,7 +20,7 @@ class JMoseCommandSchedulerExtensionTest extends TestCase
     {
         $builder = new ContainerBuilder();
 
-        $ext = new JMoseCommandSchedulerExtension();
+        $ext = new DukecityCommandSchedulerExtension();
 
         $ext->load($config, $builder);
 
@@ -31,7 +31,7 @@ class JMoseCommandSchedulerExtensionTest extends TestCase
 
     public function provideConfiguration()
     {
-        $rootNode = 'jmose_command_scheduler';
+        $rootNode = 'dukecity_command_scheduler';
 
         $dir = __DIR__.'/configuration_set/';
 

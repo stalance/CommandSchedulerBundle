@@ -1,10 +1,10 @@
 <?php
 
-namespace JMose\CommandSchedulerBundle\Entity\Repository;
+namespace Dukecity\CommandSchedulerBundle\Entity\Repository;
 
 use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityRepository;
-use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
+use Dukecity\CommandSchedulerBundle\Entity\ScheduledCommand;
 
 /**
  * Class ScheduledCommandRepository.
@@ -60,7 +60,7 @@ class ScheduledCommandRepository extends EntityRepository
     /**
      * @param int|bool $lockTimeout
      *
-     * @return array|\JMose\CommandSchedulerBundle\Entity\ScheduledCommand[]
+     * @return array|\Dukecity\CommandSchedulerBundle\Entity\ScheduledCommand[]
      */
     public function findFailedAndTimeoutCommands($lockTimeout = false)
     {

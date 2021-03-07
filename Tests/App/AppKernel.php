@@ -16,7 +16,7 @@ class AppKernel extends Kernel
             new \Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new \Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new \Liip\FunctionalTestBundle\LiipFunctionalTestBundle(),
-            new \JMose\CommandSchedulerBundle\JMoseCommandSchedulerBundle(),
+            new \Dukecity\CommandSchedulerBundle\DukecityCommandSchedulerBundle(),
             new \Liip\TestFixturesBundle\LiipTestFixturesBundle(),
         ];
     }

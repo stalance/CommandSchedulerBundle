@@ -1,9 +1,9 @@
 <?php
 
-namespace JMose\CommandSchedulerBundle\Command;
+namespace Dukecity\CommandSchedulerBundle\Command;
 
 use Cron\CronExpression;
-use JMose\CommandSchedulerBundle\Entity\ScheduledCommand;
+use Dukecity\CommandSchedulerBundle\Entity\ScheduledCommand;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -125,7 +125,7 @@ class ExecuteCommand extends Command
             if ($command->isDisabled() || $command->isLocked()) {
                 continue;
             }
-            $scheduledCommand = $this->em->find(ScheduledCommand::class, $scheduledCommand);
+            $command = $this->em->find(ScheduledCommand::class, $command);
             /** @var ScheduledCommand $command */
             $cron = CronExpression::factory($command->getCronExpression());
             $nextRunDate = $cron->getNextRunDate($command->getLastExecution());
