@@ -1,24 +1,16 @@
 CommandSchedulerBundle
 ======================
 
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/8d984140-0e19-4c4f-8b05-605025eebeb5/mini.png)](https://insight.sensiolabs.com/projects/8d984140-0e19-4c4f-8b05-605025eebeb5)
-[![Build Status](https://travis-ci.org/j-guyon/CommandSchedulerBundle.svg)](https://travis-ci.org/j-guyon/CommandSchedulerBundle)
-[![Coverage Status](https://coveralls.io/repos/J-Mose/CommandSchedulerBundle/badge.svg)](https://coveralls.io/r/J-Mose/CommandSchedulerBundle)
-[![Latest Stable Version](https://poser.pugx.org/dukecity/command-scheduler-bundle/v/stable)](https://packagist.org/packages/dukecity/command-scheduler-bundle)
-
 This bundle will allow you to easily manage scheduling for Symfony's console commands (native or not) with cron expression.
 
 ## Versions & Dependencies
 
 The following table shows the compatibilities of different versions of the bundle :
 
-| Version                                                                                 | Symfony          | PHP    |
-| --------------------------------------------------------------------------------------- |  --------------- | ------ |
-| [3.0 (master)](https://github.com/J-Mose/CommandSchedulerBundle/tree/master)            | ^3.4\|^4.3\|^5.0 | >=7.2  |
-| [2.2.x](https://github.com/J-Mose/CommandSchedulerBundle/tree/2.2)                      | ^3.4\|^4.3       | >=7.1  |
-| [2.0.2](https://github.com/J-Mose/CommandSchedulerBundle/tree/v2.0.2) (unmaintained)    | ^3.4\|^4.1       | >=5.6  |
-| [1.2.x](https://github.com/J-Mose/CommandSchedulerBundle/tree/1.2) (unmaintained)       | ^2.8\|^3.0       | >=5.5  |
-| [1.1.x](https://github.com/J-Mose/CommandSchedulerBundle/tree/1.1) (unmaintained)       | ^2.3             | >=5.3  |
+| Version                                                                                 | Symfony          | PHP        |
+| --------------------------------------------------------------------------------------- |  --------------- | ---------- |
+| [3.0 (master)](https://github.com/J-Mose/CommandSchedulerBundle/tree/master)            | ^3.4\|^4.3\|^5.0 | ^7.2|^8.0  |
+| [2.2.x](https://github.com/J-Mose/CommandSchedulerBundle/tree/2.2)                      | ^3.4\|^4.3       | ^7.1       |
 
 When using Symfony Flex there is an [installation recipe](https://github.com/symfony/recipes-contrib/tree/master/dukecity/command-scheduler-bundle/2.0).  
 To use it, you have to enable contrib recipes on your project : `composer config extra.symfony.allow-contrib true`

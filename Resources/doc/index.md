@@ -138,9 +138,9 @@ This can easily be done by using standard overrides in Symfony, as described [he
 
 In your project, you'll want to copy the `Navbar:navbar:html.twig` template into `app/Resources/DukecityCommandSchedulerBundle/views/Navbar/navbar.html.twig`.  Any changes to the file in this location will take precedence over the bundle's template file.
 
-### 6 - EasyAdmin integration
+### 6 - EasyAdmin v.2 integration
 
-If you want to manage your scheduled commands via [EasyAdmin](https://github.com/EasyCorp/EasyAdminBundle) here is a configuration template that you can copy/paste and change to your needs.
+If you want to manage your scheduled commands via [EasyAdmin v. 2](https://github.com/EasyCorp/EasyAdminBundle/tree/2.x) here is a configuration template that you can copy/paste and change to your needs.
  
 ```yaml
 easy_admin:
