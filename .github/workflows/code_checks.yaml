@@ -13,22 +13,31 @@ jobs:
     strategy:
       matrix:
         php: ['8.0']
+        stability: [ prefer-lowest, prefer-stable ]
 
-    name: PHP ${{ matrix.php }} tests
+    name: PHP ${{ matrix.php }} - ${{ matrix.stability }} tests
     steps:
       # basically git clone
       - uses: actions/checkout@v2
+
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.composer/cache/files
+          key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
 
       # use PHP of specific version
       - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: pcov
+          extensions: pcov, dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
           coverage: pcov # none, disable xdebug, pcov
 
-      # if we 2 steps like this, we can better see if composer failed or tests
-      - run: composer install --no-progress
-      - run: vendor/bin/phpunit
+      - name: Install dependencies
+        run: composer update --${{ matrix.stability }} --prefer-dist --no-interaction
+
+      - name: Execute tests
+        run: vendor/bin/phpunit --verbose
 
 
   #cs:
