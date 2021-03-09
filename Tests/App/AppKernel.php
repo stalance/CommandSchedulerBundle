@@ -14,7 +14,7 @@ use Symfony\Component\HttpKernel\Kernel;
  */
 class AppKernel extends Kernel
 {
-    use MicroKernelTrait;
+    #use MicroKernelTrait;
 
     #[Pure]
     public function __construct()
