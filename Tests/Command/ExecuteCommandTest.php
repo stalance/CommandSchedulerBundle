@@ -8,6 +8,7 @@ use Liip\TestFixturesBundle\Test\FixturesTrait;
 
 /**
  * Class ExecuteCommandTest.
+ * @method assertMatchesRegularExpression(string $string, false|string|string[] $output)
  */
 class ExecuteCommandTest extends WebTestCase
 {
@@ -24,13 +25,13 @@ class ExecuteCommandTest extends WebTestCase
         $output = $this->runCommand('scheduler:execute', [], true)->getDisplay();
 
         $this->assertStringStartsWith('Start : Execute all scheduled command', $output);
-        $this->assertMatchesRegularExpression('/debug:container should be executed/', $output);
-        $this->assertMatchesRegularExpression('/Execute : debug:container --help/', $output);
-        $this->assertMatchesRegularExpression('/Immediately execution asked for : debug:router/', $output);
-        $this->assertMatchesRegularExpression('/Execute : debug:router/', $output);
+        $this->assertRegExp('/debug:container should be executed/', $output);
+        $this->assertRegExp('/Execute : debug:container --help/', $output);
+        $this->assertRegExp('/Immediately execution asked for : debug:router/', $output);
+        $this->assertRegExp('/Execute : debug:router/', $output);
 
         $output = $this->runCommand('scheduler:execute')->getDisplay();
-        $this->assertMatchesRegularExpression('/Nothing to do/', $output);
+        $this->assertRegExp('/Nothing to do/', $output);
     }
 
     /**
@@ -52,7 +53,7 @@ class ExecuteCommandTest extends WebTestCase
         $this->assertEquals('', $output);
 
         $output = $this->runCommand('scheduler:execute')->getDisplay();
-        $this->assertMatchesRegularExpression('/Nothing to do/', $output);
+        $this->assertRegExp('/Nothing to do/', $output);
     }
 
     /**
@@ -72,7 +73,7 @@ class ExecuteCommandTest extends WebTestCase
         )->getDisplay();
 
         $this->assertStringStartsWith('Start : Dump all scheduled command', $output);
-        $this->assertMatchesRegularExpression('/Command debug:container should be executed/', $output);
-        $this->assertMatchesRegularExpression('/Immediately execution asked for : debug:router/', $output);
+        $this->assertRegExp('/Command debug:container should be executed/', $output);
+        $this->assertRegExp('/Immediately execution asked for : debug:router/', $output);
     }
 }

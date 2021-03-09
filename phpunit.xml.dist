@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- http://phpunit.de/manual/4.1/en/appendixes.configuration.html -->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" backupGlobals="false" backupStaticAttributes="false" colors="true" convertErrorsToExceptions="true" convertNoticesToExceptions="true" convertWarningsToExceptions="true" processIsolation="false" stopOnFailure="false" bootstrap="Tests/bootstrap.php" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+  <php>
+    <server name="KERNEL_CLASS" value="App\Tests\App\AppKernel"/>
+    <server name="KERNEL_DIR" value="./Tests/App"/>
+    <!-- <env name="SYMFONY_DEPRECATIONS_HELPER" value="999999" /> -->
+    <server name="SHELL_VERBOSITY" value="-1"/>
+    <ini name="zend.enable_gc" value="0"/>
+    <!-- disable E_USER_DEPRECATED -->
+    <!-- -16385 is the same as -1 & ~E_USER_DEPRECATED -->
+    <ini name="error_reporting" value="-16385"/>
+  </php>
   <coverage processUncoveredFiles="true">
     <include>
       <directory suffix=".php">./Command</directory>
@@ -26,13 +36,4 @@
     </testsuite>
   </testsuites>
   <logging/>
-  <php>
-    <server name="KERNEL_CLASS" value="App\Tests\App\AppKernel"/>
-    <server name="KERNEL_DIR" value="./Tests/App"/>
-    <server name="SHELL_VERBOSITY" value="-1"/>
-    <ini name="zend.enable_gc" value="0"/>
-    <!-- disable E_USER_DEPRECATED -->
-    <!-- -16385 is the same as -1 & ~E_USER_DEPRECATED -->
-    <ini name="error_reporting" value="-16385"/>
-  </php>
 </phpunit>

@@ -41,8 +41,8 @@ class MonitorCommandTest extends WebTestCase
         // One command is locked in fixture (2), another have a -1 return code as lastReturn (4)
         $output = $this->runCommand('scheduler:monitor', ['--dump' => true], true)->getDisplay();
 
-        $this->assertMatchesRegularExpression('/two:/', $output);
-        $this->assertMatchesRegularExpression('/four:/', $output);
+        $this->assertRegExp('/two:/', $output);
+        $this->assertRegExp('/four:/', $output);
     }
 
     /**
