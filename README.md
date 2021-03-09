@@ -9,7 +9,7 @@ The following table shows the compatibilities of different versions of the bundl
 
 | Version                                                                                 | Symfony          | PHP        |
 | --------------------------------------------------------------------------------------- |  --------------- | ---------- |
-| [3.0 (master)](https://github.com/J-Mose/CommandSchedulerBundle/tree/master)            | ^3.4\|^4.3\|^5.0 | ^7.2|^8.0  |
+| [3.0 (master)](https://github.com/J-Mose/CommandSchedulerBundle/tree/master)            | ^3.4\|^4.3\|^5.0 | ^7.3|^8.0  |
 | [2.2.x](https://github.com/J-Mose/CommandSchedulerBundle/tree/2.2)                      | ^3.4\|^4.3       | ^7.1       |
 
 When using Symfony Flex there is an [installation recipe](https://github.com/symfony/recipes-contrib/tree/master/dukecity/command-scheduler-bundle/2.0).  
