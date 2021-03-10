@@ -17,7 +17,7 @@ The following table shows the compatibilities of different versions of the bundl
 
 | Version                                                                               | Symfony          | PHP    |
 | ------------------------------------------------------------------------------------- |  --------------- | ------ |
-| [4.0 (master)](https://github.com/Dukecity/CommandSchedulerBundle/tree/master)        | ^4.4.20|^5.2     | >=8.0  |
+| [4.0 (master)](https://github.com/Dukecity/CommandSchedulerBundle/tree/master)        | ^4.4.20\|^5.2    | >=8.0  |
 | [3.0 (master)](https://github.com/Dukecity/CommandSchedulerBundle/tree/3.x)           | ^3.4\|^4.3\|^5.0 | >=7.2  |
 | [2.2.x](https://github.com/Dukecity/CommandSchedulerBundle/tree/2.2)                  | ^3.4\|^4.3       | >=7.1  |
 
