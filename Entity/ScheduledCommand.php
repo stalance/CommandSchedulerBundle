@@ -191,11 +191,11 @@ class ScheduledCommand
     /**
      * Set arguments.
      *
-     * @param string $arguments
+     * @param string|null $arguments
      *
      * @return ScheduledCommand
      */
-    public function setArguments(string $arguments): ScheduledCommand
+    public function setArguments(?string $arguments): ScheduledCommand
     {
         $this->arguments = $arguments;
 
