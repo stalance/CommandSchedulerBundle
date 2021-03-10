@@ -31,6 +31,9 @@ class ExecuteCommand extends Command
 {
     use LockableTrait;
 
+    const SUCCESS = 0;
+    const FAILURE = 1;
+
     /**
      * @var string
      */
@@ -144,7 +147,7 @@ HELP
         if (!$this->lock()) {
             $this->output->writeln('The command is already running in another process.');
 
-            return Command::SUCCESS;
+            return self::SUCCESS;
         }
 
 
@@ -172,7 +175,7 @@ HELP
                 $this->logPath.' not found or not writable. Check `log_path` in your config.yml'
             );
 
-            return Command::FAILURE;
+            return self::FAILURE;
         }
 
         $commandsToExceute = $this->em->getRepository(ScheduledCommand::class)
@@ -192,12 +195,19 @@ HELP
         {
             foreach ($commandsToExceute as $command)
             {
-                $io->info($command->getName().': '.$command->getCommand().' '.$command->getArguments());
+                if(method_exists($io, "info"))
+                {
+                    $io->info($command->getName().': '.$command->getCommand().' '.$command->getArguments());
+                }
+                else
+                {
+                    $io->comment($command->getName().': '.$command->getCommand().' '.$command->getArguments());
+                }
             }
         }
         else
         {
-            # Exceute
+            # Execute
             #$sectionProgressbar = $this->output->section();
             $progress = new ProgressBar($sectionProgressbar);
             $progress->setMessage('Start');
@@ -233,6 +243,6 @@ HELP
 
         $this->release();
 
-        return Command::SUCCESS;
+        return self::SUCCESS;
     }
 }

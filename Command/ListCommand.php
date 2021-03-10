@@ -20,6 +20,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 ##[ConsoleCommand(name: 'scheduler:list', description: 'List scheduled commands')]
 class ListCommand extends Command
 {
+    const SUCCESS = 0;
+    const FAILURE = 1;
+
     /**
      * @var string
      */
@@ -96,6 +99,6 @@ class ListCommand extends Command
 
         $table->render();
 
-        return Command::SUCCESS;
+        return self::SUCCESS;
     }
 }

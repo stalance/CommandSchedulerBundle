@@ -20,8 +20,12 @@ use Dukecity\CommandSchedulerBundle\Service\CommandParser;
 use Dukecity\CommandSchedulerBundle\Command\ListCommand;
 use Dukecity\CommandSchedulerBundle\Service\CommandSchedulerExecution;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\ref;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
+
+# TODO In versions earlier to Symfony 5.1 the service() function was called ref()
+# Stay with ref() for symfony 4.4 support
 return static function (ContainerConfigurator $containerConfigurator): void {
     $services = $containerConfigurator->services();
 
@@ -29,7 +33,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->public()
         ->autowire()
         ->call('setManagerName', ['%dukecity_command_scheduler.doctrine_manager%'])
-        ->call('setTranslator', [service('translator')])
+        ->call('setTranslator', [ref('translator')])
         ->tag('container.service_subscriber')
         ->tag('controller.service_arguments');
 
@@ -37,9 +41,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->public()
         ->autowire()
         ->call('setManagerName', ['%dukecity_command_scheduler.doctrine_manager%'])
-        ->call('setTranslator', [service('translator')])
+        ->call('setTranslator', [ref('translator')])
         ->call('setLockTimeout', ['%dukecity_command_scheduler.lock_timeout%'])
-        ->call('setLogger', [service('logger')])
+        ->call('setLogger', [ref('logger')])
         ->tag('container.service_subscriber')
         ->tag('controller.service_arguments');
 
@@ -47,15 +51,15 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->public()
         ->autowire()
         ->call('setManagerName', ['%dukecity_command_scheduler.doctrine_manager%'])
-        ->call('setTranslator', [service('translator')])
+        ->call('setTranslator', [ref('translator')])
         ->call('setLockTimeout', ['%dukecity_command_scheduler.lock_timeout%'])
-        ->call('setLogger', [service('logger')])
+        ->call('setLogger', [ref('logger')])
         ->tag('controller.service_arguments');
 
     $services->set(CommandParser::class)
         ->args(
             [
-                service('kernel'),
+                ref('kernel'),
                 '%dukecity_command_scheduler.excluded_command_namespaces%',
                 '%dukecity_command_scheduler.included_command_namespaces%',
             ]
@@ -64,11 +68,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(CommandSchedulerExecution::class)
         ->args(
             [
-                service('kernel'),
-                service('service_container'),
-                service('logger'),
-                service('event_dispatcher'),
-                service('doctrine'),
+                ref('kernel'),
+                ref('service_container'),
+                ref('logger'),
+                ref('event_dispatcher'),
+                ref('doctrine'),
                 '%dukecity_command_scheduler.doctrine_manager%',
                 '%dukecity_command_scheduler.log_path%',
             ]
@@ -83,9 +87,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(ExecuteCommand::class)
         ->args(
             [
-                service('Dukecity\CommandSchedulerBundle\Service\CommandSchedulerExecution'),
-                service('event_dispatcher'),
-                service('doctrine'),
+                ref('Dukecity\CommandSchedulerBundle\Service\CommandSchedulerExecution'),
+                ref('event_dispatcher'),
+                ref('doctrine'),
                 '%dukecity_command_scheduler.doctrine_manager%',
                 '%dukecity_command_scheduler.log_path%',
             ]
@@ -95,8 +99,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(MonitorCommand::class)
         ->args(
             [
-                service('event_dispatcher'),
-                service('doctrine'),
+                ref('event_dispatcher'),
+                ref('doctrine'),
                 '%dukecity_command_scheduler.doctrine_manager%',
                 '%dukecity_command_scheduler.lock_timeout%',
                 '%dukecity_command_scheduler.monitor_mail%',
@@ -109,7 +113,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(ListCommand::class)
         ->args(
             [
-                service('doctrine'),
+                ref('doctrine'),
                 '%dukecity_command_scheduler.doctrine_manager%'
             ]
         )
@@ -118,7 +122,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(UnlockCommand::class)
         ->args(
             [
-                service('doctrine'),
+                ref('doctrine'),
                 '%dukecity_command_scheduler.doctrine_manager%',
                 '%dukecity_command_scheduler.lock_timeout%',
             ]
@@ -128,7 +132,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(AddCommand::class)
         ->args(
             [
-                service('doctrine'),
+                ref('doctrine'),
                 '%dukecity_command_scheduler.doctrine_manager%',
             ]
         )
@@ -137,7 +141,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(RemoveCommand::class)
         ->args(
             [
-                service('doctrine'),
+                ref('doctrine'),
                 '%dukecity_command_scheduler.doctrine_manager%',
             ]
         )
@@ -155,13 +159,18 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(ScheduledCommand::class)
         ->tag('controller.service_arguments');
 
+
+    if(class_exists(Symfony\Component\Notifier\NotifierInterface::class))
+    {$notifier = ref('notifier');}
+    else { $notifier = null; }
+
     $services->set(SchedulerCommandSubscriber::class)
         ->args(
             [
-                service('service_container'),
-                service('logger'),
-                service('doctrine.orm.default_entity_manager'),
-                service('notifier'),
+                ref('service_container'),
+                ref('logger'),
+                ref('doctrine.orm.default_entity_manager'),
+                $notifier,
                 '%dukecity_command_scheduler.monitor_mail%',
                 '%dukecity_command_scheduler.monitor_mail_subject%',
             ]
