@@ -19,6 +19,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 ##[ConsoleCommand(name: 'scheduler:start', description: 'Starts command scheduler')]
 class StartSchedulerCommand extends Command
 {
+    const SUCCESS = 0;
+    const FAILURE = 1;
+
     /**
      * @var string
      */
@@ -62,7 +65,7 @@ HELP
             $output->writeln(sprintf('<info>%s</info>', 'Starting command scheduler in blocking mode. Press CTRL+C to cancel'));
             $this->scheduler($output->isVerbose() ? $output : new NullOutput(), null);
 
-            return Command::SUCCESS;
+            return self::SUCCESS;
         }
 
         if (!extension_loaded('pcntl')) {
@@ -80,7 +83,7 @@ HELP
 
             $output->writeln(sprintf('<info>%s</info>', 'Command scheduler started in non-blocking mode...'));
 
-            return Command::SUCCESS;
+            return self::SUCCESS;
         }
 
         if (-1 === posix_setsid()) {
@@ -89,7 +92,7 @@ HELP
 
         $this->scheduler(new NullOutput(), $pidFile);
 
-        return Command::SUCCESS;
+        return self::SUCCESS;
     }
 
     /**

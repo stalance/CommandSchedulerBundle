@@ -1,1 +1,1 @@
-See Wiki at https://github.com/Chris53897/CommandSchedulerBundle/wiki
+See Wiki at https://github.com/Dukecity/CommandSchedulerBundle/wiki

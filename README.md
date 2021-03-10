@@ -1,27 +1,25 @@
 CommandSchedulerBundle
 ======================
 
-[![Code_Checks](https://github.com/Chris53897/CommandSchedulerBundle/actions/workflows/code_checks.yaml/badge.svg?branch=master)](https://github.com/Chris53897/CommandSchedulerBundle/actions/workflows/code_checks.yaml)
-[![Coverage Status](https://coveralls.io/repos/github/Chris53897/CommandSchedulerBundle/badge.svg?branch=master)](https://coveralls.io/github/Chris53897/CommandSchedulerBundle?branch=master)
+[![Code_Checks](https://github.com/Dukecity/CommandSchedulerBundle/actions/workflows/code_checks.yaml/badge.svg?branch=master)](https://github.com/Dukecity/CommandSchedulerBundle/actions/workflows/code_checks.yaml)
+[![Coverage Status](https://coveralls.io/repos/github/Dukecity/CommandSchedulerBundle/badge.svg?branch=master)](https://coveralls.io/github/Dukecity/CommandSchedulerBundle?branch=master)
 
 
 This bundle will allow you to easily manage scheduling for Symfony's console commands (native or not) with cron expression.
-See [Wiki](https://github.com/Chris53897/CommandSchedulerBundle/wiki) for Details
+See [Wiki](https://github.com/Dukecity/CommandSchedulerBundle/wiki) for Details
 
 ## Versions & Dependencies
 
 Version 4.x has the goal to use modern Php and Symfony features and low maintenance.
-So only Php >= 8.0 and Symfony >= 5.0 are supported at the moment.
-Some Symfony components could stay in ^4.4.20. The main problem is the deprecation of libxml_disable_entity_loader()
-https://www.php.net/manual/en/migration80.deprecated.php
+So only Php >= 8.0 and Symfony ^4.4.20|^5.2 are supported at the moment.
 
 The following table shows the compatibilities of different versions of the bundle :
 
-| Version                                                                                 | Symfony          | PHP    |
-| --------------------------------------------------------------------------------------- |  --------------- | ------ |
-| [4.0 (master)](https://github.com/Chris53897/CommandSchedulerBundle/tree/master)        | ^4.4.20|^5.2     | >=8.0  |
-| [3.0 (master)](https://github.com/Chris53897/CommandSchedulerBundle/tree/master)        | ^3.4\|^4.3\|^5.0 | >=7.2  |
-| [2.2.x](https://github.com/Chris53897/CommandSchedulerBundle/tree/2.2)                  | ^3.4\|^4.3       | >=7.1  |
+| Version                                                                               | Symfony          | PHP    |
+| ------------------------------------------------------------------------------------- |  --------------- | ------ |
+| [4.0 (master)](https://github.com/Dukecity/CommandSchedulerBundle/tree/master)        | ^4.4.20|^5.2     | >=8.0  |
+| [3.0 (master)](https://github.com/Dukecity/CommandSchedulerBundle/tree/3.x)           | ^3.4\|^4.3\|^5.0 | >=7.2  |
+| [2.2.x](https://github.com/Dukecity/CommandSchedulerBundle/tree/2.2)                  | ^3.4\|^4.3       | >=7.1  |
 
 
 ## Install
@@ -76,10 +74,10 @@ Version 3:
 
 ## Documentation
 
-See the [documentation here](https://github.com/Chris53897/CommandSchedulerBundle/wiki).
+See the [documentation here](https://github.com/Dukecity/CommandSchedulerBundle/wiki).
 
 ## License
 
 This bundle is under the MIT license. See the [complete license](Resources/meta/LICENCE) for info.
 
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FChris53897%2FCommandSchedulerBundle.svg?type=small)](https://app.fossa.com/projects/git%2Bgithub.com%2FChris53897%2FCommandSchedulerBundle?ref=badge_small)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FDukecity%2FCommandSchedulerBundle.svg?type=small)](https://app.fossa.com/projects/git%2Bgithub.com%2FDukecity%2FCommandSchedulerBundle?ref=badge_small)

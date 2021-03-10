@@ -15,10 +15,16 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * Add a command.
+ *
+ * @example php bin/console scheduler:add 'myCommand' 'debug:router' '' '@daily' 10, 'mycommand.log' false, false
  */
 ##[ConsoleCommand(name: 'scheduler:add', description: 'Add a scheduled command')]
 class AddCommand extends Command
 {
+    #use CommandReturnTrait;
+    const SUCCESS = 0;
+    const FAILURE = 1;
+
     /**
      * @var string
      */
@@ -98,17 +104,17 @@ class AddCommand extends Command
             } else {
                 $io->error(sprintf('Could not add the command %s (allready exists)', $commandName));
 
-                return Command::FAILURE;
+                return self::FAILURE;
             }
 
             $io->success(sprintf('The Command %s is added successfully', $commandName));
 
-            return Command::SUCCESS;
+            return self::SUCCESS;
         } catch (\Exception $e) {
             $io->error(sprintf('Could not add the command %s', $commandName));
             #var_dump($e->getMessage());
 
-            return Command::FAILURE;
+            return self::FAILURE;
         }
     }
 }

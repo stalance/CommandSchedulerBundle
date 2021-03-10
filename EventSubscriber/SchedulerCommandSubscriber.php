@@ -20,7 +20,7 @@ final class SchedulerCommandSubscriber implements EventSubscriberInterface
     private LoggerInterface $logger;
     private EntityManagerInterface $em;
     private ContainerInterface $container;
-    private NotifierInterface $notifier;
+    private NotifierInterface|null $notifier;
 
     /**
      * TODO check if parameters needed
@@ -29,11 +29,11 @@ final class SchedulerCommandSubscriber implements EventSubscriberInterface
      * @param ContainerInterface     $container
      * @param LoggerInterface        $logger
      * @param EntityManagerInterface $em
-     * @param NotifierInterface      $notifier
+     * @param NotifierInterface|null $notifier
      * @param array                  $monitor_mail
      * @param string                 $monitor_mail_subject
      */
-    public function __construct(ContainerInterface $container, LoggerInterface $logger, EntityManagerInterface $em, NotifierInterface $notifier, private array $monitor_mail = [], private string $monitor_mail_subject = 'CronMonitor:')
+    public function __construct(ContainerInterface $container, LoggerInterface $logger, EntityManagerInterface $em, NotifierInterface|null $notifier = null, private array $monitor_mail = [], private string $monitor_mail_subject = 'CronMonitor:')
     {
         $this->container = $container;
         $this->logger = $logger;
@@ -68,12 +68,17 @@ final class SchedulerCommandSubscriber implements EventSubscriberInterface
 
     public function onScheduledCommandFailed(SchedulerCommandFailedEvent $event)
     {
-        //...$this->notifier->getAdminRecipients()
-        $recipients = [];
-        foreach ($this->monitor_mail as $mailadress) {
-            $recipients[] = new Recipient($mailadress);
+        # notifier is optional
+        if($this->notifier)
+        {
+            //...$this->notifier->getAdminRecipients()
+            $recipients = [];
+            foreach ($this->monitor_mail as $mailadress) {
+                $recipients[] = new Recipient($mailadress);
+            }
+
+            $this->notifier->send(new CronMonitorNotification($event->getFailedCommands(), $this->monitor_mail_subject), ...$recipients);
         }
-        $this->notifier->send(new CronMonitorNotification($event->getFailedCommands(), $this->monitor_mail_subject), ...$recipients);
 
         //$this->logger->warning('SchedulerCommandFailedEvent', ['details' => $event->getMessage()]);
     }
@@ -93,7 +98,7 @@ final class SchedulerCommandSubscriber implements EventSubscriberInterface
             "result" => $event->getResult(),
             #"log" => $event->getLog(),
             "runtime" => $event->getRuntime()->format('%S seconds'),
-            "exception" => $event->getException()?->getMessage() ?? null
+            #"exception" => $event->getException()?->getMessage() ?? null
         ]);
     }
 }

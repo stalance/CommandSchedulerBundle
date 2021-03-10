@@ -14,6 +14,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 //#[ConsoleCommand(name: 'scheduler:test', description: 'long running command', hidden: true)]
 class TestCommand extends Command
 {
+    const SUCCESS = 0;
+    const FAILURE = 1;
+
     /**
      * @var string
      */
@@ -70,11 +73,11 @@ class TestCommand extends Command
         # fake fail?
         if ($this->returnFail)
         {
-         return Command::FAILURE;
+         return self::FAILURE;
         }
         else
         {
-         return Command::SUCCESS;
+         return self::SUCCESS;
         }
     }
 }
