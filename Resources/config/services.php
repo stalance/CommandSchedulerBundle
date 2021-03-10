@@ -18,7 +18,7 @@ use Dukecity\CommandSchedulerBundle\EventSubscriber\SchedulerCommandSubscriber;
 use Dukecity\CommandSchedulerBundle\Form\Type\CommandChoiceType;
 use Dukecity\CommandSchedulerBundle\Service\CommandParser;
 use Dukecity\CommandSchedulerBundle\Command\ListCommand;
-use Dukecity\CommandSchedulerBundle\Service\CommandSchedulerExcecution;
+use Dukecity\CommandSchedulerBundle\Service\CommandSchedulerExecution;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
@@ -61,7 +61,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ]
         );
 
-    $services->set(CommandSchedulerExcecution::class)
+    $services->set(CommandSchedulerExecution::class)
         ->args(
             [
                 service('kernel'),
@@ -73,7 +73,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 '%dukecity_command_scheduler.log_path%',
             ]
         )
-        #->alias("CommandSchedulerExcecution")
+        #->alias("CommandSchedulerExecution")
     ;
 
     $services->set(CommandChoiceType::class)
@@ -83,7 +83,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(ExecuteCommand::class)
         ->args(
             [
-                service('Dukecity\CommandSchedulerBundle\Service\CommandSchedulerExcecution'),
+                service('Dukecity\CommandSchedulerBundle\Service\CommandSchedulerExecution'),
                 service('event_dispatcher'),
                 service('doctrine'),
                 '%dukecity_command_scheduler.doctrine_manager%',

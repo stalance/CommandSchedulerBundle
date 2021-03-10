@@ -404,7 +404,7 @@ class ScheduledCommand
 
     /**
      * Returns the next run time of the scheduled command
-     * @param bool $checkExecuteImmediately Check if immediately excecution is set
+     * @param bool $checkExecuteImmediately Check if immediately execution is set
      *
      * @return DateTime|null
      *

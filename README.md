@@ -12,12 +12,14 @@ See [Wiki](https://github.com/Chris53897/CommandSchedulerBundle/wiki) for Detail
 
 Version 4.x has the goal to use modern Php and Symfony features and low maintenance.
 So only Php >= 8.0 and Symfony >= 5.0 are supported at the moment.
+Some Symfony components could stay in ^4.4.20. The main problem is the deprecation of libxml_disable_entity_loader()
+https://www.php.net/manual/en/migration80.deprecated.php
 
 The following table shows the compatibilities of different versions of the bundle :
 
 | Version                                                                                 | Symfony          | PHP    |
 | --------------------------------------------------------------------------------------- |  --------------- | ------ |
-| [4.0 (master)](https://github.com/Chris53897/CommandSchedulerBundle/tree/master)        | ^5.0             | >=8.0  |
+| [4.0 (master)](https://github.com/Chris53897/CommandSchedulerBundle/tree/master)        | ^4.4.20|^5.2     | >=8.0  |
 | [3.0 (master)](https://github.com/Chris53897/CommandSchedulerBundle/tree/master)        | ^3.4\|^4.3\|^5.0 | >=7.2  |
 | [2.2.x](https://github.com/Chris53897/CommandSchedulerBundle/tree/2.2)                  | ^3.4\|^4.3       | >=7.1  |
 
@@ -39,19 +41,19 @@ Check new URL /command-scheduler/list
 
 ## Features
 
-New in Version 4: 
-- Event-Handling (preExcecution, postExceution). You can subscribe your own Events
-- Monitoring: Notifications with the [Symfony Notifier](https://symfony.com/doc/current/notifier.html) Component. Derfault: E-Mail
-- Refactored Exceution of Commands to Services. You can use them now from other Services.
-- Handled error in Command Parsing. So there is no 500 Error while parsing commands. 
+New in Version 4:
+- Event-Handling (preExecution, postExecution). You can subscribe your own Events
+- Monitoring: Notifications with the [Symfony Notifier](https://symfony.com/doc/current/notifier.html) Component. Default: E-Mail
+- Refactored Execution of Commands to Services. You can use them now from other Services.
+- Handled error in Command Parsing. So there is no 500 Error while parsing commands.
 - You CLI-commands for add, remove and list scheduled commands
-- Improved UI of command-exceutions in cli
+- Improved UI of command-execution in cli
 - Create Command-Listing as Json for API usage
 
 
 Version 3:
 - An admin interface to add, edit, enable/disable or delete scheduled commands.
-- For each command, you define : 
+- For each command, you define :
   - name
   - symfony console command (choice based on native `list` command)
   - cron expression (see [Cron format](http://en.wikipedia.org/wiki/Cron#Format) for informations)

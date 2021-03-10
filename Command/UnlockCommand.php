@@ -28,8 +28,7 @@ class UnlockCommand extends Command
     protected static $defaultName = 'scheduler:unlock';
     private ObjectManager $em;
     const DEFAULT_LOCK_TIME = 3600; // 1 hour
-    /** @var SymfonyStyle */
-    private $io;
+    private SymfonyStyle $io;
 
     /**
      * @var bool true if all locked commands should be unlocked

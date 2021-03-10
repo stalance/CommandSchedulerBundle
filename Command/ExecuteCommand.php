@@ -7,7 +7,7 @@ namespace Dukecity\CommandSchedulerBundle\Command;
 
 use Doctrine\Persistence\ObjectManager;
 use Dukecity\CommandSchedulerBundle\Entity\ScheduledCommand;
-use Dukecity\CommandSchedulerBundle\Service\CommandSchedulerExcecution;
+use Dukecity\CommandSchedulerBundle\Service\CommandSchedulerExecution;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\LockableTrait;
@@ -42,7 +42,7 @@ class ExecuteCommand extends Command
     private ?int $commandsVerbosity = null;
     private $output;
     private InputInterface $input;
-    private CommandSchedulerExcecution $commandSchedulerExcecution;
+    private CommandSchedulerExecution $commandSchedulerExecution;
     /**
      * @var bool|string|string[]|null
      */
@@ -51,14 +51,14 @@ class ExecuteCommand extends Command
     /**
      * ExecuteCommand constructor.
      *
-     * @param CommandSchedulerExcecution $commandSchedulerExcecution
+     * @param CommandSchedulerExecution $commandSchedulerExecution
      * @param EventDispatcherInterface $eventDispatcher
      * @param ManagerRegistry $managerRegistry
      * @param string $managerName
      * @param string | bool $logPath
      */
     public function __construct(
-        CommandSchedulerExcecution $commandSchedulerExcecution,
+        CommandSchedulerExecution $commandSchedulerExecution,
         EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $managerRegistry,
         string $managerName,
@@ -70,7 +70,7 @@ class ExecuteCommand extends Command
         //EntityManagerInterface
         //$this->em = $this->getDoctrine()->getManager($managerName);
 
-        $this->commandSchedulerExcecution = $commandSchedulerExcecution;
+        $this->commandSchedulerExecution = $commandSchedulerExecution;
 
         // If logpath is not set to false, append the directory separator to it
         if (false !== $this->logPath) {
@@ -205,9 +205,9 @@ HELP
 
                 foreach ($commandsToExceute as $command) {
 
-                    $progress->setMessage('Start Excecution of '.$command->getCommand().' '.$command->getArguments());
+                    $progress->setMessage('Start Execution of '.$command->getCommand().' '.$command->getArguments());
 
-                    $result = $this->commandSchedulerExcecution->executeCommand($command, $this->env, $this->commandsVerbosity);
+                    $result = $this->commandSchedulerExecution->executeCommand($command, $this->env, $this->commandsVerbosity);
 
                 if($result==0)
                 {$io->success($command->getName().': '.$command->getCommand().' '.$command->getArguments());}
@@ -223,7 +223,7 @@ HELP
             if(!is_a($this->output, StreamOutput::class))
             {$sectionProgressbar->clear();}
 
-            $io->section('Finished Excecutions');
+            $io->section('Finished Executions');
 
         }}
         else {

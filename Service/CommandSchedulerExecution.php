@@ -30,7 +30,7 @@ use Symfony\Component\Console\Command\Command;
  * Class CommandScheduler.
  *
  */
-class CommandSchedulerExcecution
+class CommandSchedulerExecution
 {
     private LoggerInterface|null $logger = null;
     private EventDispatcherInterface $eventDispatcher;
@@ -123,7 +123,7 @@ class CommandSchedulerExcecution
      * @param $scheduledCommand
      * @return Command|null
      */
-    private function prepareCommandExcecution($scheduledCommand): ?Command
+    private function prepareCommandExecution($scheduledCommand): ?Command
     {
         if(!($command = $this->getCommand($scheduledCommand)))
         {
@@ -180,7 +180,7 @@ class CommandSchedulerExcecution
      */
     private function doExceution(ScheduledCommand $scheduledCommand, int $commandsVerbosity): int
     {
-        $command = $this->prepareCommandExcecution($scheduledCommand);
+        $command = $this->prepareCommandExecution($scheduledCommand);
 
         $input = $this->getInputCommand($scheduledCommand, $command, $this->env);
 
@@ -220,7 +220,7 @@ class CommandSchedulerExcecution
     /**
      * @param ScheduledCommand $scheduledCommand
      */
-    private function prepareExcecution(ScheduledCommand $scheduledCommand)
+    private function prepareExecution(ScheduledCommand $scheduledCommand)
     {
         //reload command from database before every execution to avoid parallel execution
         $this->em->getConnection()->beginTransaction();
@@ -270,7 +270,7 @@ class CommandSchedulerExcecution
         string $commandsVerbosity = OutputInterface::VERBOSITY_NORMAL): int
     {
         $this->env = $env;
-        $this->prepareExcecution($scheduledCommand);
+        $this->prepareExecution($scheduledCommand);
 
         $scheduledCommand = $this->em->find(ScheduledCommand::class, $scheduledCommand);
 
