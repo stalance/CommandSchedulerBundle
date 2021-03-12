@@ -22,13 +22,10 @@ class RemoveCommand extends Command
     const SUCCESS = 0;
     const FAILURE = 1;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected static $defaultName = 'scheduler:remove';
     private ObjectManager $em;
-    /** @var SymfonyStyle */
-    private $io;
+    private SymfonyStyle $io;
 
     /**
      * UnlockCommand constructor.
