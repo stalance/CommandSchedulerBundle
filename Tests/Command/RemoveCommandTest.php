@@ -20,11 +20,11 @@ class RemoveCommandTest extends AbstractCommandTest
         $this->loadFixtures([LoadScheduledCommandData::class]);
 
         // remove a command that does not exist
-        $output = $this->executeCommand(RemoveCommand::class, ['name' => 'abc'])->getDisplay();
+        $output = $this->executeCommand(RemoveCommand::class, ['name' => 'abc'], [], 1)->getDisplay();
         $this->assertStringContainsString('Could not', $output);
 
         // empty command-name
-        $output = $this->executeCommand(RemoveCommand::class, ['name' => ''])->getDisplay();
+        $output = $this->executeCommand(RemoveCommand::class, ['name' => ''], [], 1)->getDisplay();
         $this->assertStringContainsString('Could not', $output);
 
         // Remove command
@@ -36,7 +36,7 @@ class RemoveCommandTest extends AbstractCommandTest
         $this->assertNull($two);
 
         // Fails now
-        $output = $this->executeCommand(RemoveCommand::class, ['name' => 'two'])->getDisplay();
+        $output = $this->executeCommand(RemoveCommand::class, ['name' => 'two'], [], 1)->getDisplay();
         $this->assertStringContainsString('Could not', $output);
     }
 }

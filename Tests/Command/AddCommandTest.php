@@ -49,7 +49,7 @@ class AddCommandTest extends AbstractCommandTest
         //$this->assertInstanceOf($cmd_check, ScheduledCommand);
 
         // Fails now
-        $output = $this->executeCommand(AddCommand::class, $this->testCommand)->getDisplay();
+        $output = $this->executeCommand(AddCommand::class, $this->testCommand, [], 1)->getDisplay();
         $this->assertStringContainsString('Could not', $output);
 
         //
@@ -58,7 +58,7 @@ class AddCommandTest extends AbstractCommandTest
             'cmd' => 'debug:router',
             'arguments' => '',
             'cronExpression' => '@daily',
-        ])->getDisplay();
+        ], [], 1)->getDisplay();
         $this->assertStringContainsString('Could not', $output);
     }
 
@@ -161,7 +161,7 @@ class AddCommandTest extends AbstractCommandTest
      */
     public function testInvalidValues(array $command)
     {
-        $output = $this->executeCommand(AddCommand::class, $command)->getDisplay();
+        $output = $this->executeCommand(AddCommand::class, $command, [], 1)->getDisplay();
         # Could not add the command
         $this->assertStringNotContainsString('successfully', $output);
     }

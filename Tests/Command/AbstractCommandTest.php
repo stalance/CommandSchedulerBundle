@@ -38,20 +38,27 @@ abstract class AbstractCommandTest extends WebTestCase
      * execution of a command.
      *
      * @param string $commandClass
-     * @param array  $arguments    All the arguments passed when executing the command
-     * @param array  $inputs       The (optional) answers given to the command
-     *
+     * @param array $arguments All the arguments passed when executing the command
+     * @param array $inputs The (optional) answers given to the command
+     * @param int $expectedExitCode
      * @return CommandTester
      */
-    protected function executeCommand(string $commandClass, array $arguments = [], array $inputs = []): CommandTester
+    protected function executeCommand(string $commandClass, array $arguments = [], array $inputs = [], int $expectedExitCode=0): CommandTester
     {
         // this uses a special testing container that allows you to fetch private services
         $cmd = self::$container->get($commandClass);
         $cmd->setApplication(new Application('Test'));
 
+        #var_dump($cmd->getDefinition()); die();
+
         $commandTester = new CommandTester($cmd);
         $commandTester->setInputs($inputs);
-        $commandTester->execute($arguments);
+        $result = $commandTester->execute($arguments, ["capture_stderr_separately"]);
+
+        $this->assertSame($expectedExitCode, $result);
+
+        if($result !== $expectedExitCode)
+        {var_dump($commandTester->getErrorOutput());}
 
         return $commandTester;
     }
