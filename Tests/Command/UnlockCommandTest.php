@@ -23,9 +23,9 @@ class UnlockCommandTest extends AbstractCommandTest
         // One command is locked in fixture (2), another have a -1 return code as lastReturn (4)
         $output = $this->executeCommand(UnlockCommand::class, ['--all' => true])->getDisplay();
 
-        $this->assertMatchesRegularExpression('/"two"/', $output);
-        $this->assertDoesNotMatchRegularExpression('/"one"/', $output);
-        $this->assertDoesNotMatchRegularExpression('/"three"/', $output);
+        $this->assertStringContainsString('two', $output);
+        $this->assertStringNotContainsString('one', $output);
+        $this->assertStringNotContainsString('three', $output);
 
         try {
             $this->em->clear();
@@ -48,7 +48,7 @@ class UnlockCommandTest extends AbstractCommandTest
         // One command is locked in fixture (2), another have a -1 return code as lastReturn (4)
         $output = $this->executeCommand(UnlockCommand::class, ['name' => 'two'])->getDisplay();
 
-        $this->assertMatchesRegularExpression('/"two"/', $output);
+        $this->assertStringContainsString('two', $output);
 
         try {
             $this->em->clear();
@@ -76,8 +76,8 @@ class UnlockCommandTest extends AbstractCommandTest
         )
             ->getDisplay();
 
-        $this->assertMatchesRegularExpression('/Skipping/', $output);
-        $this->assertMatchesRegularExpression('/"two"/', $output);
+        $this->assertStringContainsString('Skipping', $output);
+        $this->assertStringContainsString('two', $output);
 
         try {
             $this->em->clear();

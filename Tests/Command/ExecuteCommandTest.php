@@ -25,11 +25,12 @@ class ExecuteCommandTest extends AbstractCommandTest
         $output = $this->executeCommand(ExecuteCommand::class)->getDisplay();
 
         $this->assertStringContainsString('Start : Execute', $output);
-        $this->assertMatchesRegularExpression('/one: debug:container/', $output);
-        $this->assertMatchesRegularExpression('/four: debug:router/', $output);
+        $this->assertStringContainsString('one: debug:container', $output);
+        $this->assertStringContainsString('four: debug:router', $output);
 
+        # the second call should show that no commands needs exceution
         $output = $this->executeCommand(ExecuteCommand::class)->getDisplay();
-        $this->assertMatchesRegularExpression('/Nothing to do/', $output);
+        $this->assertStringContainsString('Nothing to do', $output);
     }
 
     /**
@@ -45,7 +46,7 @@ class ExecuteCommandTest extends AbstractCommandTest
         $this->assertEquals('', $output);
 
         $output = $this->executeCommand(ExecuteCommand::class)->getDisplay();
-        $this->assertMatchesRegularExpression('/Nothing to do/', $output);
+        $this->assertStringContainsString('Nothing to do', $output);
     }
 
     /**
@@ -59,7 +60,7 @@ class ExecuteCommandTest extends AbstractCommandTest
         $output = $this->executeCommand(ExecuteCommand::class, ['--dump' => true])->getDisplay();
 
         $this->assertStringContainsString('Start : Dump', $output);
-        $this->assertMatchesRegularExpression('/ one:/', $output);
-        $this->assertMatchesRegularExpression('/ four:/', $output);
+        $this->assertStringContainsString(' one:', $output);
+        $this->assertStringContainsString(' four:', $output);
     }
 }

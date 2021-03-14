@@ -21,9 +21,9 @@ class ListCommandTest extends AbstractCommandTest
         $output = $this->executeCommand(ListCommand::class, [])->getDisplay();
 
         // all
-        $this->assertMatchesRegularExpression('/one/', $output);
-        $this->assertMatchesRegularExpression('/two/', $output);
-        $this->assertMatchesRegularExpression('/three/', $output);
-        $this->assertMatchesRegularExpression('/four/', $output);
+        $this->assertStringContainsString('one', $output);
+        $this->assertStringContainsString('two', $output);
+        $this->assertStringContainsString('three', $output);
+        $this->assertStringContainsString('four', $output);
     }
 }
