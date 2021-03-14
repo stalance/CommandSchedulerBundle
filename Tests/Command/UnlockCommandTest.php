@@ -23,16 +23,16 @@ class UnlockCommandTest extends AbstractCommandTest
         // One command is locked in fixture (2), another have a -1 return code as lastReturn (4)
         $output = $this->executeCommand(UnlockCommand::class, ['--all' => true])->getDisplay();
 
-        $this->assertMatchesRegularExpression('/"two"/', $output);
-        $this->assertDoesNotMatchRegularExpression('/"one"/', $output);
-        $this->assertDoesNotMatchRegularExpression('/"three"/', $output);
+        $this->assertStringContainsString('CommandTestTwo', $output);
+        $this->assertStringNotContainsString('CommandTestOne', $output);
+        $this->assertStringNotContainsString('CommandTestThree', $output);
 
         try {
             $this->em->clear();
         } catch (MappingException $e) {
             echo 'Error with Mapping '.$e->getMessage();
         }
-        $two = $this->em->getRepository(ScheduledCommand::class)->findOneBy(['name' => 'two']);
+        $two = $this->em->getRepository(ScheduledCommand::class)->findOneBy(['name' => 'CommandTestTwo']);
 
         $this->assertFalse($two->isLocked());
     }
@@ -46,16 +46,16 @@ class UnlockCommandTest extends AbstractCommandTest
         $this->loadFixtures([LoadScheduledCommandData::class]);
 
         // One command is locked in fixture (2), another have a -1 return code as lastReturn (4)
-        $output = $this->executeCommand(UnlockCommand::class, ['name' => 'two'])->getDisplay();
+        $output = $this->executeCommand(UnlockCommand::class, ['name' => 'CommandTestTwo'])->getDisplay();
 
-        $this->assertMatchesRegularExpression('/"two"/', $output);
+        $this->assertStringContainsString('CommandTestTwo', $output);
 
         try {
             $this->em->clear();
         } catch (MappingException $e) {
             echo 'Error with Mapping '.$e->getMessage();
         }
-        $two = $this->em->getRepository(ScheduledCommand::class)->findOneBy(['name' => 'two']);
+        $two = $this->em->getRepository(ScheduledCommand::class)->findOneBy(['name' => 'CommandTestTwo']);
 
         $this->assertFalse($two->isLocked());
     }
@@ -72,19 +72,19 @@ class UnlockCommandTest extends AbstractCommandTest
         // another have a -1 return code as lastReturn (4)
         $output = $this->executeCommand(
             UnlockCommand::class,
-            ['name' => 'two', '--lock-timeout' => 3 * 24 * 60 * 60]
+            ['name' => 'CommandTestTwo', '--lock-timeout' => 3 * 24 * 60 * 60]
         )
             ->getDisplay();
 
-        $this->assertMatchesRegularExpression('/Skipping/', $output);
-        $this->assertMatchesRegularExpression('/"two"/', $output);
+        $this->assertStringContainsString('Skipping', $output);
+        $this->assertStringContainsString('CommandTestTwo', $output);
 
         try {
             $this->em->clear();
         } catch (MappingException $e) {
             echo 'Error with Mapping '.$e->getMessage();
         }
-        $two = $this->em->getRepository(ScheduledCommand::class)->findOneBy(['name' => 'two']);
+        $two = $this->em->getRepository(ScheduledCommand::class)->findOneBy(['name' => 'CommandTestTwo']);
 
         $this->assertTrue($two->isLocked());
     }

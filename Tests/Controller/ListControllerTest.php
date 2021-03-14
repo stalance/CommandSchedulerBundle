@@ -42,7 +42,7 @@ class ListControllerTest extends WebTestCase
         $this->loadFixtures([LoadScheduledCommandData::class]);
 
         $crawler = $this->client->request('GET', '/command-scheduler/list');
-        $this->assertEquals(4, $crawler->filter('a[href^="/command-scheduler/action/toggle/"]')->count());
+        $this->assertEquals(5, $crawler->filter('a[href^="/command-scheduler/action/toggle/"]')->count());
     }
 
     /**
@@ -58,7 +58,7 @@ class ListControllerTest extends WebTestCase
         //toggle off
         $crawler = $this->client->request('GET', '/command-scheduler/action/remove/1');
 
-        $this->assertEquals(3, $crawler->filter('a[href^="/command-scheduler/action/toggle/"]')->count());
+        $this->assertEquals(4, $crawler->filter('a[href^="/command-scheduler/action/toggle/"]')->count());
     }
 
     /**
@@ -96,7 +96,7 @@ class ListControllerTest extends WebTestCase
         $crawler = $this->client->request('GET', '/command-scheduler/action/execute/1');
 
         #
-        $this->assertStringContainsString('Command -one- will be executed during the next', $this->client->getResponse()->getContent());
+        $this->assertStringContainsString('Command -CommandTestOne- will be executed during the next', $this->client->getResponse()->getContent());
 
         //$this->assertEquals(1, $crawler->filter('a[href="/command-scheduler/action/execute/1"] > span[class="text-muted glyphicon glyphicon-play"]')->count());
         //$this->assertEquals(1, $crawler->filterXPath('//div[contains("Command will be executed during the next")')->count());

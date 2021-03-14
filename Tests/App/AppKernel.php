@@ -38,6 +38,7 @@ class AppKernel extends Kernel
             new \Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new \Dukecity\CommandSchedulerBundle\DukecityCommandSchedulerBundle(),
             new \Liip\TestFixturesBundle\LiipTestFixturesBundle(),
+            #\Symfony\Bundle\DebugBundle\DebugBundle::class => ['dev' => true, 'test' => true],
             new \Symfony\Bundle\DebugBundle\DebugBundle(),
             //new \Symfony\Bundle\WebProfilerBundle\WebProfilerBundle(),
             //new \DAMA\DoctrineTestBundle\DAMADoctrineTestBundle::class => ['test' => true],

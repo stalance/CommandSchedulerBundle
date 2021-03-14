@@ -26,10 +26,11 @@ class LoadScheduledCommandData implements FixtureInterface
         $today = clone $now;
         $beforeYesterday = $now->modify('-2 days');
 
-        $this->createScheduledCommand('one', 'debug:container', '--help', '@daily', 'one.log', 100, $beforeYesterday);
-        $this->createScheduledCommand('two', 'debug:container', '', '@daily', 'two.log', 80, $beforeYesterday, true);
-        $this->createScheduledCommand('three', 'debug:container', '', '@daily', 'three.log', 60, $today, false, true);
-        $this->createScheduledCommand('four', 'debug:router', '', '@daily', 'four.log', 40, $today, false, false, true, -1);
+        $this->createScheduledCommand('CommandTestOne',   'debug:container', '--help', '@daily', 'one.log', 100, $beforeYesterday);
+        $this->createScheduledCommand('CommandTestTwo',   'debug:container', '', '@daily', 'two.log', 80, $beforeYesterday, true);
+        $this->createScheduledCommand('CommandTestThree', 'debug:container', '', '@daily', 'three.log', 60, $today, false, true);
+        $this->createScheduledCommand('CommandTestFour',   'debug:router', '', '@daily', 'four.log', 40, $today, false, false, true, -1);
+        $this->createScheduledCommand('CommandTestFive',   'scheduler:test', '0 true', '@daily', 'five.log', 39, $today, false, false, true);
     }
 
     /**

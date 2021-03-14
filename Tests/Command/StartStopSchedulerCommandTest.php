@@ -27,6 +27,13 @@ class StartStopSchedulerCommandTest extends AbstractCommandTest
 
         $output = $this->executeCommand(StopSchedulerCommand::class)->getDisplay();
         $this->assertStringStartsWith('Command scheduler is stopped.', $output);
-        $this->assertFileDoesNotExist($pidFile);
+
+        # PHPUnit 9
+        if(method_exists($this, "assertFileDoesNotExist"))
+        {$this->assertFileDoesNotExist($pidFile);}
+
+        # PHPUnit 8
+        if(method_exists($this, "assertFileNotExists"))
+        {$this->assertFileNotExists($pidFile);}
     }
 }

@@ -69,9 +69,3 @@ services:
         resource: '../../../Fixtures/ORM/*'
         tags: ['doctrine.fixture.orm']
 
-    #Dukecity\CommandSchedulerBundle\Entity\:
-        #resource: '../../../Entity/*'
-        #tags: [ 'controller.service_arguments' ]
-
-    #Dukecity\CommandSchedulerBundle\Entity\ScheduledCommand:
-        #tags: [ controller.service_arguments ]
