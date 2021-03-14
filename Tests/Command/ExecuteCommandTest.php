@@ -25,8 +25,8 @@ class ExecuteCommandTest extends AbstractCommandTest
         $output = $this->executeCommand(ExecuteCommand::class)->getDisplay();
 
         $this->assertStringContainsString('Start : Execute', $output);
-        $this->assertStringContainsString('one: debug:container', $output);
-        $this->assertStringContainsString('four: debug:router', $output);
+        $this->assertStringContainsString('CommandTestOne: debug:container', $output);
+        $this->assertStringContainsString('CommandTestFour: debug:router', $output);
 
         # the second call should show that no commands needs exceution
         $output = $this->executeCommand(ExecuteCommand::class)->getDisplay();
@@ -60,7 +60,7 @@ class ExecuteCommandTest extends AbstractCommandTest
         $output = $this->executeCommand(ExecuteCommand::class, ['--dump' => true])->getDisplay();
 
         $this->assertStringContainsString('Start : Dump', $output);
-        $this->assertStringContainsString(' one:', $output);
-        $this->assertStringContainsString(' four:', $output);
+        $this->assertStringContainsString('CommandTestOne:', $output);
+        $this->assertStringContainsString('CommandTestFour:', $output);
     }
 }

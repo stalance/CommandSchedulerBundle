@@ -21,9 +21,9 @@ class ListCommandTest extends AbstractCommandTest
         $output = $this->executeCommand(ListCommand::class, [])->getDisplay();
 
         // all
-        $this->assertStringContainsString('one', $output);
-        $this->assertStringContainsString('two', $output);
-        $this->assertStringContainsString('three', $output);
-        $this->assertStringContainsString('four', $output);
+        $this->assertStringContainsString('CommandTestOne', $output);
+        $this->assertStringContainsString('CommandTestTwo', $output);
+        $this->assertStringContainsString('CommandTestThree', $output);
+        $this->assertStringContainsString('CommandTestFour', $output);
     }
 }

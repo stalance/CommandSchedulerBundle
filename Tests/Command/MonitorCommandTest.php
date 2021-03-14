@@ -22,8 +22,8 @@ class MonitorCommandTest extends AbstractCommandTest
         $output = $this->executeCommand(MonitorCommand::class, ['--dump' => true])->getDisplay();
 
         // One command is locked in fixture (2), another have a -1 return code as lastReturn (4)
-        $this->assertStringContainsString('two', $output);
-        $this->assertStringContainsString('four', $output);
+        $this->assertStringContainsString('CommandTestTwo', $output);
+        $this->assertStringContainsString('CommandTestFour', $output);
     }
 
     /**

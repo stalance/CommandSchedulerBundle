@@ -28,15 +28,15 @@ class RemoveCommandTest extends AbstractCommandTest
         $this->assertStringContainsString('Could not', $output);
 
         // Remove command
-        $output = $this->executeCommand(RemoveCommand::class, ['name' => 'two'])->getDisplay();
+        $output = $this->executeCommand(RemoveCommand::class, ['name' => 'CommandTestTwo'])->getDisplay();
         $this->assertStringContainsString('successfully', $output);
 
         // Not in DB anymore
-        $two = $this->em->getRepository(ScheduledCommand::class)->findOneBy(['name' => 'two']);
+        $two = $this->em->getRepository(ScheduledCommand::class)->findOneBy(['name' => 'CommandTestTwo']);
         $this->assertNull($two);
 
         // Fails now
-        $output = $this->executeCommand(RemoveCommand::class, ['name' => 'two'], [], 1)->getDisplay();
+        $output = $this->executeCommand(RemoveCommand::class, ['name' => 'CommandTestTwo'], [], 1)->getDisplay();
         $this->assertStringContainsString('Could not', $output);
     }
 }
