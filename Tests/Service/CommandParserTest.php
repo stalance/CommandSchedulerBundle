@@ -25,8 +25,14 @@ class CommandParserTest extends WebTestCase
 
     public function testGetCommandDetails()
     {
+        # Single parameter
         $commandDetails = $this->commandParser->getCommandDetails(["help"]);
 
+        $this->assertIsArray($commandDetails);
+        $this->assertArrayHasKey('help', $commandDetails);
+        $this->assertSame("help", $commandDetails["help"]["name"]);
+
+        # Multiple parameters
         $commandDetails = $this->commandParser->getCommandDetails(
             ["help", "assets:install", "cache:clear"]
         );
@@ -58,11 +64,25 @@ class CommandParserTest extends WebTestCase
     public function testGetCommands()
     {
         $commands = $this->commandParser->getCommands();
-        #var_dump($commands);
 
         $this->assertIsArray($commands);
         $this->assertArrayHasKey('_global', $commands);
         $this->assertSame("assets:install", $commands["assets"]["assets:install"]);
+    }
+
+    /**
+     * Check if we get the command-list correct (Default config in config_test.yml)
+     */
+    public function testGetAllowedCommands()
+    {
+        $commands = $this->commandParser->getAllowedCommandDetails();
+
+        $this->assertIsArray($commands);
+        $this->assertArrayHasKey('about', $commands);
+        $this->assertSame("about", $commands["about"]["name"]);
+
+        $this->assertArrayHasKey('list', $commands);
+        $this->assertArrayHasKey('cache:clear', $commands);
     }
 
 

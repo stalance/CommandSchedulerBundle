@@ -109,9 +109,10 @@ class CommandParser
     }
 
     /**
-     * Execute the console command "list" with XML output to have all available command.
+     * Execute the console command "list" and parse the output to have all available command.
      *
-     * @return array[]
+     * @param string $env
+     * @return array[] ["Namespace1" => ["Command1", "Command2"]]
      *
      * @throws Exception
      */
@@ -121,9 +122,54 @@ class CommandParser
             throw new \InvalidArgumentException('Cannot combine excludedNamespaces with includedNamespaces');
         }
 
-        return $this->extractCommandsFromXML($this->getAvailableCommands("xml", $env));
+        return $this->extractCommands($this->getAvailableCommands("json", $env));
     }
 
+
+    /**
+     * Get Details for the commands, for the allowed Namespaces
+     *
+     * @param string $env
+     * @return array
+     * @throws Exception
+     */
+    public function getAllowedCommandDetails(string $env="prod"): array
+    {
+       # var_dump($this->getCommands($env));
+       return $this->getCommandDetails($this->getCommands($env));
+    }
+
+
+    /**
+     * Is the command-List wrapped in namespaces?
+     *
+     * @param array $commands
+     * @return array
+     */
+    public function reduceNamespacedCommands(array $commands): array
+    {
+        if(count($commands)==0)
+        {return [];}
+
+        # is namespaced?
+        if(is_array(current($commands)))
+        {
+            #var_dump("Command-Listing with namespaces");
+            $commandsExtracted = [];
+
+            foreach ($commands as $namespaces)
+            {
+                foreach ($namespaces as $cmd)
+                {
+                    $commandsExtracted[$cmd] = $cmd;
+                }
+            }
+
+            return $commandsExtracted;
+        }
+
+        return $commands;
+    }
 
     /**
      * @param array $commands
@@ -135,6 +181,9 @@ class CommandParser
         $availableCommands = $this->getAvailableCommands("json", "prod");
         $result = [];
         #$command->getDefinition();
+
+        # Is the command-List wrapped in namespaces?
+        $commands = $this->reduceNamespacedCommands($commands);
 
         foreach ($availableCommands["commands"] as $command)
         {
@@ -152,43 +201,48 @@ class CommandParser
     }
 
 
+
+
     /**
-     * Extract an array of available Symfony commands from the XML output.
+     * Extract an array of available Symfony commands from the JSON output.
      *
-     * @param string $xml
+     * @param array $commands
+     * ["namespaces]
+     *  [0]
+     *     ["id"] => cache
+     *     ["commands"] => ["cache:clear", "cache:warmup", ...]
      *
      * @return array
      */
-    private function extractCommandsFromXML(string $xml): array
+    private function extractCommands(array $commands): array
     {
-        if ('' === $xml) {
+        if (count($commands) == 0) {
             return [];
         }
 
         $commandsList = [];
 
         try {
-            $node = new \SimpleXMLElement($xml);
-
-            foreach ($node->namespaces->namespace as $namespace) {
-                $namespaceId = (string) $namespace->attributes()->id;
+            foreach ($commands["namespaces"] as $namespace) {
+                $namespaceId = (string) $namespace["id"];
 
                 # Blacklisting and Whitelisting
                 if ((count($this->excludedNamespaces) > 0 && in_array($namespaceId, $this->excludedNamespaces))
-                ||
-                (count($this->includedNamespaces) > 0 && !in_array($namespaceId, $this->includedNamespaces))
+                    ||
+                    (count($this->includedNamespaces) > 0 && !in_array($namespaceId, $this->includedNamespaces))
                 ) {
                     continue;
                 }
 
                 # Add Command Name to array
-                foreach ($namespace->command as $command) {
-                    $commandsList[$namespaceId][(string) $command] = (string) $command;
+                foreach ($namespace["commands"] as $command) {
+
+                    $commandsList[$namespaceId][$command] = $command;
                 }
             }
         } catch (Exception) {
             // return an empty CommandList
-            $commandsList = ['ERROR: please check php bin/console list --format=xml' => 'error'];
+            $commandsList = ['ERROR: please check php bin/console list --format=json' => 'error'];
         }
 
         return $commandsList;
