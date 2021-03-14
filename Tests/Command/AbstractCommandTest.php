@@ -22,6 +22,9 @@ abstract class AbstractCommandTest extends WebTestCase
 
     /** @var CommandTester|null */
     protected CommandTester | null $commandTester;
+    protected array $infos = [
+        "commands" => 5,
+    ];
 
     /**
      * {@inheritdoc}

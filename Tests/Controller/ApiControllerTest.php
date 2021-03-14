@@ -49,7 +49,7 @@ class ApiControllerTest extends WebTestCase
 
         $jsonResponse = $this->client->getResponse()->getContent();
         $jsonArray = json_decode($jsonResponse, true);
-        $this->assertEquals(4, count($jsonArray));
+        $this->assertEquals(5, count($jsonArray));
         $this->assertSame('CommandTestOne', $jsonArray['CommandTestOne']['NAME']);
     }
 

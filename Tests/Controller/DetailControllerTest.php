@@ -102,7 +102,7 @@ class DetailControllerTest extends WebTestCase
         $form->get('command_scheduler_detail[cronExpression]')->setValue('* * * * *');
         $crawler = $client->submit($form);
 
-        $this->assertEquals(4, $crawler->filterXPath('//a[contains(@href, "/command-scheduler/action/toggle/")]')->count());
+        $this->assertEquals(5, $crawler->filterXPath('//a[contains(@href, "/command-scheduler/action/toggle/")]')->count());
         $this->assertEquals('edited one', trim($crawler->filter('td')->eq(1)->text()));
     }
 }

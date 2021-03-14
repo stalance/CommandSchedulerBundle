@@ -73,6 +73,7 @@ class TestCommand extends Command
         # fake fail?
         if ($this->returnFail)
         {
+         $this->io->info('Response-Code is forced to '.self::FAILURE);
          return self::FAILURE;
         }
         else
