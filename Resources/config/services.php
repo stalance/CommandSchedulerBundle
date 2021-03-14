@@ -47,14 +47,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->tag('container.service_subscriber')
         ->tag('controller.service_arguments');
 
-    $services->set(ApiController::class)
-        ->public()
-        ->autowire()
-        ->call('setManagerName', ['%dukecity_command_scheduler.doctrine_manager%'])
-        ->call('setTranslator', [ref('translator')])
-        ->call('setLockTimeout', ['%dukecity_command_scheduler.lock_timeout%'])
-        ->call('setLogger', [ref('logger')])
-        ->tag('controller.service_arguments');
+
 
     $services->set(CommandParser::class)
         ->args(
@@ -64,6 +57,16 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 '%dukecity_command_scheduler.included_command_namespaces%',
             ]
         );
+
+    $services->set(ApiController::class)
+        ->public()
+        ->autowire()
+        ->call('setManagerName', ['%dukecity_command_scheduler.doctrine_manager%'])
+        ->call('setTranslator', [ref('translator')])
+        ->call('setLockTimeout', ['%dukecity_command_scheduler.lock_timeout%'])
+        ->call('setLogger', [ref('logger')])
+        ->call('setCommandParser', [ref(CommandParser::class)])
+        ->tag('controller.service_arguments');
 
     $services->set(CommandSchedulerExecution::class)
         ->args(

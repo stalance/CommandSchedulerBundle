@@ -36,6 +36,70 @@ class ApiControllerTest extends WebTestCase
     /**
      * Test list all command URL with should return json.
      */
+    public function testConsoleCommands()
+    {
+        $this->client->followRedirects(true);
+
+        // List all available console commands
+        $this->client->request('GET', '/command-scheduler/api/console_commands');
+        $this->assertResponseIsSuccessful();
+
+        $jsonResponse = $this->client->getResponse()->getContent();
+        $jsonArray = json_decode($jsonResponse, true);
+
+        $this->assertGreaterThanOrEqual(1, count($jsonArray));
+        $this->assertArrayHasKey('_global', $jsonArray);
+        $this->assertSame("assets:install", $jsonArray["assets"]["assets:install"]);
+        $this->assertSame("debug:autowiring", $jsonArray["debug"]["debug:autowiring"]);
+    }
+
+    /**
+     * Test list all command URL with should return json.
+     */
+    public function testConsoleCommandsDetailsAll()
+    {
+        $this->client->followRedirects(true);
+
+        // List all available console commands
+        $this->client->request('GET', '/command-scheduler/api/console_commands_details');
+        $this->assertResponseIsSuccessful();
+
+        $jsonResponse = $this->client->getResponse()->getContent();
+        $commands = json_decode($jsonResponse, true);
+
+        $this->assertIsArray($commands);
+        $this->assertArrayHasKey('about', $commands);
+        $this->assertSame("about", $commands["about"]["name"]);
+
+        $this->assertArrayHasKey('list', $commands);
+        $this->assertArrayHasKey('cache:clear', $commands);
+    }
+
+    /**
+     * Test list all command URL with should return json.
+     */
+    public function testConsoleCommandsDetails()
+    {
+        $this->client->followRedirects(true);
+
+        // List all available console commands
+        $this->client->request('GET', '/command-scheduler/api/console_commands_details/about,list,cache:clear,asserts:install');
+        $this->assertResponseIsSuccessful();
+
+        $jsonResponse = $this->client->getResponse()->getContent();
+        $commands = json_decode($jsonResponse, true);
+
+        $this->assertIsArray($commands);
+        $this->assertArrayHasKey('about', $commands);
+        $this->assertSame("about", $commands["about"]["name"]);
+
+        $this->assertArrayHasKey('list', $commands);
+        $this->assertArrayHasKey('cache:clear', $commands);
+    }
+
+    /**
+     * Test list all command URL with should return json.
+     */
     public function testList()
     {
         // DataFixtures create 4 records

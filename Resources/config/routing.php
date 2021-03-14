@@ -14,6 +14,16 @@ return static function (RoutingConfigurator $routingConfigurator): void {
     $routingConfigurator->add('dukecity_command_scheduler_api_list', '/command-scheduler/api/list')
         ->defaults(['_controller' => 'Dukecity\CommandSchedulerBundle\Controller\ApiController::listAction']);
 
+    $routingConfigurator->add('dukecity_command_scheduler_api_console_commands', '/command-scheduler/api/console_commands')
+        ->defaults(['_controller' => 'Dukecity\CommandSchedulerBundle\Controller\ApiController::getConsoleCommands']);
+
+    $routingConfigurator->add('dukecity_command_scheduler_api_console_commands_details', '/command-scheduler/api/console_commands_details/{commands}')
+        ->defaults(
+            ['_controller' => 'Dukecity\CommandSchedulerBundle\Controller\ApiController::getConsoleCommandsDetails',
+             'commands' => 'all'
+            ]);
+
+
     $routingConfigurator->add('dukecity_command_scheduler_action_toggle', '/command-scheduler/action/toggle/{id}')
         ->defaults(['_controller' => 'Dukecity\CommandSchedulerBundle\Controller\ListController::toggleAction']);
 

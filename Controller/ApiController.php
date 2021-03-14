@@ -3,6 +3,7 @@
 namespace Dukecity\CommandSchedulerBundle\Controller;
 
 use Dukecity\CommandSchedulerBundle\Entity\ScheduledCommand;
+use Dukecity\CommandSchedulerBundle\Service\CommandParser;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,6 +17,10 @@ class ApiController extends AbstractBaseController
 {
     private int $lockTimeout = 3600;
     private LoggerInterface $logger;
+    /**
+     * @var CommandParser
+     */
+    private CommandParser $commandParser;
 
     /**
      * @param int $lockTimeout
@@ -32,6 +37,15 @@ class ApiController extends AbstractBaseController
     {
         $this->logger = $logger;
     }
+
+    /**
+     * @param CommandParser $commandParser
+     */
+    public function setCommandParser(CommandParser $commandParser): void
+    {
+        $this->commandParser = $commandParser;
+    }
+
 
     /**
      * @param array $commands
@@ -58,6 +72,53 @@ class ApiController extends AbstractBaseController
         }
 
         return $jsonArray;
+    }
+
+
+    /**
+     * List all available (with the allowed namespaces) symfony console commands.
+     * The commands are grouped by namespaces (like the regular "list" command from symfony
+     * @return JsonResponse
+     */
+    public function getConsoleCommands(): JsonResponse
+    {
+        try {
+         return $this->json($this->commandParser->getCommands());
+        }
+        catch (\Exception $e) {
+            $this->logger->error('Get Console Commands by API failed', ['message' => $e->getMessage()]);
+        }
+
+        // StatusCode 417 (error)
+        return $this->json([], Response::HTTP_EXPECTATION_FAILED);
+    }
+
+
+    /**
+     * Get Details for symfony console commands (if in allowed namespaces)
+     *
+     * @param string $commands all | list of commands , separated
+     * @example cache:clear,assets:install
+     * @return JsonResponse
+     */
+    public function getConsoleCommandsDetails(string $commands="all"): JsonResponse
+    {
+        try {
+
+            if($commands!=="all")
+            {
+                return $this->json($this->commandParser->getCommandDetails(explode(",", $commands)));
+            }
+
+            # all commands
+            return $this->json($this->commandParser->getAllowedCommandDetails());
+        }
+        catch (\Exception $e) {
+            $this->logger->error('Get Console Commands details by API failed', ['message' => $e->getMessage()]);
+        }
+
+        // StatusCode 417 (error)
+        return $this->json([], Response::HTTP_EXPECTATION_FAILED);
     }
 
     /**
