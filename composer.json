@@ -38,7 +38,8 @@
         "symfony/property-access": "^4.4.20|^5.2",
         "symfony/http-kernel": "^4.4.20|^5.2",
         "symfony/inflector": "^4.4.20|^5.2",
-        "symfony/yaml": "^4.4.20|^5.2"
+        "symfony/yaml": "^4.4.20|^5.2",
+        "lorisleiva/cron-translator": "^0.2"
     },
     "require-dev": {
         "ext-pcntl": "*",

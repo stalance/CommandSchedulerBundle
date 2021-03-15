@@ -23,6 +23,12 @@ return static function (RoutingConfigurator $routingConfigurator): void {
              'commands' => 'all'
             ]);
 
+    $routingConfigurator->add('dukecity_command_scheduler_api_translate_cron_expression',
+            '/command-scheduler/api/trans_cron_expression/{cronExpression}/{lang}')
+        ->defaults(
+            ['_controller' => 'Dukecity\CommandSchedulerBundle\Controller\ApiController::translateCronExpression',
+                'lang' => 'en'
+            ]);
 
     $routingConfigurator->add('dukecity_command_scheduler_action_toggle', '/command-scheduler/action/toggle/{id}')
         ->defaults(['_controller' => 'Dukecity\CommandSchedulerBundle\Controller\ListController::toggleAction']);

@@ -172,13 +172,13 @@ class CommandSchedulerExecution
 
 
     /**
-     * Do the real excecution of a command
+     * Do the real execution of a command
      *
      * @param ScheduledCommand $scheduledCommand
      * @param int $commandsVerbosity
      * @return int Result
      */
-    private function doExceution(ScheduledCommand $scheduledCommand, int $commandsVerbosity): int
+    private function doExecution(ScheduledCommand $scheduledCommand, int $commandsVerbosity): int
     {
         $command = $this->prepareCommandExecution($scheduledCommand);
 
@@ -274,7 +274,7 @@ class CommandSchedulerExecution
 
         $scheduledCommand = $this->em->find(ScheduledCommand::class, $scheduledCommand);
 
-        $result = $this->doExceution($scheduledCommand, $commandsVerbosity);
+        $result = $this->doExecution($scheduledCommand, $commandsVerbosity);
 
 
         if (false === $this->em->isOpen()) {

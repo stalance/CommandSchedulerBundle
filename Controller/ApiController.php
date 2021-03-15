@@ -2,11 +2,14 @@
 
 namespace Dukecity\CommandSchedulerBundle\Controller;
 
+use Cron\CronExpression as CronExpressionLib;
 use Dukecity\CommandSchedulerBundle\Entity\ScheduledCommand;
 use Dukecity\CommandSchedulerBundle\Service\CommandParser;
+use Lorisleiva\CronTranslator\CronParsingException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Lorisleiva\CronTranslator\CronTranslator;
 
 /**
  * Class ApiController.
@@ -171,5 +174,35 @@ class ApiController extends AbstractBaseController
 
         // StatusCode 417 (error)
         return $response->setStatusCode(Response::HTTP_EXPECTATION_FAILED);
+    }
+
+
+    /**
+     * Translate cron expression
+     *
+     * @param string $cronExpression
+     * @param string $lang
+     * @return JsonResponse Status = 0 (ok)
+     */
+    public function translateCronExpression(string $cronExpression, string $lang): JsonResponse
+    {
+        try{
+            if(CronExpressionLib::isValidExpression($cronExpression))
+            {
+                $msg = CronTranslator::translate($cronExpression, $lang);
+                return new JsonResponse(["status" => 0, "message" => $msg]);
+            }
+            else
+            {
+                $msg = "Not a valid Cron-Expression";
+                return new JsonResponse(["status" => -1, "message" => $msg]);
+            }
+        }
+        catch (\Exception)
+        {
+            $msg = "Could not translate Cron-Expression";
+        }
+
+        return new JsonResponse(["status" => -2, "message" => $msg]);
     }
 }

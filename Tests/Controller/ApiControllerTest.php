@@ -28,6 +28,8 @@ class ApiControllerTest extends WebTestCase
     public function setUp(): void
     {
         $this->client = self::createClient();
+        $this->client->followRedirects(true);
+        
         $this->em = static::$kernel->getContainer()
             ->get('doctrine')
             ->getManager();
@@ -38,8 +40,6 @@ class ApiControllerTest extends WebTestCase
      */
     public function testConsoleCommands()
     {
-        $this->client->followRedirects(true);
-
         // List all available console commands
         $this->client->request('GET', '/command-scheduler/api/console_commands');
         $this->assertResponseIsSuccessful();
@@ -58,8 +58,6 @@ class ApiControllerTest extends WebTestCase
      */
     public function testConsoleCommandsDetailsAll()
     {
-        $this->client->followRedirects(true);
-
         // List all available console commands
         $this->client->request('GET', '/command-scheduler/api/console_commands_details');
         $this->assertResponseIsSuccessful();
@@ -80,8 +78,6 @@ class ApiControllerTest extends WebTestCase
      */
     public function testConsoleCommandsDetails()
     {
-        $this->client->followRedirects(true);
-
         // List all available console commands
         $this->client->request('GET', '/command-scheduler/api/console_commands_details/about,list,cache:clear,asserts:install');
         $this->assertResponseIsSuccessful();
@@ -105,8 +101,6 @@ class ApiControllerTest extends WebTestCase
         // DataFixtures create 4 records
         $this->loadFixtures([LoadScheduledCommandData::class]);
 
-        $this->client->followRedirects(true);
-
         // List 4 Commands
         $this->client->request('GET', '/command-scheduler/api/list');
         $this->assertResponseIsSuccessful();
@@ -124,8 +118,6 @@ class ApiControllerTest extends WebTestCase
     {
         // DataFixtures create 4 records
         $this->loadFixtures([LoadScheduledCommandData::class]);
-
-        $this->client->followRedirects(true);
 
         // One command is locked in fixture (2), another have a -1 return code as lastReturn (4)
         $this->client->request('GET', '/command-scheduler/monitor');
@@ -149,12 +141,11 @@ class ApiControllerTest extends WebTestCase
         $four = $this->em->getRepository(ScheduledCommand::class)->find(4);
         $two->setLocked(false);
         $four->setLastReturnCode(0);
+
         try {
             $this->em->flush();
         } catch (OptimisticLockException | ORMException $e) {
         }
-
-        $this->client->followRedirects(true);
 
         // One command is locked in fixture (2), another have a -1 return code as lastReturn (4)
         $this->client->request('GET', '/command-scheduler/monitor');
@@ -162,6 +153,21 @@ class ApiControllerTest extends WebTestCase
 
         $jsonResponse = $this->client->getResponse()->getContent();
         $jsonArray = json_decode($jsonResponse, true);
-        $this->assertEquals(0, count($jsonArray));
+        $this->assertCount(0, $jsonArray);
+    }
+
+    /**
+     * Test translations
+     */
+    public function testTranslateCronExpression()
+    {
+        $this->client->request('GET', '/command-scheduler/api/trans_cron_expression/* * * * */en');
+        $this->assertResponseIsSuccessful();
+
+        $jsonResponse = $this->client->getResponse()->getContent();
+        $jsonArray = json_decode($jsonResponse, true);
+
+        $this->assertSame(0, $jsonArray["status"]);
+        $this->assertSame("Every minute", $jsonArray["message"]);
     }
 }
