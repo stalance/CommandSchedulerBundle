@@ -33,7 +33,9 @@ class StartStopSchedulerCommandTest extends AbstractCommandTest
         {$this->assertFileDoesNotExist($pidFile);}
 
         # PHPUnit 8
-        if(method_exists($this, "assertFileNotExists"))
+        if(method_exists($this, "assertFileNotExists") &&
+            (!method_exists($this, "assertFileDoesNotExist"))
+        )
         {$this->assertFileNotExists($pidFile);}
     }
 }

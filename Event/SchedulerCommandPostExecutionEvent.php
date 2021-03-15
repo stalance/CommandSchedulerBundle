@@ -5,7 +5,7 @@ namespace Dukecity\CommandSchedulerBundle\Event;
 use JetBrains\PhpStorm\Pure;
 use Dukecity\CommandSchedulerBundle\Entity\ScheduledCommand;
 use Symfony\Component\Console\Output\OutputInterface;
-use TypeError;
+use Error;
 
 class SchedulerCommandPostExecutionEvent extends AbstractSchedulerCommandEvent
 {
@@ -16,7 +16,7 @@ class SchedulerCommandPostExecutionEvent extends AbstractSchedulerCommandEvent
      * @param int $result
      * @param OutputInterface|null $log
      * @param array|null $profiling
-     * @param \Exception|TypeError|null $exception
+     * @param \Exception|Error|null $exception
      */
     #[Pure]
     public function __construct(
@@ -24,7 +24,7 @@ class SchedulerCommandPostExecutionEvent extends AbstractSchedulerCommandEvent
         private int $result,
         private ?OutputInterface $log = null,
         private ?array $profiling = null,
-        private \Exception|TypeError|null $exception = null)
+        private \Exception|Error|null $exception = null)
     {
         parent::__construct($command);
     }
@@ -56,9 +56,9 @@ class SchedulerCommandPostExecutionEvent extends AbstractSchedulerCommandEvent
     }
 
     /**
-     * @return \Exception|TypeError|null
+     * @return \Exception|Error|null
      */
-    public function getException(): \Exception|TypeError|null
+    public function getException(): \Exception|Error|null
     {
         return $this->exception;
     }

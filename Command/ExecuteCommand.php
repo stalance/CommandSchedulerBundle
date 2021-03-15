@@ -16,7 +16,8 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
+use Dukecity\CommandSchedulerBundle\Service\SymfonyStyleWrapper as SymfonyStyle;
+#use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\StreamOutput;
@@ -195,14 +196,7 @@ HELP
         {
             foreach ($commandsToExceute as $command)
             {
-                if(method_exists($io, "info"))
-                {
-                    $io->info($command->getName().': '.$command->getCommand().' '.$command->getArguments());
-                }
-                else
-                {
-                    $io->comment($command->getName().': '.$command->getCommand().' '.$command->getArguments());
-                }
+                $io->info($command->getName().': '.$command->getCommand().' '.$command->getArguments());
             }
         }
         else
