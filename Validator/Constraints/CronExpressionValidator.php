@@ -33,7 +33,10 @@ class CronExpressionValidator extends ConstraintValidator
         try {
             new CronExpressionLib($value);
         } catch (\InvalidArgumentException) {
-            $this->context->addViolation($constraint->message, []);
+
+            $this->context->buildViolation($constraint->message)
+                ->setParameter('{{ string }}', $value)
+                ->addViolation();
         }
     }
 }

@@ -6,11 +6,12 @@ use Symfony\Component\Validator\Constraint;
 
 /**
  * Class CronExpression.
+ * @Annotation
  */
 class CronExpression extends Constraint
 {
     /**
      * Constraint error message.
      */
-    public string $message;
+    public string $message = 'The string "{{ string }}" is not a valid cron expression.';
 }

@@ -49,7 +49,9 @@ class CronExpressionValidatorTest extends ConstraintValidatorTestCase
 
         $this->validator->validate($value, $constraint);
 
-        $this->buildViolation('myMessage')->assertRaised();
+        $this->buildViolation('myMessage')
+            ->setParameter('{{ string }}', $value)
+            ->assertRaised();
     }
 
     public function getInvalidValues(): array

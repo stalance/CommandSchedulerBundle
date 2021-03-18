@@ -21,7 +21,6 @@
                 Command
             </div>
             <div class="card-body">
-                {{ form_row( scheduledCommandForm.id ) }}
                 {{ form_row( scheduledCommandForm.name, {'attr': styleConfiguration|merge({'placeholder': 'name'}) } ) }}
 
                 {{ form_row( scheduledCommandForm.logFile, {'attr': styleConfiguration|merge({'placeholder': 'myFile.log'}) } ) }}

@@ -6,11 +6,14 @@ use Carbon\Carbon;
 use Cron\CronExpression as CronExpressionLib;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Dukecity\CommandSchedulerBundle\Validator\Constraints as AssertDukecity;
 
 /**
  * @ORM\Entity(repositoryClass="Dukecity\CommandSchedulerBundle\Repository\ScheduledCommandRepository")
  * @ORM\Table(name="scheduled_command")
+ * @UniqueEntity("name")
  *
  * @author  Julien Guyon <julienguyon@hotmail.com>
  */
@@ -19,34 +22,34 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ScheduledCommand
 {
     /**
-     * @var ?int
+     * @var int
      *
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private ?int $id = null;
+    private int $id;
 
     /**
      * @ORM\Version
      * @ORM\Column(type="integer")
      * @see https://www.doctrine-project.org/projects/doctrine-orm/en/2.8/reference/transactions-and-concurrency.html
      */
-    private ?int $version;
-
-    /**
-     * @var ?string
-     *
-     * @ORM\Column(type="string", length=150)
-     */
-    private ?string $name = null;
+    private int $version;
 
     /**
      * @var string
-     * Assert\NotBlank
-     * @ORM\Column(type="string", length=200)
+     * @Assert\NotBlank
+     * @ORM\Column(type="string", length=150, nullable=false, unique=true)
      */
-    private ?string $command = null;
+    private string $name;
+
+    /**
+     * @var string
+     * @Assert\NotBlank
+     * @ORM\Column(type="string", length=200, nullable=false)
+     */
+    private string $command;
 
     /**
      * @var ?string
@@ -56,15 +59,17 @@ class ScheduledCommand
     private ?string $arguments = null;
 
     /**
-     * @var ?string
+     * @var string
      *
      * @ORM\Column(type="string", length=200, nullable=true)
-     *
+     * @Assert\NotBlank
+     * @AssertDukecity\CronExpression
      * @see http://www.abunchofutils.com/utils/developer/cron-expression-helper/
      */
-    private ?string $cronExpression = null;
+    private string $cronExpression;
 
     /**
+     * @Assert\Type("\DateTime")
      * @ORM\Column(type="datetime", nullable=true)
      */
     private ?DateTime $lastExecution = null;
@@ -84,9 +89,10 @@ class ScheduledCommand
     private ?string $logFile = null;
 
     /**
+     * @Assert\Type("integer")
      * @ORM\Column(type="integer", nullable=false)
      */
-    private ?int $priority;
+    private int $priority;
 
     /**
      * If true, command will be execute next time regardless cron expression.
@@ -98,21 +104,23 @@ class ScheduledCommand
     /**
      * @ORM\Column(type="boolean", nullable=false)
      */
-    private ?bool $disabled = false;
+    private bool $disabled = false;
 
     /**
      * @ORM\Column(type="boolean", nullable=false)
      */
-    private ?bool $locked = false;
+    private bool $locked = false;
 
     /**
      * Init new ScheduledCommand.
      */
     public function __construct()
     {
-        $this->setLastExecution(new DateTime());
+        #$this->setLastExecution(new DateTime());
+        $this->lastExecution = null;
         $this->setLocked(false);
         $this->priority = 0;
+        $this->version = 1;
     }
 
     /**
@@ -236,11 +244,11 @@ class ScheduledCommand
     /**
      * Set lastExecution.
      *
-     * @param \DateTime|null $lastExecution
+     * @param \DateTime $lastExecution
      *
      * @return ScheduledCommand
      */
-    public function setLastExecution(\DateTime | null $lastExecution = null): ScheduledCommand
+    public function setLastExecution(\DateTime $lastExecution): ScheduledCommand
     {
         $this->lastExecution = $lastExecution;
 
@@ -294,7 +302,7 @@ class ScheduledCommand
     /**
      * Get priority.
      */
-    public function getPriority(): ?int
+    public function getPriority(): int
     {
         return $this->priority;
     }
