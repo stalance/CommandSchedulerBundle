@@ -6,40 +6,42 @@
 {% endblock title %}
 
 {% block content %}
-    <div class="table-responsive table-stripped">
-    <table class="table">
+
+<div class="card">
+    <div class="card-header">{{ 'list.title'|trans }}</div>
+    <div class="card-body">
+    <table id="duketown-cronjobs" class="table table-striped table-hover table-bordered" style="width:100%">
         <thead>
             <tr>
-                <th>&nbsp;</th>
-                <th>{{ "detail.name"|trans }}</th>
-                <th>{{ "detail.command"|trans }}</th>
-                <th>{{ "detail.cronExpression"|trans }}</th>
-                <th>{{ "detail.logFile"|trans }}</th>
-                <th>{{ "detail.lastExecution"|trans }}</th>
-                <th>{{ "detail.nextRun"|trans }}</th>
-                <th class="text-right">{{ "detail.priority"|trans }}</th>
-                <th class="text-right">{{ "detail.actions"|trans }}</th>
+                <th data-searchable="false" data-orderable="false">&nbsp;</th>
+                <th data-searchable="true" data-orderable="true">{{ "detail.name"|trans }}</th>
+                <th data-searchable="true" data-orderable="true">{{ "detail.command"|trans }}</th>
+                <th data-searchable="false" data-orderable="false">{{ "detail.cronExpression"|trans }}</th>
+                <th data-searchable="true" data-orderable="false">{{ "detail.logFile"|trans }}</th>
+                <th data-searchable="false" data-orderable="true">{{ "detail.lastExecution"|trans }}</th>
+                <th data-searchable="false" data-orderable="true">{{ "detail.nextRun"|trans }}</th>
+                <th data-searchable="false" data-orderable="true" class="text-right">{{ "detail.priority"|trans }}</th>
+                <th data-searchable="false" data-orderable="false" class="text-right">{{ "detail.actions"|trans }}</th>
             </tr>
         </thead>
-
         <tbody>
         {% for command in scheduledCommands %}
             <tr {% if command.disabled == true %}class="text-muted" {% endif %}>
-                <td>
-                    <!-- <a href="{{ path('dukecity_command_scheduler_action_toggle', {'id': command.id}) }}" data-toggle="confirmation" data-btn-ok-label="{{ "action.unlock"|trans }}" data-title="{{ "confirm.unlock"|trans }}" > -->
-                    <a href="{{ path('dukecity_command_scheduler_action_toggle', {'id': command.id}) }}" >
+                <td {% if command.disabled == false %}data-search="active" data-order="0"{% else %}data-search="deactive" data-order="1"{% endif %}>
+                    <a href="{{ path('dukecity_command_scheduler_action_toggle', {'id': command.id}) }}"
+                       data-toggle="confirmation" data-btn-ok-label="{{ "action.unlock"|trans }}" data-title="{{ "confirm.unlock"|trans }}">
                     {% if command.disabled == true %}
-                        <span class="text-danger glyphicon glyphicon-off"></span> <span class="sr-only">&nbsp;</span>
+                        <i class="bi bi-power text-danger" title="Activate command"></i>
                     {% else %}
-                        <span class="text-success glyphicon glyphicon-off"></span> <span class="sr-only">&nbsp;</span>
+                        <i class="bi bi-power text-success" title="Deativate command"></i>
                     {% endif %}
                     </a>
                 </td>
-                <td>
+                <td data-search="{{ command.name }}" data-order="{{ command.name }}">
                     <span style="font-size:14px;" {% if command.disabled == false %}
-                            class="label label-success" title="Command is active"
+                            class="badge badge-success" title="Command is active"
                             {% else %}
-                            class="label label-danger" title="Command is disabled"
+                            class="badge badge-danger" title="Command is disabled"
                             {% endif %}>
                     {{ command.name }}
                     </span>
@@ -54,7 +56,7 @@
                     {{ command.logFile }}
                 </td>
                 <td>
-                    <span style="font-size:14px;" class="label label-{% if command.lastReturnCode == 0 %}success{% else %}danger{% endif %}" title="Last Return Code: {{ command.lastReturnCode }}">
+                    <span style="font-size:14px;" class="badge badge-{% if command.lastReturnCode == 0 %}success{% else %}danger{% endif %}" title="Last Return Code: {{ command.lastReturnCode }}">
                     {{ command.lastExecution is empty ? "" : command.lastExecution|date( "dateFormat"|trans ) }}
                     </span>
                 </td>
@@ -67,32 +69,73 @@
                 <td class="text-right">
                     {{ command.priority }}
                 </td>
-                <td style="min-width: 90px;" class="text-right">
+                <td style="min-width: 90px;" class="action-container text-right">
                     {% if command.locked == true %}
-                        <a style="display: inline-block; width: 24px; margin-left: 2px; margin-right: 2px;" href="{{ path('dukecity_command_scheduler_action_unlock', {'id': command.id}) }}" data-toggle="confirmation" data-btn-ok-label="{{ "action.unlock"|trans }}" data-title="{{ "confirm.unlock"|trans }}" >
-                            <span class="text-muted glyphicon glyphicon-lock"></span> <span class="sr-only">{{ "action.unlock"|trans }}</span>
+                        <a href="{{ path('dukecity_command_scheduler_action_unlock', {'id': command.id}) }}"
+                           data-toggle="confirmation"
+                           data-btn-ok-label="{{ "action.unlock"|trans }}"
+                           data-title="{{ "confirm.unlock"|trans }}" >
+                            <i class="bi bi-lock-fill text-danger" title="{{ "action.unlock"|trans }}"></i>
                         </a>
                     {% else %}
                        <div style="display: inline-block;"> </div>
                     {% endif %}
-                    <a style="display: inline-block; width: 24px; margin-left: 2px; margin-right: 2px;" href="{{ path('dukecity_command_scheduler_detail_edit', {'id': command.id}) }}" >
-                        <span class="text-info glyphicon glyphicon-pencil"></span> <span class="sr-only">{{ "action.edit"|trans }}</span>
+                    <a href="{{ path('dukecity_command_scheduler_detail_edit', {'id': command.id}) }}" >
+                        <i class="bi bi-pencil-square" title="{{ "action.edit"|trans }}"></i>
                     </a>
-                    <a style="display: inline-block; width: 24px; margin-left: 2px; margin-right: 2px;" href="{{ path('dukecity_command_scheduler_action_remove', {'id': command.id}) }}"
+                    <a href="{{ path('dukecity_command_scheduler_action_remove', {'id': command.id}) }}"
                        data-toggle="confirmation"
                        data-btn-ok-label="{{ "action.delete"|trans }}"
                        data-title="{{ "confirm.delete"|trans }}" >
-                        <span class="text-danger glyphicon glyphicon-trash"></span> <span class="sr-only">{{ "action.delete"|trans }}</span>
+                        <i class="bi bi-trash-fill text-danger" title="{{ "action.delete"|trans }}"></i>
                     </a>
-                    <a style="display: inline-block; width: 24px; margin-left: 2px; margin-right: 2px;" href="{{ path('dukecity_command_scheduler_action_execute', {'id': command.id}) }}" data-toggle="confirmation" data-btn-ok-label="{{ "action.execute"|trans }}" data-title="{{ "confirm.execute"|trans }}">
-                        <span class="text-{% if command.executeImmediately == true %}muted{% else %}success{% endif %} glyphicon glyphicon-play"></span> <span class="sr-only">{{ "action.execute"|trans }}</span>
+                    <a href="{{ path('dukecity_command_scheduler_action_execute', {'id': command.id}) }}"
+                       data-toggle="confirmation"
+                       data-btn-ok-label="{{ "action.execute"|trans }}"
+                       data-title="{{ "confirm.execute"|trans }}"
+                    >
+                        <i class="bi bi-file-play text-{% if command.executeImmediately == true %}muted{% else %}success{% endif %}" title="{{ "action.execute"|trans }}"></i>
                     </a>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-    </div>
 
-    <a href="{{ path('dukecity_command_scheduler_detail_new') }}" class="btn btn-primary btn-lg pull-right" role="button">{{ "action.new"|trans }} »</a>
-{% endblock content %}
+    </div>
+    <div class="card-footer">
+    <a href="{{ path('dukecity_command_scheduler_detail_new') }}" class="btn btn-primary float-right" role="button">{{ "action.new"|trans }} »</a>
+    </div>
+</div>
+    {% endblock content %}
+
+
+{% block javascript %}
+$(document).ready(function() {
+
+    $('#duketown-cronjobs').DataTable( {
+        stateSave: true,
+        dom: 'Bfrtip',
+        buttons: [
+            'colvis'
+        ],
+        /*rowGroup: {
+            dataSrc: 1
+        },*/
+        order: [[ 6, "desc" ], [ 7, "desc" ]],
+        columnDefs: [
+            {
+                "targets": [ 4 ],
+                "visible": false,
+                "searchable": false
+            }
+        ],
+        paging: false,
+        ordering: true,
+        info: false,
+        search: false,
+        responsive: true
+    } );
+} );
+{% endblock javascript %}
+

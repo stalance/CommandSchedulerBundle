@@ -74,12 +74,12 @@ class ListControllerTest extends WebTestCase
         //toggle off
         $crawler = $this->client->request('GET', '/command-scheduler/action/toggle/1');
         $this->assertEquals(1, $crawler->filter(
-            'a[href="/command-scheduler/action/toggle/1"] > span[class="text-danger glyphicon glyphicon-off"]')
+            'a[href="/command-scheduler/action/toggle/1"] > i[class="bi bi-power text-danger"]')
             ->count());
 
         //toggle on
         $crawler = $this->client->request('GET', '/command-scheduler/action/toggle/1');
-        $this->assertEquals(0, $crawler->filter('a[href="/command-scheduler/action/toggle/1"] > span[class="text-danger glyphicon glyphicon-off"]')->count());
+        $this->assertEquals(0, $crawler->filter('a[href="/command-scheduler/action/toggle/1"] > i[class="bi bi-power text-danger"]')->count());
     }
 
     /**

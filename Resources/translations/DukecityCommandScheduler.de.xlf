@@ -123,6 +123,10 @@
                 <source>detail.locked</source>
                 <target>Verschlossen</target>
             </trans-unit>
+            <trans-unit id="215">
+                <source>detail.nextRun</source>
+                <target>Nächste Ausführung</target>
+            </trans-unit>
 
             <!-- Flashs messages -->
             <trans-unit id="300">

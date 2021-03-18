@@ -5,17 +5,20 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Command Scheduler</title>
+    <title>Command Scheduler {% block title %}{% endblock title %}</title>
     <link href="{{ asset('bundles/dukecitycommandscheduler/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('bundles/dukecitycommandscheduler/css/bootstrap-theme.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/dukecitycommandscheduler/css/select2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/dukecitycommandscheduler/css/bootstrap-icons.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/dukecitycommandscheduler/css/dataTables.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/dukecitycommandscheduler/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/dukecitycommandscheduler/css/custom.css') }}" rel="stylesheet">
 </head>
-<body>
+<body id="dukecity">
 {% include '@DukecityCommandScheduler/Navbar/navbar.html.twig' %}
-<div class="jumbotron">
-    <div class="container">
+<div class="">
+    <div class="container-fluid" style="margin-top:30px; max-width: 1300px; margin-bottom: 50px;">
         <div class="row">
             <div class="col-md-12">
-                <h2>{% block title %}{% endblock title %}</h2>
 
                 {# Succes flash messages #}
                 {% for flashMessage in app.session.flashbag.get('success') %}
@@ -34,33 +37,36 @@
                 {% block content %}{% endblock content %}
             </div>
         </div>
-        <hr>
     </div>
 </div><!-- /container -->
 
-<script type="text/javascript" src="{{ asset('bundles/dukecitycommandscheduler/js/jquery-3.5.1.slim.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('bundles/dukecitycommandscheduler/js/jquery-migrate-1.4.1.min.js') }}"></script>
-
-<script type="text/javascript" src="{{ asset('bundles/dukecitycommandscheduler/js/bootstrap.min.js') }}"></script>
-
-<script type="text/javascript" src="{{ asset('bundles/dukecitycommandscheduler/js/bootstrap-tooltip.js') }}"></script>
-<script type="text/javascript" src="{{ asset('bundles/dukecitycommandscheduler/js/bootstrap-confirmation.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/dukecitycommandscheduler/js/jquery-3.6.0.slim.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/dukecitycommandscheduler/js/jquery-migrate-3.3.2.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/dukecitycommandscheduler/js/bootstrap.bundle.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/dukecitycommandscheduler/js/bootstrap-confirmation.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/dukecitycommandscheduler/js/select2.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/dukecitycommandscheduler/js/datatables.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/dukecitycommandscheduler/js/dataTables.bootstrap4.min.js') }}"></script>
 
 <script type="text/javascript">
-    // Enable bootstrap-confirmation (https://bootstrap-confirmation.js.org/)
+
     $(document).ready(function () {
 
-        $('[data-toggle="confirmation"]').confirmation({
+        // Enable bootstrap-confirmation (https://bootstrap-confirmation.js.org/)
+        $('[data-toggle=confirmation]').confirmation({
+            rootSelector: '[data-toggle=confirmation]',
+            container: 'body',
             singleton: true,
             popout: true,
             placement: 'left',
             btnOkClass: 'btn btn-danger',
-            //btnOkClass: 'btn btn-sm btn-danger', //Bootstrap 4
             btnCancelLabel: 'Cancel',
-            btnCancelClass: 'btn btn-default'
-            //btnCancelClass: 'btn btn-sm btn-secondary', //Bootstrap 4
+            btnCancelClass: 'btn btn-secondary',
         });
     });
+
+    {% block javascript %}{% endblock javascript %}
+
 </script>
 </body>
 </html>

@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Cron\CronExpression as CronExpressionLib;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="Dukecity\CommandSchedulerBundle\Repository\ScheduledCommandRepository")
@@ -41,8 +42,8 @@ class ScheduledCommand
     private ?string $name = null;
 
     /**
-     * @var ?string
-     *
+     * @var string
+     * Assert\NotBlank
      * @ORM\Column(type="string", length=200)
      */
     private ?string $command = null;
