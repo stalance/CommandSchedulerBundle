@@ -24,15 +24,6 @@ doctrine:
         auto_generate_proxy_classes: true
         auto_mapping: true
 
-security:
-    firewalls:
-        secured_area:
-            pattern:    ^/
-            anonymous:  true
-    providers:
-        in_memory:
-             memory: ~
-
 dukecity_command_scheduler:
     lock_timeout: 300
     excluded_command_namespaces:
