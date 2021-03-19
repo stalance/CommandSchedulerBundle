@@ -42,9 +42,9 @@ class UnlockCommandTest extends WebTestCase
         // One command is locked in fixture (2), another have a -1 return code as lastReturn (4)
         $output = $this->runCommand('scheduler:unlock', ['--all' => true], true)->getDisplay();
 
-        $this->assertRegExp('/"two"/', $output);
-        $this->assertNotRegExp('/"one"/', $output);
-        $this->assertNotRegExp('/"three"/', $output);
+        $this->assertStringContainsString('"two"', $output);
+        $this->assertStringNotContainsString('"one"', $output);
+        $this->assertStringNotContainsString('"three"', $output);
 
         $this->em->clear();
         $two = $this->em->getRepository(ScheduledCommand::class)->findOneBy(['name' => 'two']);
@@ -63,7 +63,7 @@ class UnlockCommandTest extends WebTestCase
         // One command is locked in fixture (2), another have a -1 return code as lastReturn (4)
         $output = $this->runCommand('scheduler:unlock', ['name' => 'two'], true)->getDisplay();
 
-        $this->assertRegExp('/"two"/', $output);
+        $this->assertStringContainsString('"two"', $output);
 
         $this->em->clear();
         $two = $this->em->getRepository(ScheduledCommand::class)->findOneBy(['name' => 'two']);
@@ -86,8 +86,8 @@ class UnlockCommandTest extends WebTestCase
             true
         )->getDisplay();
 
-        $this->assertRegExp('/Skipping/', $output);
-        $this->assertRegExp('/"two"/', $output);
+        $this->assertStringContainsString('Skipping', $output);
+        $this->assertStringContainsString('"two"', $output);
 
         $this->em->clear();
         $two = $this->em->getRepository(ScheduledCommand::class)->findOneBy(['name' => 'two']);

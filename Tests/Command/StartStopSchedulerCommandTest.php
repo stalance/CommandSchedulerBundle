@@ -30,6 +30,16 @@ class StartStopSchedulerCommandTest extends WebTestCase
 
         $output = $this->runCommand('scheduler:stop')->getDisplay();
         $this->assertStringStartsWith('Command scheduler is stopped.', $output);
-        $this->assertFileNotExists($pidFile);
+
+
+        # PHPUnit 9
+        if(method_exists($this, "assertFileDoesNotExist"))
+        {$this->assertFileDoesNotExist($pidFile);}
+
+        # PHPUnit 8
+        if(method_exists($this, "assertFileNotExists") &&
+            (!method_exists($this, "assertFileDoesNotExist"))
+        )
+        {$this->assertFileNotExists($pidFile);}
     }
 }
