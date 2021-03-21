@@ -28,7 +28,8 @@ class ScheduledCommand
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(name="id", type="integer")
      */
-    private int $id;
+    private $id; # temporary, otherwise EasyAdminBundle could not create new entries
+    #private int $id;
 
     /**
      * @ORM\Version
