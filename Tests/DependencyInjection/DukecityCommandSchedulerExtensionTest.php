@@ -1,6 +1,6 @@
 <?php
 
-namespace Dukecity\CommandSchedulerBundle\DependencyInjection\Tests;
+namespace App\Tests\DependencyInjection;
 
 use Dukecity\CommandSchedulerBundle\DependencyInjection\DukecityCommandSchedulerExtension;
 use PHPUnit\Framework\TestCase;
