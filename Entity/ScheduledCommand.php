@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Cron\CronExpression as CronExpressionLib;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Dukecity\CommandSchedulerBundle\Validator\Constraints as AssertDukecity;
@@ -23,10 +24,9 @@ class ScheduledCommand
 {
     /**
      * @var int
-     *
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(name="id", type="integer")
      */
     private int $id;
 
@@ -36,6 +36,14 @@ class ScheduledCommand
      * @see https://www.doctrine-project.org/projects/doctrine-orm/en/2.8/reference/transactions-and-concurrency.html
      */
     private int $version;
+
+    /**
+     * The creation date
+     *
+     * @var ?DateTime
+     * @ORM\Column(type="datetime", name="created_at")
+     */
+    private ?DateTime $createdAt = null;
 
     /**
      * @var string
@@ -116,11 +124,18 @@ class ScheduledCommand
      */
     public function __construct()
     {
+        $this->createdAt = new DateTime();
         #$this->setLastExecution(new DateTime());
         $this->lastExecution = null;
         $this->setLocked(false);
         $this->priority = 0;
         $this->version = 1;
+    }
+
+    #[Pure]
+    public function __toString(): string
+    {
+        return $this->getName();
     }
 
     /**
@@ -244,11 +259,11 @@ class ScheduledCommand
     /**
      * Set lastExecution.
      *
-     * @param \DateTime $lastExecution
+     * @param DateTime $lastExecution
      *
      * @return ScheduledCommand
      */
-    public function setLastExecution(\DateTime $lastExecution): ScheduledCommand
+    public function setLastExecution(DateTime $lastExecution): ScheduledCommand
     {
         $this->lastExecution = $lastExecution;
 
@@ -412,6 +427,23 @@ class ScheduledCommand
     }
 
     /**
+     * @return ?DateTime
+     */
+    public function getCreatedAt(): ?DateTime
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param DateTime $createdAt
+     * @return DateTime
+     */
+    public function setCreatedAt(DateTime $createdAt): DateTime
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
      * Returns the next run time of the scheduled command
      * @param bool $checkExecuteImmediately Check if immediately execution is set
      *
@@ -431,7 +463,11 @@ class ScheduledCommand
         return (new CronExpressionLib($this->getCronExpression()))->getNextRunDate();
     }
 
-
+    /**
+     * Get a human readable format of the next run of the scheduled command
+     * @example 3 minutes
+     * @return string|null
+     */
     public function getNextRunDateForHumans(): ?string
     {
         try{
