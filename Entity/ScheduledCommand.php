@@ -41,7 +41,7 @@ class ScheduledCommand
      * The creation date
      *
      * @var ?DateTime
-     * @ORM\Column(type="datetime", name="created_at")
+     * @ORM\Column(type="datetime", name="created_at", nullable=true)
      */
     private ?DateTime $createdAt = null;
 
