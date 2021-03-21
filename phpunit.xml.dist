@@ -17,14 +17,21 @@
       <directory suffix=".php">./Controller</directory>
       <directory suffix=".php">./DependencyInjection</directory>
       <directory suffix=".php">./Entity</directory>
+      <directory suffix=".php">./Event</directory>
+      <directory suffix=".php">./EventSubscriber</directory>
       <directory suffix=".php">./Form</directory>
-      <directory suffix=".php">./Resources</directory>
+      <directory suffix=".php">./Notification</directory>
+      <directory suffix=".php">./Resources/config</directory>
+      <directory suffix=".php">./Service</directory>
       <directory suffix=".php">./Validator</directory>
     </include>
     <exclude>
       <directory>./build</directory>
+      <directory>./Resources/doc/integrations</directory>
       <directory>./Tests</directory>
       <directory>./vendor</directory>
+      <directory>./coverage</directory>
+      <directory>./github</directory>
     </exclude>
     <report>
       <clover outputFile="build/logs/clover.xml"/>
