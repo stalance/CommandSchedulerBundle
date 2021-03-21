@@ -43,10 +43,10 @@ public function registerBundles()
 
 Now, you have to register the routes provided by the bundle :  
 ```yaml
-# app/config/routing.yml
+# app/config/routing.php
 
 dukecity_command_scheduler:
-    resource: "@DukecityCommandSchedulerBundle/Resources/config/routing.yml"
+    resource: "@DukecityCommandSchedulerBundle/Resources/config/routing.php"
     prefix:   /
 ```
 
