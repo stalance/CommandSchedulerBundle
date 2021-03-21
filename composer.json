@@ -33,7 +33,8 @@
         "symfony/inflector": "^4.4.20|^5.2",
         "symfony/yaml": "^4.4.20|^5.2",
         "symfony/config": "^4.4.20|^5.2",
-        "symfony/dependency-injection": "^4.4.20|^5.2"
+        "symfony/dependency-injection": "^4.4.20|^5.2",
+        "symfony/cache-contracts": "^2.2"
     },
     "require-dev": {
         "ext-pcntl": "*",
