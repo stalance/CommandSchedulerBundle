@@ -20,6 +20,7 @@
         "symfony/console": "^4.4.20|^5.2",
         "doctrine/orm": "^2.8.1",
         "doctrine/doctrine-bundle": "^2.2",
+        "doctrine/doctrine-migrations-bundle": "^3.0",
         "dragonmantank/cron-expression": "^3.1",
         "symfony/framework-bundle": "^4.4.20|^5.2",
         "symfony/twig-bundle": "^4.4.20|^5.2",
@@ -49,6 +50,7 @@
         "symfony/css-selector": "^4.4.20|^5.2",
         "liip/test-fixtures-bundle": "^1.11.0",
         "symfony/browser-kit": "^4.4.20|^5.2",
+        "symfony/maker-bundle": "^1.11",
         "jetbrains/phpstorm-attributes": "^1.0"
     },
     "suggest": {
