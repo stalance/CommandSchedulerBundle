@@ -6,6 +6,7 @@ on:
   push:
     branches:
       - master
+      - improve-quality
 
 #on: ["push", "pull_request"]
 
@@ -27,9 +28,15 @@ jobs:
       - run: |
              vendor/bin/phpunit --coverage-clover build/logs/clover.xml
              vendor/bin/php-coveralls --coverage_clover=build/logs/clover.xml -v
-      - uses: coverallsapp/github-action@master
+
+      - uses: codecov/codecov-action@v1
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          files: build/logs/clover.xml # optional
+          verbose: true # optional (default = false)
+
+      #- uses: coverallsapp/github-action@master
+        #with:
+          #github-token: ${{ secrets.GITHUB_TOKEN }}
+          #COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           #GITHUB_RUN_ID: 1
           #GITHUB_EVENT_NAME: "test"
