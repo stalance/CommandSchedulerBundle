@@ -70,9 +70,6 @@ class ExecuteCommand extends Command
     ) {
         $this->eventDispatcher = $eventDispatcher;
         $this->em = $managerRegistry->getManager($managerName);
-        //$this->em = $managerRegistry->getManagerForClass(ScheduledCommand::class);
-        //EntityManagerInterface
-        //$this->em = $this->getDoctrine()->getManager($managerName);
 
         $this->commandSchedulerExecution = $commandSchedulerExecution;
 
@@ -151,7 +148,7 @@ HELP
             return self::SUCCESS;
         }
 
-
+       # For Unittests ;(
        if(is_a($this->output, ConsoleOutput::class))
         {
             $sectionListing = $this->output->section();
@@ -164,7 +161,6 @@ HELP
             $io = new SymfonyStyle($this->input, $this->output);
             #$this->env="test";
         }
-
 
 
         // Before continue, we check that the "log_path" is valid and writable (except for gaufrette)
@@ -210,6 +206,7 @@ HELP
                 foreach ($commandsToExceute as $command) {
 
                     $progress->setMessage('Start Execution of '.$command->getCommand().' '.$command->getArguments());
+                    $io->comment('Start Execution of '.$command->getCommand().' '.$command->getArguments());
 
                     $result = $this->commandSchedulerExecution->executeCommand($command, $this->env, $this->commandsVerbosity);
 

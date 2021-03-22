@@ -106,9 +106,6 @@ class UnlockCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        
-        //$this->io->title(self::$defaultName);
-
         if (!$this->unlockAll && empty($this->scheduledCommandName)) {
             $this->io->error('Either the name of a scheduled command or the --all option must be set.'.
                         PHP_EOL.'List all locked Commands: php console scheduler:monitor --dump');
@@ -170,7 +167,7 @@ class UnlockCommand extends Command
             )
         ) {
             $this->io->error(
-                sprintf('Skipping: Timout for scheduled Command "%s" has not run out.', $command->getName())
+                sprintf('Skipping: Timeout for scheduled Command "%s" has not run out.', $command->getName())
             );
 
             return false;
