@@ -18,13 +18,13 @@ The following table shows the compatibilities of different versions of the bundl
 | Version                                                                               | Symfony          | PHP    |
 | ------------------------------------------------------------------------------------- |  --------------- | ------ |
 | [4.0 (master)](https://github.com/Dukecity/CommandSchedulerBundle/tree/master)        | ^4.4.20\|^5.2    | >=8.0  |
-| [3.x](https://github.com/Dukecity/CommandSchedulerBundle/tree/3.x)                    | ^4.4.20\|^5.2    | >=7.2  |
+| [3.x](https://github.com/Dukecity/CommandSchedulerBundle/tree/3.x)                    | ^4.4.20\|^5.2    | >=7.3  |
 | [2.2.x](https://github.com/Dukecity/CommandSchedulerBundle/tree/2.2)                  | ^3.4\|^4.3       | ^7.1   |
 
 
 ## Install
 
-When using Symfony Flex there is an [installation recipe](https://github.com/symfony/recipes-contrib/tree/master/dukecity/command-scheduler-bundle/1.0).  
+When using Symfony Flex there is an [installation recipe](https://github.com/symfony/recipes-contrib/tree/master/dukecity/command-scheduler-bundle/3.0).  
 To use it, you have to enable contrib recipes on your project : 
 
     composer config extra.symfony.allow-contrib true
@@ -48,17 +48,17 @@ Check new URL /command-scheduler/list
 
 ## Features
 
-New in Version 4:
-- Event-Handling (preExecution, postExecution). You can subscribe your own Events
-- Monitoring: Notifications with the [Symfony Notifier](https://symfony.com/doc/current/notifier.html) Component. Default: E-Mail
+### New in Version 4:
+- API for all functions (in development)
+- Event-Handling (preExecution, postExecution). You can subscribe to this [Events](Resources/doc/integrations/events/index.md)
+- Monitoring: Optional Notifications with the [Symfony Notifier](https://symfony.com/doc/current/notifier.html) Component. Default: E-Mail
 - Refactored Execution of Commands to Services. You can use them now from other Services.
 - Handled error in Command Parsing. So there is no 500 Error while parsing commands.
 - You CLI-commands for add, remove and list scheduled commands
 - Improved UI of command-execution in cli
-- Create Command-Listing as Json for API usage
 
 
-Version 3:
+### Version 3:
 - An admin interface to add, edit, enable/disable or delete scheduled commands.
 - For each command, you define :
   - name
@@ -71,7 +71,7 @@ Version 3:
 - Locking system, to stop scheduling a command that has returned an error
 - Monitoring with timeout or failed commands (Json URL and command with mailing)
 - Translated in french, english, german and spanish
-- An [EasyAdmin](https://github.com/EasyCorp/EasyAdminBundle) configuration template available [here](Resources/doc/index.md#6---easyadmin-integration)
+- An [EasyAdmin](https://github.com/EasyCorp/EasyAdminBundle) 2 + 3 configuration template available [here](Resources/doc/integrations/easyadmin/index.md)
 - **Beta** - Handle commands with a deamon (unix only) if you don't want to use a cronjob
 
 ## Screenshots
