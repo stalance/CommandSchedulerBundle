@@ -1,7 +1,6 @@
 vendor/
 composer.lock
 build/
-.coveralls.yml
 .php_cs.cache
 .phpcs-cache
 .phpunit.result.cache

@@ -43,7 +43,6 @@
     <exclude>
       <directory>./github</directory>
       <directory>./build</directory>
-      <directory>./coverage</directory>
       <directory>./Resources/doc/integrations</directory>
       <directory>./Tests</directory>
       <directory>./vendor</directory>
