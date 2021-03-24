@@ -15,12 +15,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Notifier\NotifierInterface;
 use Symfony\Component\Notifier\Recipient\Recipient;
 
-final class SchedulerCommandSubscriber implements EventSubscriberInterface
+class SchedulerCommandSubscriber implements EventSubscriberInterface
 {
-    private LoggerInterface $logger;
-    private EntityManagerInterface $em;
-    private ContainerInterface $container;
-    private NotifierInterface|null $notifier;
+    protected LoggerInterface $logger;
+    protected EntityManagerInterface $em;
+    protected ContainerInterface $container;
+    protected NotifierInterface|null $notifier;
 
     /**
      * TODO check if parameters needed

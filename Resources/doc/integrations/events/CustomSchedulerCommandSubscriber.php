@@ -2,42 +2,17 @@
 
 namespace App\EventSubscriber;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Dukecity\CommandSchedulerBundle\Event\SchedulerCommandCreatedEvent;
 use Dukecity\CommandSchedulerBundle\Event\SchedulerCommandPostExecutionEvent;
 use Dukecity\CommandSchedulerBundle\Event\SchedulerCommandFailedEvent;
 use Dukecity\CommandSchedulerBundle\Event\SchedulerCommandPreExecutionEvent;
-use Psr\Log\LoggerInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Notifier\NotifierInterface;
+use Dukecity\CommandSchedulerBundle\EventSubscriber\SchedulerCommandSubscriber;
 
 /**
  * Example to Subscribe to Events from the Dukecity\CommandSchedulerBundle
  */
-final class SchedulerCommandSubscriber implements EventSubscriberInterface
+class CustomSchedulerCommandSubscriber extends SchedulerCommandSubscriber
 {
-    private LoggerInterface $logger;
-    private EntityManagerInterface $em;
-    private ContainerInterface $container;
-    private NotifierInterface|null $notifier;
-
-    /**
-     * SchedulerCommandSubscriber constructor.
-     *
-     * @param ContainerInterface     $container
-     * @param LoggerInterface        $logger
-     * @param EntityManagerInterface $em
-     * @param NotifierInterface|null $notifier
-     */
-    public function __construct(ContainerInterface $container, LoggerInterface $logger, EntityManagerInterface $em, NotifierInterface|null $notifier = null)
-    {
-        $this->container = $container;
-        $this->logger = $logger;
-        $this->em = $em;
-        $this->notifier = $notifier;
-    }
-
     /**
      * {@inheritdoc}
      */
