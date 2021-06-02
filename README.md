@@ -10,14 +10,14 @@ See [Wiki](https://github.com/Dukecity/CommandSchedulerBundle/wiki) for Details
 ## Versions & Dependencies
 
 Version 4.x has the goal to use modern Php and Symfony features and low maintenance.
-So only Php >= 8.0 and Symfony ^4.4.20|^5.2 are supported at the moment.
+So only Php >= 8.0 and Symfony ^4.4.20|^5.3 are supported at the moment.
 
 The following table shows the compatibilities of different versions of the bundle :
 
 | Version                                                                               | Symfony          | PHP    |
 | ------------------------------------------------------------------------------------- |  --------------- | ------ |
-| [4.0 (master)](https://github.com/Dukecity/CommandSchedulerBundle/tree/master)        | ^4.4.20\|^5.2    | >=8.0  |
-| [3.x](https://github.com/Dukecity/CommandSchedulerBundle/tree/3.x)                    | ^4.4.20\|^5.2    | >=7.3  |
+| [4.0 (master)](https://github.com/Dukecity/CommandSchedulerBundle/tree/master)        | ^4.4.20\|^5.3    | >=8.0  |
+| [3.x](https://github.com/Dukecity/CommandSchedulerBundle/tree/3.x)                    | ^4.4.20\|^5.3    | >=7.3  |
 | [2.2.x](https://github.com/Dukecity/CommandSchedulerBundle/tree/2.2)                  | ^3.4\|^4.3       | ^7.1   |
 
 

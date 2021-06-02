@@ -7,6 +7,8 @@ use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Dukecity\CommandSchedulerBundle\Entity\ScheduledCommand;
 use Dukecity\CommandSchedulerBundle\Fixtures\ORM\LoadScheduledCommandData;
+use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
+use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -17,8 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ListControllerTest extends WebTestCase
 {
-    use FixturesTrait;
-
+    protected AbstractDatabaseTool $databaseTool;
     private KernelBrowser $client;
     private EntityManager $em;
 
@@ -28,9 +29,13 @@ class ListControllerTest extends WebTestCase
     public function setUp(): void
     {
         $this->client = self::createClient();
+        $this->client->followRedirects(true);
+
         $this->em = static::$kernel->getContainer()
             ->get('doctrine')
             ->getManager();
+
+        $this->databaseTool = $this->client->getContainer()->get(DatabaseToolCollection::class)->get();
     }
 
     /**
@@ -39,7 +44,7 @@ class ListControllerTest extends WebTestCase
     public function testIndex()
     {
         // DataFixtures create 4 records
-        $this->loadFixtures([LoadScheduledCommandData::class]);
+        $this->databaseTool->loadFixtures([LoadScheduledCommandData::class]);
 
         $crawler = $this->client->request('GET', '/command-scheduler/list');
         $this->assertEquals(5, $crawler->filter('a[href^="/command-scheduler/action/toggle/"]')->count());
@@ -51,9 +56,7 @@ class ListControllerTest extends WebTestCase
     public function testRemove()
     {
         // DataFixtures create 4 records
-        $this->loadFixtures([LoadScheduledCommandData::class]);
-
-        $this->client->followRedirects(true);
+        $this->databaseTool->loadFixtures([LoadScheduledCommandData::class]);
 
         //toggle off
         $crawler = $this->client->request('GET', '/command-scheduler/action/remove/1');
@@ -67,9 +70,7 @@ class ListControllerTest extends WebTestCase
     public function testToggle()
     {
         // DataFixtures create 4 records
-        $this->loadFixtures([LoadScheduledCommandData::class]);
-
-        $this->client->followRedirects(true);
+        $this->databaseTool->loadFixtures([LoadScheduledCommandData::class]);
 
         //toggle off
         $crawler = $this->client->request('GET', '/command-scheduler/action/toggle/1');
@@ -88,9 +89,7 @@ class ListControllerTest extends WebTestCase
     public function testExecute()
     {
         // DataFixtures create 4 records
-        $this->loadFixtures([LoadScheduledCommandData::class]);
-
-        $this->client->followRedirects(true);
+        $this->databaseTool->loadFixtures([LoadScheduledCommandData::class]);
 
         //call execute now button
         $crawler = $this->client->request('GET', '/command-scheduler/action/execute/1');
@@ -108,9 +107,7 @@ class ListControllerTest extends WebTestCase
     public function testUnlock()
     {
         // DataFixtures create 4 records
-        $this->loadFixtures([LoadScheduledCommandData::class]);
-
-        $this->client->followRedirects(true);
+        $this->databaseTool->loadFixtures([LoadScheduledCommandData::class]);
 
         // One command is locked in fixture (2)
         $crawler = $this->client->request('GET', '/command-scheduler/list');

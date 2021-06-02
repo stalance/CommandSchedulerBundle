@@ -17,7 +17,7 @@ class StartStopSchedulerCommandTest extends AbstractCommandTest
     public function testStartAndStopScheduler()
     {
         // DataFixtures create 4 records
-        $this->loadFixtures([LoadScheduledCommandData::class]);
+        $this->loadScheduledCommandFixtures();
 
         $pidFile = sys_get_temp_dir().DIRECTORY_SEPARATOR.StartSchedulerCommand::PID_FILE;
 

@@ -18,7 +18,7 @@ class UnlockCommandTest extends AbstractCommandTest
     public function testUnlockAll()
     {
         // DataFixtures create 4 records
-        $this->loadFixtures([LoadScheduledCommandData::class]);
+        $this->loadScheduledCommandFixtures();
 
         // One command is locked in fixture (2), another have a -1 return code as lastReturn (4)
         $output = $this->executeCommand(UnlockCommand::class, ['--all' => true])->getDisplay();
@@ -43,7 +43,7 @@ class UnlockCommandTest extends AbstractCommandTest
     public function testUnlockByName()
     {
         // DataFixtures create 4 records
-        $this->loadFixtures([LoadScheduledCommandData::class]);
+        $this->loadScheduledCommandFixtures();
 
         // One command is locked in fixture (2), another have a -1 return code as lastReturn (4)
         $output = $this->executeCommand(UnlockCommand::class, ['name' => 'CommandTestTwo'])->getDisplay();
@@ -66,7 +66,7 @@ class UnlockCommandTest extends AbstractCommandTest
     public function testUnlockByNameWithTimout()
     {
         // DataFixtures create 4 records
-        $this->loadFixtures([LoadScheduledCommandData::class]);
+        $this->loadScheduledCommandFixtures();
 
         // One command is locked in fixture with last execution two days ago (2),
         // another have a -1 return code as lastReturn (4)

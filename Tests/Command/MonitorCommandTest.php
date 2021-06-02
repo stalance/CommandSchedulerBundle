@@ -17,7 +17,7 @@ class MonitorCommandTest extends AbstractCommandTest
     public function testExecuteWithError()
     {
         // DataFixtures create 4 records
-        $this->loadFixtures([LoadScheduledCommandData::class]);
+        $this->loadScheduledCommandFixtures();
 
         $output = $this->executeCommand(MonitorCommand::class, ['--dump' => true])->getDisplay();
 
@@ -32,7 +32,7 @@ class MonitorCommandTest extends AbstractCommandTest
     public function testExecuteWithoutError()
     {
         // DataFixtures create 4 records
-        $this->loadFixtures([LoadScheduledCommandData::class]);
+        $this->loadScheduledCommandFixtures();
 
         $two = $this->em->getRepository(ScheduledCommand::class)->find(2);
         $four = $this->em->getRepository(ScheduledCommand::class)->find(4);

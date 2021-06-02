@@ -20,7 +20,7 @@ class ExecuteCommandTest extends AbstractCommandTest
     public function testExecute()
     {
         // DataFixtures create 4 records
-        $this->loadFixtures([LoadScheduledCommandData::class]);
+        $this->loadScheduledCommandFixtures();
 
         $output = $this->executeCommand(ExecuteCommand::class)->getDisplay();
 
@@ -39,7 +39,7 @@ class ExecuteCommandTest extends AbstractCommandTest
     public function testExecuteWithNoOutput()
     {
         // DataFixtures create 4 records
-        $this->loadFixtures([LoadScheduledCommandData::class]);
+        $this->loadScheduledCommandFixtures();
 
         $output = $this->executeCommand(ExecuteCommand::class, ['--no-output' => true])->getDisplay();
 
@@ -55,7 +55,7 @@ class ExecuteCommandTest extends AbstractCommandTest
     public function testExecuteWithDump()
     {
         // DataFixtures create 4 records
-        $this->loadFixtures([LoadScheduledCommandData::class]);
+        $this->loadScheduledCommandFixtures();
 
         $output = $this->executeCommand(ExecuteCommand::class, ['--dump' => true])->getDisplay();
 

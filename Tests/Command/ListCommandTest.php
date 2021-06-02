@@ -16,7 +16,7 @@ class ListCommandTest extends AbstractCommandTest
     public function testListCommand()
     {
         // DataFixtures create 4 records
-        $this->loadFixtures([LoadScheduledCommandData::class]);
+        $this->loadScheduledCommandFixtures();
 
         $output = $this->executeCommand(ListCommand::class, [])->getDisplay();
 

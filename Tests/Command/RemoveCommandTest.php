@@ -17,7 +17,7 @@ class RemoveCommandTest extends AbstractCommandTest
     public function testRemove()
     {
         // DataFixtures create 4 records
-        $this->loadFixtures([LoadScheduledCommandData::class]);
+        $this->loadScheduledCommandFixtures();
 
         // remove a command that does not exist
         $output = $this->executeCommand(RemoveCommand::class, ['name' => 'abc'], [], 1)->getDisplay();

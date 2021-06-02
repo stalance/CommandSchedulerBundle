@@ -18,7 +18,7 @@ class TestCommandTest extends AbstractCommandTest
     public function testExecute()
     {
         // DataFixtures create 4 records
-        $this->loadFixtures([LoadScheduledCommandData::class]);
+        $this->loadScheduledCommandFixtures();
 
         # Test Runtime
         $start = new \DateTime();

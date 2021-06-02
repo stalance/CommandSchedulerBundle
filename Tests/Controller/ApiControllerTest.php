@@ -7,7 +7,8 @@ use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Dukecity\CommandSchedulerBundle\Entity\ScheduledCommand;
 use Dukecity\CommandSchedulerBundle\Fixtures\ORM\LoadScheduledCommandData;
-use Liip\TestFixturesBundle\Test\FixturesTrait;
+use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
+use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,8 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ApiControllerTest extends WebTestCase
 {
-    use FixturesTrait;
-
+    protected AbstractDatabaseTool $databaseTool;
     private KernelBrowser $client;
     private EntityManager $em;
 
@@ -33,6 +33,8 @@ class ApiControllerTest extends WebTestCase
         $this->em = static::$kernel->getContainer()
             ->get('doctrine')
             ->getManager();
+
+        $this->databaseTool = $this->client->getContainer()->get(DatabaseToolCollection::class)->get();
     }
 
     /**
@@ -99,7 +101,7 @@ class ApiControllerTest extends WebTestCase
     public function testList()
     {
         // DataFixtures create 4 records
-        $this->loadFixtures([LoadScheduledCommandData::class]);
+        $this->databaseTool->loadFixtures([LoadScheduledCommandData::class]);
 
         // List 4 Commands
         $this->client->request('GET', '/command-scheduler/api/list');
@@ -117,7 +119,7 @@ class ApiControllerTest extends WebTestCase
     public function testMonitorWithErrors()
     {
         // DataFixtures create 4 records
-        $this->loadFixtures([LoadScheduledCommandData::class]);
+        $this->databaseTool->loadFixtures([LoadScheduledCommandData::class]);
 
         // One command is locked in fixture (2), another have a -1 return code as lastReturn (4)
         $this->client->request('GET', '/command-scheduler/monitor');
@@ -135,7 +137,7 @@ class ApiControllerTest extends WebTestCase
     public function testMonitorWithoutErrors()
     {
         // DataFixtures create 4 records
-        $this->loadFixtures([LoadScheduledCommandData::class]);
+        $this->databaseTool->loadFixtures([LoadScheduledCommandData::class]);
 
         $two = $this->em->getRepository(ScheduledCommand::class)->find(2);
         $four = $this->em->getRepository(ScheduledCommand::class)->find(4);

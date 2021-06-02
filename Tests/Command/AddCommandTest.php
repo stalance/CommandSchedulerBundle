@@ -37,7 +37,7 @@ class AddCommandTest extends AbstractCommandTest
     public function testDuplicateAdd()
     {
         // DataFixtures create 4 records
-        $this->loadFixtures([LoadScheduledCommandData::class]);
+        $this->loadScheduledCommandFixtures();
 
         // Add command
         $output = $this->executeCommand(AddCommand::class, $this->testCommand)->getDisplay();
@@ -71,7 +71,7 @@ class AddCommandTest extends AbstractCommandTest
     public function testAdd(array $command)
     {
         // DataFixtures create 4 records
-        $this->loadFixtures([LoadScheduledCommandData::class]);
+        $this->loadScheduledCommandFixtures();
 
         // Add command
         $output = $this->executeCommand(AddCommand::class, $command)->getDisplay();
