@@ -64,7 +64,9 @@ abstract class AbstractCommandTest extends WebTestCase
         $commandTester = new CommandTester($command);
         */
 
-        $cmd = static::getContainer()->get($commandClass);
+        # TODO Change later after better support for 5.3
+        #$cmd = static::getContainer()->get($commandClass); # Symfony > 5.3
+        $cmd = static::$container->get($commandClass); # Deprecated since Symfony > 5.3
         $cmd->setApplication(new Application('Test'));
 
         #var_dump($cmd->getDefinition()); die();
