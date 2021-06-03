@@ -8,7 +8,7 @@ use Symfony\Component\Validator\Constraint;
  * Class CronExpression.
  * @Annotation
  */
-class CronExpression extends Constraint
+#[\Attribute] class CronExpression extends Constraint
 {
     /**
      * Constraint error message.

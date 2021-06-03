@@ -13,6 +13,7 @@ use Dukecity\CommandSchedulerBundle\Entity\ScheduledCommand;
 /**
  * Class ScheduledCommandRepository.
  *
+ * @template-extends EntityRepository<ScheduledCommand>
  * @author  Julien Guyon <julienguyon@hotmail.com>
  */
 class ScheduledCommandRepository extends EntityRepository

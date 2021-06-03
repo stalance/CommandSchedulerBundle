@@ -83,6 +83,7 @@ class LoadScheduledCommandData implements FixtureInterface
             $this->manager->flush();
             $this->manager->getConnection()->commit();
         } catch (\Exception $e) {
+            #var_dump($e->getMessage());
             $this->manager->getConnection()->rollBack();
 
             return false;

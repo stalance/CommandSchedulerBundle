@@ -71,7 +71,6 @@ class DetailControllerTest extends WebTestCase
     {
         $this->databaseTool->loadFixtures([]);
 
-        $this->client->followRedirects(true);
         $crawler = $this->client->request('GET', '/command-scheduler/detail/edit');
         $buttonCrawlerNode = $crawler->selectButton('Save');
         $form = $buttonCrawlerNode->form();

@@ -5,119 +5,78 @@ namespace Dukecity\CommandSchedulerBundle\Entity;
 use Carbon\Carbon;
 use Cron\CronExpression as CronExpressionLib;
 use DateTime;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Dukecity\CommandSchedulerBundle\Repository\ScheduledCommandRepository;
 use JetBrains\PhpStorm\Pure;
+use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Dukecity\CommandSchedulerBundle\Validator\Constraints as AssertDukecity;
 
 /**
- * @ORM\Entity(repositoryClass="Dukecity\CommandSchedulerBundle\Repository\ScheduledCommandRepository")
- * @ORM\Table(name="scheduled_command")
- * @UniqueEntity("name")
- *
+ * https://www.doctrine-project.org/2021/05/24/orm2.9.html
  * @author  Julien Guyon <julienguyon@hotmail.com>
  */
-//#[ORM\Entity(repositoryClass="Dukecity\CommandSchedulerBundle\Repository\ScheduledCommandRepository")]
-//#[ORM\Table(name="scheduled_command")]
+#[ORM\Entity(repositoryClass: ScheduledCommandRepository::class)]
+#[ORM\Table(name: "scheduled_command")]
+#[UniqueEntity(fields: ["name"])]
 class ScheduledCommand
 {
-    /**
-     * @var int
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(name="id", type="integer")
-     */
+    #[ORM\Id, ORM\Column(type: Types::INTEGER), ORM\GeneratedValue(strategy: 'AUTO')]
     private $id; # temporary, otherwise EasyAdminBundle could not create new entries
-    #private int $id;
+    #private ?int $id = null;
 
-    /**
-     * @ORM\Version
-     * @ORM\Column(type="integer")
-     * @see https://www.doctrine-project.org/projects/doctrine-orm/en/2.8/reference/transactions-and-concurrency.html
-     */
-    private int $version;
+    // see https://www.doctrine-project.org/projects/doctrine-orm/en/2.9/reference/transactions-and-concurrency.html
+    #[ORM\Version()]
+    #[ORM\Column(type: Types::INTEGER)]
+    private int $version = 0;
 
-    /**
-     * The creation date
-     *
-     * @var ?DateTime
-     * @ORM\Column(type="datetime", name="created_at", nullable=true)
-     */
+    #[ORM\Column(name: "created_at", type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTime $createdAt = null;
 
-    /**
-     * @var string
-     * @Assert\NotBlank
-     * @ORM\Column(type="string", length=150, nullable=false, unique=true)
-     */
+    #[Assert\NotBlank]
+    #[ORM\Column(type: Types::STRING, length: 150, unique: true, nullable: false)]
     private string $name;
 
-    /**
-     * @var string
-     * @Assert\NotBlank
-     * @ORM\Column(type="string", length=200, nullable=false)
-     */
+    #[Assert\NotBlank]
+    #[ORM\Column(type: Types::STRING, length: 200, nullable: false)]
     private string $command;
 
-    /**
-     * @var ?string
-     *
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $arguments = null;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(type="string", length=200, nullable=true)
-     * @Assert\NotBlank
-     * @AssertDukecity\CronExpression
      * @see http://www.abunchofutils.com/utils/developer/cron-expression-helper/
      */
+    #[Assert\NotBlank]
+    #[AssertDukecity\CronExpression]
+    #[ORM\Column(type: Types::STRING, length: 200, nullable: true)]
     private string $cronExpression;
 
-    /**
-     * @Assert\Type("\DateTime")
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[Assert\Type(DateTime::class)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTime $lastExecution = null;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: Types::INTEGER, nullable: true)]
     private ?int $lastReturnCode = null;
 
-    /**
-     * Log's file name (without path).
-     *
-     * @var ?string
-     *
-     * @ORM\Column(type="string", length=150, nullable=true)
-     */
+    /** Log's file name (without path). */
+    #[ORM\Column(type: Types::STRING, length: 150, nullable: true)]
     private ?string $logFile = null;
 
-    /**
-     * @Assert\Type("integer")
-     * @ORM\Column(type="integer", nullable=false)
-     */
+    ##[Assert\Type(Integer::class)]
+    #[ORM\Column(type: Types::INTEGER, nullable: false)]
     private int $priority;
 
-    /**
-     * If true, command will be execute next time regardless cron expression.
-     *
-     * @ORM\Column(type="boolean", nullable=false)
-     */
+    /** If true, command will be execute next time regardless cron expression. */
+    #[ORM\Column(type: Types::BOOLEAN, nullable: false)]
     private bool $executeImmediately = false;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=false)
-     */
+    #[ORM\Column(type: Types::BOOLEAN, nullable: false)]
     private bool $disabled = false;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=false)
-     */
+    #[ORM\Column(type: Types::BOOLEAN, nullable: false)]
     private bool $locked = false;
 
     /**

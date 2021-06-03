@@ -18,8 +18,8 @@
     "require": {
         "php": "^8.0",
         "symfony/console": "^4.4.20|^5.3",
-        "doctrine/orm": "^2.8.1",
-        "doctrine/doctrine-bundle": "^2.2",
+        "doctrine/orm": "^2.9",
+        "doctrine/doctrine-bundle": "^2.4",
         "doctrine/doctrine-migrations-bundle": "^3.0",
         "dragonmantank/cron-expression": "^3.1",
         "symfony/framework-bundle": "^4.4.20|^5.3",
@@ -50,7 +50,7 @@
         "symfony/css-selector": "^4.4.20|^5.3",
         "liip/test-fixtures-bundle": "^2.0.0-alpha2",
         "symfony/browser-kit": "^4.4.20|^5.3",
-        "symfony/maker-bundle": "^1.11",
+        "symfony/maker-bundle": "^1.31",
         "jetbrains/phpstorm-attributes": "^1.0"
     },
     "suggest": {
