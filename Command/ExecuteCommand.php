@@ -9,6 +9,7 @@ use Doctrine\Persistence\ObjectManager;
 use Dukecity\CommandSchedulerBundle\Entity\ScheduledCommand;
 use Dukecity\CommandSchedulerBundle\Service\CommandSchedulerExecution;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\LockableTrait;
 use Symfony\Component\Console\Exception\ExceptionInterface;
@@ -27,7 +28,7 @@ use Symfony\Component\Console\Output\StreamOutput;
  *
  * @author  Julien Guyon <julienguyon@hotmail.com>
  */
-//#[ConsoleCommand(name: 'scheduler:execute', description: 'Execute scheduled commands')]
+#[AsCommand(name: 'scheduler:execute', description: 'Execute scheduled commands')]
 class ExecuteCommand extends Command
 {
     use LockableTrait;

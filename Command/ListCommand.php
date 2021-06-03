@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Doctrine\Persistence\ObjectManager;
 use Dukecity\CommandSchedulerBundle\Entity\ScheduledCommand;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -17,7 +18,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * Class ListCommand
  * This class is for listing all commands.
  */
-##[ConsoleCommand(name: 'scheduler:list', description: 'List scheduled commands')]
+#[AsCommand(name: 'scheduler:list', description: 'List scheduled commands')]
 class ListCommand extends Command
 {
     const SUCCESS = 0;

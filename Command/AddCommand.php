@@ -7,6 +7,7 @@ namespace Dukecity\CommandSchedulerBundle\Command;
 use Doctrine\Persistence\ObjectManager;
 use Dukecity\CommandSchedulerBundle\Entity\ScheduledCommand;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,7 +19,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @example php bin/console scheduler:add 'myCommand' 'debug:router' '' '@daily' 10, 'mycommand.log' false, false
  */
-##[ConsoleCommand(name: 'scheduler:add', description: 'Add a scheduled command')]
+#[AsCommand(name: 'scheduler:add', description: 'Add a scheduled command')]
 class AddCommand extends Command
 {
     #use CommandReturnTrait;

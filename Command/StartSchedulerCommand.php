@@ -2,6 +2,7 @@
 
 namespace Dukecity\CommandSchedulerBundle\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,7 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * Adaption to CommandSchedulerBundle by Christoph Singer <singer@webagentur72.de>
  */
-##[ConsoleCommand(name: 'scheduler:start', description: 'Starts command scheduler')]
+#[AsCommand(name: 'scheduler:start', description: 'Starts command scheduler')]
 class StartSchedulerCommand extends Command
 {
     const SUCCESS = 0;

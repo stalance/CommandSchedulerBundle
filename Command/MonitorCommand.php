@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Doctrine\Persistence\ObjectManager;
 use Dukecity\CommandSchedulerBundle\Event\SchedulerCommandFailedEvent;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,7 +24,7 @@ use Dukecity\CommandSchedulerBundle\Entity\ScheduledCommand;
  *
  * @author  Daniel Fischer <dfischer000@gmail.com>
  */
-##[ConsoleCommand(name: 'scheduler:monitor', description: 'Monitor scheduled commands')]
+#[AsCommand(name: 'scheduler:monitor', description: 'Monitor scheduled commands')]
 class MonitorCommand extends Command
 {
     const SUCCESS = 0;

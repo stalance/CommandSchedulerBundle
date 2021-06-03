@@ -7,6 +7,7 @@ namespace Dukecity\CommandSchedulerBundle\Command;
 use Doctrine\Persistence\ObjectManager;
 use Dukecity\CommandSchedulerBundle\Entity\ScheduledCommand;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,7 +17,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 /**
  * Remove a command.
  */
-##[ConsoleCommand(name: 'scheduler:remove', description: 'Remove a scheduled command', alias='scheduler:delete')]
+#[AsCommand(name: 'scheduler:remove', description: 'Remove a scheduled command', aliases:['scheduler:delete'])]
 class RemoveCommand extends Command
 {
     const SUCCESS = 0;

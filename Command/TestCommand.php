@@ -2,6 +2,7 @@
 
 namespace Dukecity\CommandSchedulerBundle\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -12,7 +13,7 @@ use Dukecity\CommandSchedulerBundle\Service\SymfonyStyleWrapper as SymfonyStyle;
 /**
  * Command is just for testing.
  */
-//#[ConsoleCommand(name: 'scheduler:test', description: 'long running command', hidden: true)]
+#[AsCommand(name: 'scheduler:test', description: 'long running command', hidden: true)]
 class TestCommand extends Command
 {
     const SUCCESS = 0;
