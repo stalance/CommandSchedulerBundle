@@ -36,7 +36,6 @@
         "symfony/dependency-injection": "^4.4.20|^5.3",
         "symfony/property-access": "^4.4.20|^5.3",
         "symfony/http-kernel": "^4.4.20|^5.3",
-        "symfony/inflector": "^4.4.20|^5.3",
         "symfony/yaml": "^4.4.20|^5.3",
         "lorisleiva/cron-translator": "^0.2"
     },
