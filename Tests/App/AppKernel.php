@@ -7,6 +7,10 @@ use Symfony\Component\HttpKernel\Kernel;
 
 class AppKernel extends Kernel
 {
+    public function __construct()
+    {
+        parent::__construct('test', true);
+    }
     public function registerBundles()
     {
         return [
@@ -18,6 +22,8 @@ class AppKernel extends Kernel
             new \Liip\FunctionalTestBundle\LiipFunctionalTestBundle(),
             new \Dukecity\CommandSchedulerBundle\DukecityCommandSchedulerBundle(),
             new \Liip\TestFixturesBundle\LiipTestFixturesBundle(),
+	    new \Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+	    new \Symfony\Bundle\DebugBundle\DebugBundle(),
         ];
     }
 
