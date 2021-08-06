@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Exception\CommandNotFoundException;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\StreamOutput;
+use Symfony\Component\ErrorHandler\Debug;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
@@ -87,6 +88,7 @@ class CommandParser
         );
 
         try {
+            Debug::enable();
             $output = new StreamOutput(fopen('php://memory', 'w+'));
             $application->run($input, $output);
 
