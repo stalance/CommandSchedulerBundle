@@ -49,13 +49,14 @@ class ListController extends AbstractBaseController
     }
 
     /**
-     * @param ScheduledCommand $scheduledCommand
+     * @param $id
      *
      * @return RedirectResponse
      */
-    public function removeAction(ScheduledCommand $scheduledCommand): RedirectResponse
+    public function removeAction($id): RedirectResponse
     {
         $entityManager = $this->getDoctrineManager();
+        $scheduledCommand = $entityManager->getRepository(ScheduledCommand::class)->find($id);
         $entityManager->remove($scheduledCommand);
         $entityManager->flush();
 
@@ -68,12 +69,13 @@ class ListController extends AbstractBaseController
     /**
      * Toggle enabled/disabled.
      *
-     * @param ScheduledCommand $scheduledCommand
+     * @param $id
      *
      * @return RedirectResponse
      */
-    public function toggleAction(ScheduledCommand $scheduledCommand): RedirectResponse
+    public function toggleAction($id): RedirectResponse
     {
+        $scheduledCommand = $this->getDoctrineManager()->getRepository(ScheduledCommand::class)->find($id);
         $scheduledCommand->setDisabled(!$scheduledCommand->isDisabled());
         $this->getDoctrineManager()->flush();
 
@@ -81,13 +83,14 @@ class ListController extends AbstractBaseController
     }
 
     /**
-     * @param ScheduledCommand $scheduledCommand
+     * @param $id
      * @param Request          $request
      *
      * @return RedirectResponse
      */
-    public function executeAction(ScheduledCommand $scheduledCommand, Request $request): RedirectResponse
+    public function executeAction($id, Request $request): RedirectResponse
     {
+        $scheduledCommand = $this->getDoctrineManager()->getRepository(ScheduledCommand::class)->find($id);
         $scheduledCommand->setExecuteImmediately(true);
         $this->getDoctrineManager()->flush();
 
@@ -102,13 +105,14 @@ class ListController extends AbstractBaseController
     }
 
     /**
-     * @param ScheduledCommand $scheduledCommand
+     * @param $id
      * @param Request          $request
      *
      * @return RedirectResponse
      */
-    public function unlockAction(ScheduledCommand $scheduledCommand, Request $request): RedirectResponse
+    public function unlockAction($id, Request $request): RedirectResponse
     {
+        $scheduledCommand = $this->getDoctrineManager()->getRepository(ScheduledCommand::class)->find($id);
         $scheduledCommand->setLocked(false);
         $this->getDoctrineManager()->flush();
 
