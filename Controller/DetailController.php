@@ -18,12 +18,13 @@ class DetailController extends AbstractBaseController
      * Handle display of new/existing ScheduledCommand object.
      *
      * @param Request               $request
-     * @param ScheduledCommand|null $scheduledCommand
+     * @param $id
      *
      * @return Response
      */
-    public function edit(Request $request, ScheduledCommand $scheduledCommand = null): Response
+    public function edit(Request $request, $id = null): Response
     {
+        $scheduledCommand = $id ? $this->getDoctrineManager()->getRepository(ScheduledCommand::class)->find($id) : null;
         if (!$scheduledCommand) {
             $scheduledCommand = new ScheduledCommand();
         }
