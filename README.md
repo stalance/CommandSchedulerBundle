@@ -31,12 +31,12 @@ To use it, you have to enable contrib recipes on your project :
 
 #### Update Database
 
-If you're using doctrine-migrations:
+If you're using DoctrineMigrationsBundle (recommended way):
 
     php bin/console make:migration
     php bin/console doctrine:migrations:migrate
 
-Without migrations:
+Without DoctrineMigrationsBundle:
 
     php bin/console doctrine:schema:update --force
 
