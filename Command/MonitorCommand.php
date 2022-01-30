@@ -27,30 +27,12 @@ use Dukecity\CommandSchedulerBundle\Entity\ScheduledCommand;
 #[AsCommand(name: 'scheduler:monitor', description: 'Monitor scheduled commands')]
 class MonitorCommand extends Command
 {
-    const SUCCESS = 0;
-    const FAILURE = 1;
-
-    /**
-     * @var string
-     */
-    protected static $defaultName = 'scheduler:monitor';
     private ObjectManager $em;
-    private EventDispatcherInterface $eventDispatcher;
+
     //private ParameterBagInterface $params;
 
-    /**
-     * MonitorCommand constructor.
-     *
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param ManagerRegistry          $managerRegistry
-     * @param string                   $managerName
-     * @param int | bool               $lockTimeout
-     * @param array                    $receiver
-     * @param string                   $mailSubject
-     * @param bool                     $sendMailIfNoError
-     */
     public function __construct(
-        EventDispatcherInterface $eventDispatcher,
+        private EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $managerRegistry,
         string $managerName,
         private int | bool $lockTimeout,
@@ -59,7 +41,6 @@ class MonitorCommand extends Command
         private bool $sendMailIfNoError = false
     ) {
         $this->em = $managerRegistry->getManager($managerName);
-        $this->eventDispatcher = $eventDispatcher;
         parent::__construct();
     }
 
@@ -84,11 +65,6 @@ HELP);
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
-     *
      * @throws \Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -98,7 +74,7 @@ HELP);
         if (!$dumpMode && 0 === count($this->receiver)) {
             $output->writeln('<error>Please add receiver in configuration. Or use --dump option</error>');
 
-            return self::FAILURE;
+            return Command::FAILURE;
         }
 
         // Fist, get all failed or potential timeout
@@ -120,14 +96,11 @@ HELP);
             $this->sendMails('No errors found.');
         }*/
 
-        return self::SUCCESS;
+        return Command::SUCCESS;
     }
 
     /**
      * Print a table of locked Commands to console.
-     *
-     * @param OutputInterface $output
-     * @param array           $failedCommands
      *
      * @throws \Exception
      */

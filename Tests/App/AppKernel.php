@@ -4,7 +4,6 @@
 
 namespace App\Tests\App;
 
-use JetBrains\PhpStorm\Pure;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel;
@@ -16,7 +15,6 @@ class AppKernel extends Kernel
 {
     #use MicroKernelTrait;
 
-    #[Pure]
     public function __construct()
     {
         parent::__construct('test', true);
@@ -24,10 +22,7 @@ class AppKernel extends Kernel
 
     /**
      * Register Bundles for test-configuration.
-     *
-     * @return array
      */
-    #[Pure]
     public function registerBundles(): array
     {
         return [
@@ -46,22 +41,18 @@ class AppKernel extends Kernel
     }
 
     /**
-     * @param LoaderInterface $loader
-     *
      * @throws \Exception
      */
-    public function registerContainerConfiguration(LoaderInterface $loader)
+    public function registerContainerConfiguration(LoaderInterface $loader): void
     {
         $loader->load(__DIR__.'/config/config_'.$this->getEnvironment().'.yml');
     }
 
-    #[Pure]
     public function getCacheDir(): string
     {
         return __DIR__.'/../../build/cache/'.$this->getEnvironment();
     }
 
-    #[Pure]
     public function getLogDir(): string
     {
         return __DIR__.'/../../build/kernel_logs/'.$this->getEnvironment();

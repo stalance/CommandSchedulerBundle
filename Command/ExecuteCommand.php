@@ -33,46 +33,22 @@ class ExecuteCommand extends Command
 {
     use LockableTrait;
 
-    const SUCCESS = 0;
-    const FAILURE = 1;
-
-    /**
-     * @var string
-     */
-    protected static $defaultName = 'scheduler:execute';
     //private ObjectManager | EntityManager $em;
     private ObjectManager $em;
-    private EventDispatcherInterface $eventDispatcher;
     private string $dumpMode;
     private ?int $commandsVerbosity = null;
     private $output;
     private InputInterface $input;
-    private CommandSchedulerExecution $commandSchedulerExecution;
-    /**
-     * @var bool|string|string[]|null
-     */
     private null|bool|array|string $env;
 
-    /**
-     * ExecuteCommand constructor.
-     *
-     * @param CommandSchedulerExecution $commandSchedulerExecution
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param ManagerRegistry $managerRegistry
-     * @param string $managerName
-     * @param string | bool $logPath
-     */
     public function __construct(
-        CommandSchedulerExecution $commandSchedulerExecution,
-        EventDispatcherInterface $eventDispatcher,
+        private CommandSchedulerExecution $commandSchedulerExecution,
+        private EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $managerRegistry,
         string $managerName,
-    private string | bool $logPath
+        private string | bool $logPath
     ) {
-        $this->eventDispatcher = $eventDispatcher;
         $this->em = $managerRegistry->getManager($managerName);
-
-        $this->commandSchedulerExecution = $commandSchedulerExecution;
 
         // If logpath is not set to false, append the directory separator to it
         if (false !== $this->logPath) {
@@ -102,9 +78,6 @@ HELP
 
     /**
      * Initialize parameters and services used in execute function.
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
      */
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
@@ -146,7 +119,7 @@ HELP
         if (!$this->lock()) {
             $this->output->writeln('The command is already running in another process.');
 
-            return self::SUCCESS;
+            return Command::SUCCESS;
         }
 
        # For Unittests ;(
@@ -173,25 +146,24 @@ HELP
                 $this->logPath.' not found or not writable. Check `log_path` in your config.yml'
             );
 
-            return self::FAILURE;
+            return Command::FAILURE;
         }
 
-        $commandsToExceute = $this->em->getRepository(ScheduledCommand::class)
+        $commandsToExecute = $this->em->getRepository(ScheduledCommand::class)
             ->findCommandsToExecute();
-        $amountCommands = count($commandsToExceute);
-
+        $amountCommands = count($commandsToExecute);
 
 
 
         $io->title('Start : '.($this->dumpMode ? 'Dump' : 'Execute').' of '.$amountCommands.' scheduled command(s)');
 
 
-        if (is_iterable($commandsToExceute) && $amountCommands >= 1)
+        if (is_iterable($commandsToExecute) && $amountCommands >= 1)
         {
         # dry-run ?
         if ($this->input->getOption('dump'))
         {
-            foreach ($commandsToExceute as $command)
+            foreach ($commandsToExecute as $command)
             {
                 $io->info($command->getName().': '.$command->getCommand().' '.$command->getArguments());
             }
@@ -204,7 +176,7 @@ HELP
             $progress->setMessage('Start');
             $progress->start($amountCommands);
 
-                foreach ($commandsToExceute as $command) {
+                foreach ($commandsToExecute as $command) {
 
                     $progress->setMessage('Start Execution of '.$command->getCommand().' '.$command->getArguments());
                     $io->comment('Start Execution of '.$command->getCommand().' '.$command->getArguments());
@@ -235,6 +207,6 @@ HELP
 
         $this->release();
 
-        return self::SUCCESS;
+        return Command::SUCCESS;
     }
 }

@@ -23,21 +23,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class AddCommand extends Command
 {
     #use CommandReturnTrait;
-    const SUCCESS = 0;
-    const FAILURE = 1;
-
-    /**
-     * @var string
-     */
-    protected static $defaultName = 'scheduler:add';
     private ObjectManager $em;
 
-    /**
-     * UnlockCommand constructor.
-     *
-     * @param ManagerRegistry $managerRegistry
-     * @param string          $managerName
-     */
     public function __construct(ManagerRegistry $managerRegistry, string $managerName)
     {
         $this->em = $managerRegistry->getManager($managerName);
@@ -65,11 +52,6 @@ class AddCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
-     *
      * @throws \Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -105,17 +87,17 @@ class AddCommand extends Command
             } else {
                 $io->error(sprintf('Could not add the command %s (allready exists)', $commandName));
 
-                return self::FAILURE;
+                return Command::FAILURE;
             }
 
             $io->success(sprintf('The Command %s is added successfully', $commandName));
 
-            return self::SUCCESS;
+            return Command::SUCCESS;
         } catch (\Exception $e) {
             $io->error(sprintf('Could not add the command %s', $commandName));
             #var_dump($e->getMessage());
 
-            return self::FAILURE;
+            return Command::FAILURE;
         }
     }
 }

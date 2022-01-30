@@ -23,25 +23,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 #[AsCommand(name: 'scheduler:unlock', description: 'Unlock one or all scheduled commands that have surpassed the lock timeout.')]
 class UnlockCommand extends Command
 {
-    const SUCCESS = 0;
-    const FAILURE = 1;
-    
-    /**
-     * @var string
-     */
-    protected static $defaultName = 'scheduler:unlock';
     private ObjectManager $em;
     const DEFAULT_LOCK_TIME = 3600; // 1 hour
     private SymfonyStyle $io;
 
-    /**
-     * @var bool true if all locked commands should be unlocked
-     */
     private bool $unlockAll;
-
-    /**
-     * @var string|null name of the command to be unlocked
-     */
     private string | null $scheduledCommandName = null;
 
     /**
@@ -66,7 +52,7 @@ class UnlockCommand extends Command
      */
     protected function configure(): void
     {
-        $this->setDescription('Unlock one or all scheduled commands that have surpassed the lock timeout.')
+        $this
             ->addArgument('name', InputArgument::OPTIONAL, 'Name of the command to unlock')
             ->addOption('all', 'A', InputOption::VALUE_NONE, 'Unlock all scheduled commands')
             ->addOption(
@@ -79,9 +65,6 @@ class UnlockCommand extends Command
 
     /**
      * Initialize parameters and services used in execute function.
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
      */
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
@@ -98,11 +81,6 @@ class UnlockCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
-     *
      * @throws \Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -111,7 +89,7 @@ class UnlockCommand extends Command
             $this->io->error('Either the name of a scheduled command or the --all option must be set.'.
                         PHP_EOL.'List all locked Commands: php console scheduler:monitor --dump');
 
-            return self::FAILURE;
+            return Command::FAILURE;
         }
 
         $repository = $this->em->getRepository(ScheduledCommand::class);
@@ -135,7 +113,7 @@ class UnlockCommand extends Command
                     )
                 );
 
-                return self::FAILURE;
+                return Command::FAILURE;
             }
 
             $this->unlock($scheduledCommand);
@@ -143,14 +121,10 @@ class UnlockCommand extends Command
 
         $this->em->flush();
 
-        return self::SUCCESS;
+        return Command::SUCCESS;
     }
 
     /**
-     * @param ScheduledCommand $command command to be unlocked
-     *
-     * @return bool true if unlock success
-     *
      * @throws \Exception
      */
     protected function unlock(ScheduledCommand $command): bool

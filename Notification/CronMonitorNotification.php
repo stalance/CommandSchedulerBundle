@@ -2,7 +2,6 @@
 
 namespace Dukecity\CommandSchedulerBundle\Notification;
 
-use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Notifier\Message\ChatMessage;
 use Symfony\Component\Notifier\Message\EmailMessage;
 use Symfony\Component\Notifier\Notification\ChatNotificationInterface;
@@ -16,13 +15,6 @@ class CronMonitorNotification extends Notification implements EmailNotificationI
 {
     private array $scheduledCommands;
 
-    /**
-     * CronMonitorNotification constructor.
-     *
-     * @param array  $scheduledCommands
-     * @param string $subject
-     */
-    #[Pure]
     public function __construct(array $scheduledCommands, private string $subject)
     {
         $this->scheduledCommands = $scheduledCommands;
@@ -62,12 +54,6 @@ class CronMonitorNotification extends Notification implements EmailNotificationI
         return "CronMonitoring: The following commands need to be checked.\n\n".$message;
     }
 
-    /**
-     * @param Recipient|EmailRecipientInterface $recipient
-     * @param string|null                       $transport
-     *
-     * @return EmailMessage|null
-     */
     public function asEmailMessage(
         Recipient | EmailRecipientInterface $recipient,
         string $transport = null

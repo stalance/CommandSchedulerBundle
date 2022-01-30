@@ -9,6 +9,9 @@ use Dukecity\CommandSchedulerBundle\Entity\ScheduledCommand;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Completion\CompletionInput;
+use Symfony\Component\Console\Completion\CompletionSuggestions;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -20,20 +23,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 #[AsCommand(name: 'scheduler:remove', description: 'Remove a scheduled command', aliases:['scheduler:delete'])]
 class RemoveCommand extends Command
 {
-    const SUCCESS = 0;
-    const FAILURE = 1;
-
-    /** @var string */
-    protected static $defaultName = 'scheduler:remove';
     private ObjectManager $em;
     private SymfonyStyle $io;
 
-    /**
-     * UnlockCommand constructor.
-     *
-     * @param ManagerRegistry $managerRegistry
-     * @param string          $managerName
-     */
     public function __construct(ManagerRegistry $managerRegistry, string $managerName)
     {
         $this->em = $managerRegistry->getManager($managerName);
@@ -66,7 +58,6 @@ HELP
            ;
     }
 
-
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
@@ -94,11 +85,6 @@ HELP
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
-     *
      * @throws \Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -117,11 +103,29 @@ HELP
 
             $io->success(sprintf('The Command %s is deleted successfully', $commandName));
 
-            return self::SUCCESS;
+            return Command::SUCCESS;
         } catch (\Exception) {
             $io->error(sprintf('Could not find/delete the command %s', $commandName));
 
-            return self::FAILURE;
+            return Command::FAILURE;
+        }
+    }
+
+    public function getCommandNames(): array
+    {
+        $return = [];
+        $commands = $this->em->getRepository(ScheduledCommand::class)->findAll();
+        foreach ($commands as $command){
+            $return[] = $command->getName();
+        }
+
+        return $return;
+    }
+
+    public function complete(CompletionInput $input, CompletionSuggestions $suggestions): void
+    {
+        if ($input->mustSuggestArgumentValuesFor('name')) {
+            $suggestions->suggestValues($this->getCommandNames());
         }
     }
 }

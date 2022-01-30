@@ -8,8 +8,6 @@ use DateTime;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Dukecity\CommandSchedulerBundle\Repository\ScheduledCommandRepository;
-use JetBrains\PhpStorm\Pure;
-use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Dukecity\CommandSchedulerBundle\Validator\Constraints as AssertDukecity;
@@ -92,27 +90,17 @@ class ScheduledCommand
         $this->version = 1;
     }
 
-    #[Pure]
     public function __toString(): string
     {
         return $this->getName();
     }
 
-    /**
-     * Get id.
-     */
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * Set id.
-     *
-     * @param int $id
-     *
-     * @return ScheduledCommand
-     */
     public function setId(int $id): ScheduledCommand
     {
         $this->id = $id;
@@ -120,21 +108,11 @@ class ScheduledCommand
         return $this;
     }
 
-    /**
-     * Get name.
-     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * Set name.
-     *
-     * @param string $name
-     *
-     * @return ScheduledCommand
-     */
     public function setName(string $name): ScheduledCommand
     {
         $this->name = $name;
@@ -142,21 +120,11 @@ class ScheduledCommand
         return $this;
     }
 
-    /**
-     * Get command.
-     */
     public function getCommand(): ?string
     {
         return $this->command;
     }
 
-    /**
-     * Set command.
-     *
-     * @param string $command
-     *
-     * @return ScheduledCommand
-     */
     public function setCommand(string $command): ScheduledCommand
     {
         $this->command = $command;
@@ -164,21 +132,11 @@ class ScheduledCommand
         return $this;
     }
 
-    /**
-     * Get arguments.
-     */
     public function getArguments(): ?string
     {
         return $this->arguments;
     }
 
-    /**
-     * Set arguments.
-     *
-     * @param string|null $arguments
-     *
-     * @return ScheduledCommand
-     */
     public function setArguments(?string $arguments): ScheduledCommand
     {
         $this->arguments = $arguments;
@@ -186,21 +144,11 @@ class ScheduledCommand
         return $this;
     }
 
-    /**
-     * Get cronExpression.
-     */
     public function getCronExpression(): ?string
     {
         return $this->cronExpression;
     }
 
-    /**
-     * Set cronExpression.
-     *
-     * @param string $cronExpression
-     *
-     * @return ScheduledCommand
-     */
     public function setCronExpression(string $cronExpression): ScheduledCommand
     {
         $this->cronExpression = $cronExpression;
@@ -208,21 +156,11 @@ class ScheduledCommand
         return $this;
     }
 
-    /**
-     * Get lastExecution.
-     */
     public function getLastExecution(): ?DateTime
     {
         return $this->lastExecution;
     }
 
-    /**
-     * Set lastExecution.
-     *
-     * @param DateTime $lastExecution
-     *
-     * @return ScheduledCommand
-     */
     public function setLastExecution(DateTime $lastExecution): ScheduledCommand
     {
         $this->lastExecution = $lastExecution;
@@ -230,21 +168,11 @@ class ScheduledCommand
         return $this;
     }
 
-    /**
-     * Get logFile.
-     */
     public function getLogFile(): ?string
     {
         return $this->logFile;
     }
 
-    /**
-     * Set logFile.
-     *
-     * @param string $logFile
-     *
-     * @return ScheduledCommand
-     */
     public function setLogFile(string $logFile): ScheduledCommand
     {
         $this->logFile = $logFile;
@@ -252,21 +180,11 @@ class ScheduledCommand
         return $this;
     }
 
-    /**
-     * Get lastReturnCode.
-     */
     public function getLastReturnCode(): ?int
     {
         return $this->lastReturnCode;
     }
 
-    /**
-     * Set lastReturnCode.
-     *
-     * @param int|null $lastReturnCode
-     *
-     * @return ScheduledCommand
-     */
     public function setLastReturnCode(?int $lastReturnCode): ScheduledCommand
     {
         $this->lastReturnCode = $lastReturnCode;
@@ -274,21 +192,11 @@ class ScheduledCommand
         return $this;
     }
 
-    /**
-     * Get priority.
-     */
     public function getPriority(): int
     {
         return $this->priority;
     }
 
-    /**
-     * Set priority.
-     *
-     * @param int $priority
-     *
-     * @return ScheduledCommand
-     */
     public function setPriority(int $priority): ScheduledCommand
     {
         $this->priority = $priority;
@@ -296,29 +204,16 @@ class ScheduledCommand
         return $this;
     }
 
-    /**
-     * Get executeImmediately.
-     */
     public function isExecuteImmediately(): bool
     {
         return $this->executeImmediately;
     }
 
-    /**
-     * Get executeImmediately.
-     */
     public function getExecuteImmediately(): bool
     {
         return $this->executeImmediately;
     }
 
-    /**
-     * Set executeImmediately.
-     *
-     * @param bool $executeImmediately
-     *
-     * @return ScheduledCommand
-     */
     public function setExecuteImmediately(bool $executeImmediately): ScheduledCommand
     {
         $this->executeImmediately = $executeImmediately;
@@ -326,29 +221,16 @@ class ScheduledCommand
         return $this;
     }
 
-    /**
-     * Get disabled.
-     */
     public function isDisabled(): ?bool
     {
         return $this->disabled;
     }
 
-    /**
-     * Get disabled.
-     */
     public function getDisabled(): ?bool
     {
         return $this->disabled;
     }
 
-    /**
-     * Set disabled.
-     *
-     * @param bool $disabled
-     *
-     * @return ScheduledCommand
-     */
     public function setDisabled(bool $disabled): ScheduledCommand
     {
         $this->disabled = $disabled;
@@ -356,29 +238,16 @@ class ScheduledCommand
         return $this;
     }
 
-    /**
-     * Locked Getter.
-     */
     public function isLocked(): ?bool
     {
         return $this->locked;
     }
 
-    /**
-     * locked Getter.
-     */
     public function getLocked(): ?bool
     {
         return $this->locked;
     }
 
-    /**
-     * locked Setter.
-     *
-     * @param bool $locked
-     *
-     * @return ScheduledCommand
-     */
     public function setLocked(bool $locked): ScheduledCommand
     {
         $this->locked = $locked;
@@ -386,29 +255,19 @@ class ScheduledCommand
         return $this;
     }
 
-    /**
-     * @return ?DateTime
-     */
     public function getCreatedAt(): ?DateTime
     {
         return $this->createdAt;
     }
 
-    /**
-     * @param DateTime $createdAt
-     * @return DateTime
-     */
-    public function setCreatedAt(DateTime $createdAt): DateTime
+    public function setCreatedAt(DateTime $createdAt): ScheduledCommand
     {
         $this->createdAt = $createdAt;
+
+        return $this;
     }
 
     /**
-     * Returns the next run time of the scheduled command
-     * @param bool $checkExecuteImmediately Check if immediately execution is set
-     *
-     * @return DateTime|null
-     *
      * @throws \Exception
      */
     public function getNextRunDate(bool $checkExecuteImmediately = true): ?DateTime
@@ -425,8 +284,6 @@ class ScheduledCommand
 
     /**
      * Get a human readable format of the next run of the scheduled command
-     * @example 3 minutes
-     * @return string|null
      */
     public function getNextRunDateForHumans(): ?string
     {

@@ -39,15 +39,9 @@ abstract class AbstractCommandTest extends WebTestCase
     }
 
     /**
-     * This helper method abstracts the boilerplate code needed to test thetes
+     * This helper method abstracts the boilerplate code needed to test the
      * execution of a command.
      * @link https://symfony.com/doc/current/console.html#testing-commands
-     *
-     * @param string $commandClass
-     * @param array $arguments All the arguments passed when executing the command
-     * @param array $inputs The (optional) answers given to the command
-     * @param int $expectedExitCode
-     * @return CommandTester
      */
     protected function executeCommand(string $commandClass, array $arguments = [], array $inputs = [], int $expectedExitCode=0): CommandTester
     {
@@ -64,9 +58,8 @@ abstract class AbstractCommandTest extends WebTestCase
         $commandTester = new CommandTester($command);
         */
 
-        # TODO Change later after better support for 5.3
-        #$cmd = static::getContainer()->get($commandClass); # Symfony > 5.3
-        $cmd = static::$container->get($commandClass); # Deprecated since Symfony > 5.3
+        dump($commandClass);
+        $cmd = static::getContainer()->get($commandClass);
         $cmd->setApplication(new Application('Test'));
 
         #var_dump($cmd->getDefinition()); die();
@@ -85,7 +78,7 @@ abstract class AbstractCommandTest extends WebTestCase
         return $commandTester;
     }
 
-    protected function loadScheduledCommandFixtures()
+    protected function loadScheduledCommandFixtures(): void
     {
         $this->databaseTool->loadFixtures([LoadScheduledCommandData::class]);
     }

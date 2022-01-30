@@ -22,6 +22,7 @@ use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Console\Command\Command;
@@ -36,24 +37,14 @@ class CommandSchedulerExecution
     private EventDispatcherInterface $eventDispatcher;
     private ManagerRegistry $managerRegistry;
     private string $env;
-    private ContainerInterface $container;
     private null|string $logPath;
     private ObjectManager $em;
     private KernelInterface $kernel;
     private Application $application;
 
-    /**
-     * CommandParser constructor.
-     * @param KernelInterface $kernel
-     * @param ContainerInterface $container
-     * @param LoggerInterface $logger
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param ManagerRegistry $managerRegistry
-     * @param string $managerName
-     */
     public function __construct(
         KernelInterface $kernel,
-        ContainerInterface $container,
+        protected ParameterBagInterface $parameterBag,
         LoggerInterface $logger,
         EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $managerRegistry,
@@ -64,8 +55,7 @@ class CommandSchedulerExecution
         $this->eventDispatcher = $eventDispatcher;
         $this->managerRegistry = $managerRegistry;
         $this->em = $managerRegistry->getManager($managerName);
-        $this->container = $container;
-        $this->logPath = $this->container->getParameter('dukecity_command_scheduler.log_path');
+        $this->logPath = $this->parameterBag->get('dukecity_command_scheduler.log_path');
         $this->kernel = $kernel;
 
         $this->application = new Application($kernel);
@@ -73,10 +63,6 @@ class CommandSchedulerExecution
     }
 
 
-    /**
-     * @param $scheduledCommand
-     * @return Command|null
-     */
     private function getCommand($scheduledCommand): ?Command
     {
         try {
@@ -89,11 +75,6 @@ class CommandSchedulerExecution
         return $command;
     }
 
-    /**
-     * @param ScheduledCommand $scheduledCommand
-     * @param int $commandsVerbosity
-     * @return OutputInterface
-     */
     private function getLog(
         ScheduledCommand $scheduledCommand,
         int $commandsVerbosity = OutputInterface::OUTPUT_NORMAL
@@ -119,9 +100,6 @@ class CommandSchedulerExecution
 
     /**
      * - Find command
-     *
-     * @param $scheduledCommand
-     * @return Command|null
      */
     private function prepareCommandExecution($scheduledCommand): ?Command
     {
@@ -140,11 +118,6 @@ class CommandSchedulerExecution
      * - call the command with args and environment
      * - merge the definition of the commands
      * - Disable interactive mode
-     *
-     * @param ScheduledCommand $scheduledCommand
-     * @param Command $command
-     * @param string $env
-     * @return StringInput
      */
     private function getInputCommand(ScheduledCommand $scheduledCommand, Command $command, string $env): StringInput
     {
@@ -173,10 +146,6 @@ class CommandSchedulerExecution
 
     /**
      * Do the real execution of a command
-     *
-     * @param ScheduledCommand $scheduledCommand
-     * @param int $commandsVerbosity
-     * @return int Result
      */
     private function doExecution(ScheduledCommand $scheduledCommand, int $commandsVerbosity): int
     {
@@ -217,9 +186,6 @@ class CommandSchedulerExecution
     }
 
 
-    /**
-     * @param ScheduledCommand $scheduledCommand
-     */
     private function prepareExecution(ScheduledCommand $scheduledCommand)
     {
         //reload command from database before every execution to avoid parallel execution
@@ -256,14 +222,6 @@ class CommandSchedulerExecution
         }
     }
 
-    /**
-     * Excecute a command
-     *
-     * @param ScheduledCommand $scheduledCommand
-     * @param string $env
-     * @param string $commandsVerbosity
-     * @return int Result
-     */
     public function executeCommand(
         ScheduledCommand $scheduledCommand,
         string $env,
@@ -272,6 +230,7 @@ class CommandSchedulerExecution
         $this->env = $env;
         $this->prepareExecution($scheduledCommand);
 
+        /** @var $scheduledCommand ScheduledCommand */
         $scheduledCommand = $this->em->find(ScheduledCommand::class, $scheduledCommand);
 
         $result = $this->doExecution($scheduledCommand, $commandsVerbosity);
@@ -290,7 +249,6 @@ class CommandSchedulerExecution
         $scheduledCommand->setExecuteImmediately(false);
         $this->em->persist($scheduledCommand);
         $this->em->flush();
-
 
         /*
          * This clear() is necessary to avoid conflict between commands and to be sure that none entity are managed
