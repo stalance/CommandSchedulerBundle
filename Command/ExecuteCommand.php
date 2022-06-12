@@ -111,17 +111,6 @@ HELP
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        /*
-         * Be sure that there are no overlapping Execution of commands.
-         * The command is released at the end of this function
-         * @see https://symfony.com/doc/current/console/lockable_trait.html
-         */
-        if (!$this->lock()) {
-            $this->output->writeln('The command is already running in another process.');
-
-            return Command::SUCCESS;
-        }
-
        # For Unittests ;(
        if(is_a($this->output, ConsoleOutput::class))
         {
@@ -177,6 +166,17 @@ HELP
             $progress->start($amountCommands);
 
                 foreach ($commandsToExecute as $command) {
+
+                    /*
+                     * Be sure that there are no overlapping Execution of commands.
+                     * The command is released at the end of this function
+                     * @see https://symfony.com/doc/current/console/lockable_trait.html
+                     */
+                    if (!$this->lock($command->getName())) {
+                        $this->output->writeln('The command is already running in another process.');
+
+                        return Command::SUCCESS;
+                    }
 
                     $progress->setMessage('Start Execution of '.$command->getCommand().' '.$command->getArguments());
                     $io->comment('Start Execution of '.$command->getCommand().' '.$command->getArguments());
