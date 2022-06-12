@@ -48,15 +48,21 @@ class CommandSchedulerExecution
         LoggerInterface $logger,
         EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $managerRegistry,
-        string $managerName
+        string $managerName,
+        string|bool $logPath
         )
     {
         $this->logger = $logger;
         $this->eventDispatcher = $eventDispatcher;
         $this->managerRegistry = $managerRegistry;
         $this->em = $managerRegistry->getManager($managerName);
-        $this->logPath = $this->parameterBag->get('dukecity_command_scheduler.log_path');
         $this->kernel = $kernel;
+        $this->logPath = $logPath;
+
+        // If logpath is not set to false, append the directory separator to it
+        if (false !== $this->logPath) {
+            $this->logPath = rtrim($this->logPath, '/\\').DIRECTORY_SEPARATOR;
+        }
 
         $this->application = new Application($kernel);
         $this->application->setAutoExit(false);
