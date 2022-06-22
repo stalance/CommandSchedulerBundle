@@ -159,7 +159,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->tag('controller.service_arguments');
 
 
-    if(class_exists(Symfony\Component\Notifier\NotifierInterface::class))
+    if(interface_exists('\Symfony\Component\Notifier\NotifierInterface'))
     {$notifier = service('notifier');}
     else { $notifier = null; }
 
